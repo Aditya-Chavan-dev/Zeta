@@ -10,6 +10,7 @@ export interface OptionChoice {
   recommended?: boolean;
 }
 
+
 export interface ClarifyingQuestion {
   id: string;
   domain: string;

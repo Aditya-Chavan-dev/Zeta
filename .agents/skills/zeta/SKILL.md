@@ -45,7 +45,12 @@ When activated in chat:
      > *"Welcome to ZETA Greenfield Governance!*  
      > *What idea or problem are you planning to build? (Feel free to share a raw brain-dump, rough thoughts, or problem statement).*  
      > *Tip: If you don't have an idea yet, reply **'Suggest an idea'** and I will ask a few quick questions to brainstorm one with you."*
-   - **Path A (User provides brain-dump)**: Dissect the idea, initialize `.zeta/state.json` with Step 0 active, and present targeted questions tailored directly to their idea.
+   - **Path A (User provides brain-dump)**:
+     - Initialize `.zeta/state.json` with Step 0 active.
+     - **STRICT BAN ON PREMATURE SOLUTIONING**: NEVER ask about technical implementations (no ASTs, parsers, LSPs, databases) in Step 0.
+     - Ask 2–3 plain-English clarifying questions based specifically on their idea (problem to solve, target users & workflows, core scope vs non-goals).
+     - Present Top 3 options ONLY if the user says "I don't know" or asks for suggestions. If the user knows what they want, let them answer in their own words without forcing choices.
+     - **Coherence Scan**: Scan the entire conversation for contradictions and compile `docs/PROJECT_INTENT.md` when coherent.
    - **Path B (User requests suggestions)**: Ask targeted discovery questions (domain, target users, platform preference), present Top 3 project concepts with trade-offs, and launch Step 0 once an idea is chosen.
 2. **In-Progress Steps**:
    - Read the active step from `.zeta/state.json`.

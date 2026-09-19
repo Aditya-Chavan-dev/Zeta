@@ -20,7 +20,13 @@ At the start of EVERY conversation turn or session reopening:
      > *Tip: If you don't have an idea yet, reply **'Suggest an idea'** and I will ask a few quick questions to brainstorm one with you."*
    - **Path A (User enters a brain-dump / idea)**:
      - Ingest the idea into `.zeta/state.json` with Step 0 active.
-     - Dissect the idea, extract core dimensions, and begin Step 0 (Problem Definition & Project Intent) with targeted Top 3 options tailored to their actual concept.
+     - **STRICT BAN ON PREMATURE SOLUTIONING**: In Step 0, NEVER jump to technical solutions, architecture profiles, parsers, or frameworks (e.g., no "Tree-sitter vs LSP", no database choices). Those belong strictly in Step 3 (Tech Stack) and Step 4 (Architecture).
+     - **Clarify the Idea First**: Ask 2–3 plain-English clarifying questions based specifically on their brain dump:
+       1. *Problem Space*: What exact pain point or friction is this solving?
+       2. *Target Users & Workflow*: Who is using this and what does their step-by-step workflow look like?
+       3. *Scope Boundaries*: What are the 2–3 must-have capabilities vs. what is explicitly OUT of scope?
+     - **No Rigid Multiple-Choice Forcing**: If the user knows what they want, let them answer in their own words. Present Top 3 options ONLY if the user says "I don't know", asks for recommendations, or is ambiguous. Never slap a `(Recommended)` tag on confusing technical jargon.
+     - **End-of-Step Coherence Scan**: Before presenting the Step 0 summary, ZETA scans the entire conversation (brain-dump + clarifying Q&A) for logical contradictions, scope creep, or architectural misalignment. If clean, compile `docs/PROJECT_INTENT.md` and prompt for `"Approve"`.
    - **Path B (User requests suggestions / brainstorming)**:
      - If the user asks for suggestions or is unsure, ask targeted discovery questions:
        1. Preferred domain (e.g., developer tools, personal productivity, data utilities, creative tools).
