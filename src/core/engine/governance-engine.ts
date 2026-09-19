@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import { IStateStore } from '../state/state-store.interface.js';
 import { LifecycleRegistry, LifecycleStageDefinition } from '../lifecycle/lifecycle-map.js';
 import { ExitCode, SessionState, AgentTurnResult } from '../state/schema.js';
+import { ResponseSentinel } from '../governance/response-sentinel.js';
 
 export interface GovernanceTurnInput {
   text: string;
@@ -55,6 +56,19 @@ export class GovernanceEngine {
   public static isExplicitQuitIntent(input: string): boolean {
     const trimmed = input.trim().toLowerCase();
     return /^(?:quit\s+zeta|exit\s+zeta|stop\s+zeta|cancel\s+zeta)$/i.test(trimmed);
+  }
+
+  /**
+   * Routes any outgoing message through ResponseSentinel to guarantee:
+   * 1. Active plugin badge.
+   * 2. 3-act storytelling chronology.
+   * 3. Max 5 items per list (ADHD).
+   * 4. Ponytail zero-placeholder slop.
+   * 5. End-of-turn Enterprise Term Breakdown.
+   */
+  public static formatOutgoingResponse(rawMessage: string, stepNumber: number = 0, stepName: string = 'Governance Stage'): string {
+    const validated = ResponseSentinel.validateAndFormat(rawMessage, stepNumber, stepName);
+    return validated.formattedOutput;
   }
 
   /**
@@ -180,11 +194,14 @@ export class GovernanceEngine {
       this.store.advanceStep(state.activeStep + 1);
     }
 
+    const rawConfirmation = `Step ${state.activeStep} (${stageDef.agentName}) is now LOCKED.\nAuthoritative artifact written to ${stageDef.documentPath}.\n${LifecycleRegistry.isLastStage(state.activeStep) ? 'Project is now COMPLETED.' : `Advanced to Step ${state.activeStep + 1}.`}`;
+    const formattedMessage = ResponseSentinel.validateAndFormat(rawConfirmation, state.activeStep, stageDef.agentName).formattedOutput;
+
     return {
       success: true,
       exitCode: ExitCode.SUCCESS,
       stage: state.activeStep,
-      message: `Step ${state.activeStep} (${stageDef.agentName}) is now LOCKED.\nAuthoritative artifact written to ${stageDef.documentPath}.\n${LifecycleRegistry.isLastStage(state.activeStep) ? 'Project is now COMPLETED.' : `Advanced to Step ${state.activeStep + 1}.`}`,
+      message: formattedMessage,
       isReadyForSignoff: false,
       isLocked: true,
       artifactSummary: compiled.tldrSummary,
