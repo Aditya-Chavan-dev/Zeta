@@ -50,6 +50,7 @@ When activated in chat:
      - **STRICT BAN ON PREMATURE SOLUTIONING**: NEVER ask about technical implementations (no ASTs, parsers, LSPs, databases) in Step 0.
      - Ask 2–3 plain-English clarifying questions based specifically on their idea (problem to solve, target users & workflows, core scope vs non-goals).
      - Present Top 3 options ONLY if the user says "I don't know" or asks for suggestions. If the user knows what they want, let them answer in their own words without forcing choices.
+     - **Propose Lean Baseline v1.0 & Surface Blind Spots**: Before finalizing, synthesize a lean MVP baseline for Version 1.0, proactively surface overlooked technical/product blind spots (e.g., config handling, error edges, performance limits), and ask the user what to keep in v1 vs. defer to v2.
      - **Coherence Scan**: Scan the entire conversation for contradictions and compile `docs/PROJECT_INTENT.md` when coherent.
    - **Path B (User requests suggestions)**: Ask targeted discovery questions (domain, target users, platform preference), present Top 3 project concepts with trade-offs, and launch Step 0 once an idea is chosen.
 2. **In-Progress Steps**:

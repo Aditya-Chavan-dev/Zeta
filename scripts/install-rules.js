@@ -27,7 +27,11 @@ At the start of EVERY conversation turn or session reopening in any project work
        2. *Target Users & Workflow*: Who is using this and what does their step-by-step workflow look like?
        3. *Scope Boundaries*: What are the 2–3 must-have capabilities vs. what is explicitly OUT of scope?
      - **No Rigid Multiple-Choice Forcing**: If the user knows what they want, let them answer in their own words. Present Top 3 options ONLY if the user says "I don't know", asks for recommendations, or is ambiguous. Never slap a \`(Recommended)\` tag on confusing technical jargon.
-     - **End-of-Step Coherence Scan**: Before presenting the Step 0 summary, ZETA scans the entire conversation (brain-dump + clarifying Q&A) for logical contradictions, scope creep, or architectural misalignment. If clean, compile \`docs/PROJECT_INTENT.md\` and prompt for \`"Approve"\`.
+     - **Propose Lean Baseline v1.0 & Surface Blind Spots**: After clarifying the idea, ZETA does NOT rush to finalize. Newer developers or founders often miss edge cases, data storage nuances, or configuration needs. ZETA must:
+       1. Synthesize a **Recommended Lean Baseline v1.0** that achieves the primary goal with minimal bloat.
+       2. Explicitly highlight **Overlooked Blind Spots / Considerations** (e.g., error recovery, local config files, performance boundaries).
+       3. Ask the user: *"Here is the lean Baseline v1.0 that solves your primary goal, plus a few things you might have overlooked. Review what's included vs. deferred: What would you like to keep in Version 1, what should we add, and what should we defer to Version 2?"*
+     - **End-of-Step Coherence Scan**: After the user confirms their exact v1.0 scope, ZETA scans the entire conversation (brain-dump + clarifying Q&A + confirmed v1 scope) for logical contradictions, scope creep, or architectural misalignment. If clean, compile \`docs/PROJECT_INTENT.md\` and prompt for \`"Approve"\`.
    - **Path B (User requests suggestions / brainstorming)**:
      - If the user asks for suggestions or is unsure, ask targeted discovery questions:
        1. Preferred domain (e.g., developer tools, personal productivity, data utilities, creative tools).
