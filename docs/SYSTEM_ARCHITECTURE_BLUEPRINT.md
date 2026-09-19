@@ -44,19 +44,53 @@
 ## 2. Architectural Style & C4 Structural Decomposition
 * **Architecture Style**: Modular Local-First Governance Engine with Inverted Ingestion Bridge
 
+![System Architecture Blueprint](assets/architecture-blueprint.svg)
+
+<details open>
+<summary><b>View Mermaid Architecture Blueprint</b></summary>
+
 ```mermaid
-graph TD
-    CLI["CLI Bridge (bin/zeta.js)"] --> GE["GovernanceEngine"]
-    IDE["Antigravity IDE"] --> CLI
-    GE --> LAD["LifecycleAgent Dispatcher"]
-    LAD --> A01["Agent 01 (Intent)"]
-    LAD --> A02["Agent 02 (Requirements)"]
-    LAD --> A03["Agent 03 (Feasibility)"]
-    LAD --> A15["Agent 15 (Retrospective)"]
-    GE --> SS["SqliteStore (IStateStore)"]
-    SS --> DB["SQLite (.zeta/zeta.db)"]
-    GE --> DOCS["Canonical Disk Artifacts (docs/*.md)"]
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#1e293b', 'primaryTextColor': '#f8fafc', 'primaryBorderColor': '#38bdf8', 'lineColor': '#64748b' }}}%%
+flowchart TB
+  subgraph InterfaceLayer ["1. Client & Ingestion Layer"]
+    User(["IDE / Developer User"]):::client
+    Bridge["Runtime Chat Bridge<br/>(COMP-01 • Stdio/JSON Parser)"]:::client
+  end
+
+  subgraph OrchestrationLayer ["2. Governance & Orchestration Core"]
+    Dispatcher["Agent Dispatcher & Router<br/>(COMP-04 • Stage Routing)"]:::orch
+    Governance["Central Governance Engine<br/>(COMP-03 • Decision Authority)"]:::orch
+    PreconditionSentinel["Precondition Sentinel<br/>(Stage Gating & Integrity)"]:::orch
+  end
+
+  subgraph LifecycleAgents ["3. 15-Stage Lifecycle Agent Domain"]
+    AgentPool["15-Stage Agent Domain<br/>(Agents 00-14: Intent → Retro)"]:::agents
+    QuestionEngine["Interactive Elicitation Engine<br/>(Strict 'No' & Top 3 Options)"]:::agents
+  end
+
+  subgraph StorageLayer ["4. Persistence, Audit & Deliverables"]
+    StateStore[("Atomic State Store<br/>COMP-02 • .zeta/state.json")]:::storage
+    SqliteWAL[("SQLite WAL Store<br/>SqliteStore • .zeta/zeta.db")]:::storage
+    DocArtifacts[("Canonical Deliverables<br/>docs/*.md Specifications")]:::storage
+  end
+
+  User -->|"Turn Command"| Bridge
+  Bridge -->|"Dispatch Turn"| Dispatcher
+  Dispatcher -->|"Evaluate Gates"| Governance
+  Governance -->|"Verify Stage Preconditions"| PreconditionSentinel
+  Dispatcher -->|"Invoke Active Stage"| AgentPool
+  AgentPool -->|"Elicit / Options"| QuestionEngine
+  Governance -->|"Atomic Write / Lock"| StateStore
+  Governance -->|"Audit & WAL Snapshots"| SqliteWAL
+  AgentPool -->|"Compile Signed Document"| DocArtifacts
+
+  classDef client fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+  classDef orch fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+  classDef agents fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ecfdf5;
+  classDef storage fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
 ```
+
+</details>
 
 ---
 

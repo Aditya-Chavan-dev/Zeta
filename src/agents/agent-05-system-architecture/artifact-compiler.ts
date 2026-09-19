@@ -57,9 +57,16 @@ export class ArtifactCompiler {
 ## 2. Architectural Style & C4 Structural Decomposition
 * **Architecture Style**: ${d.architectureStyle}
 
+![System Architecture Blueprint](assets/architecture-blueprint.svg)
+
+<details>
+<summary>View Raw Mermaid Source</summary>
+
 \`\`\`mermaid
 ${d.mermaidC4Diagram}
 \`\`\`
+
+</details>
 
 ---
 

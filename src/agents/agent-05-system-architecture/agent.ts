@@ -8,6 +8,7 @@ import { PreconditionVerifier } from './precondition-verifier.js';
 import { ArchitectureDesigner } from './architecture-designer.js';
 import { QuestionGenerator } from './question-generator.js';
 import { ArtifactCompiler, CompiledArchitectureArtifacts } from './artifact-compiler.js';
+import { generateArchitectureSvg } from './svg-generator.js';
 
 export interface Agent05TurnResponse {
   message: string;
@@ -177,11 +178,15 @@ export class Agent05SystemArchitecture {
   public async finalizeAndLock(): Promise<Agent05TurnResponse> {
     const compiled = ArtifactCompiler.compile(this.agentState.draft);
 
-    // Write to docs/SYSTEM_ARCHITECTURE_BLUEPRINT.md
+    // Write to docs/SYSTEM_ARCHITECTURE_BLUEPRINT.md and docs/assets/architecture-blueprint.svg
     const docsDir = path.join(this.workspaceRoot, 'docs');
-    if (!fs.existsSync(docsDir)) {
-      fs.mkdirSync(docsDir, { recursive: true });
+    const assetsDir = path.join(docsDir, 'assets');
+    if (!fs.existsSync(assetsDir)) {
+      fs.mkdirSync(assetsDir, { recursive: true });
     }
+    const svgPath = path.join(assetsDir, 'architecture-blueprint.svg');
+    fs.writeFileSync(svgPath, generateArchitectureSvg(this.agentState.draft), 'utf-8');
+
     const targetPath = path.join(docsDir, 'SYSTEM_ARCHITECTURE_BLUEPRINT.md');
     fs.writeFileSync(targetPath, compiled.fullDocument, 'utf-8');
 
