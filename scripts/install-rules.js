@@ -91,6 +91,22 @@ export function installGlobalRules() {
   const agentsAction = safeMerge(homeAgents);
   results.push({ file: homeAgents, action: agentsAction });
 
+  // 4. Antigravity IDE Global Skill (~/.gemini/config/skills/zeta/SKILL.md)
+  const geminiSkillsDir = path.join(homeDir, '.gemini', 'config', 'skills', 'zeta');
+  try {
+    if (!fs.existsSync(geminiSkillsDir)) {
+      fs.mkdirSync(geminiSkillsDir, { recursive: true });
+    }
+    const sourceSkill = path.join(process.cwd(), '.agents', 'skills', 'zeta', 'SKILL.md');
+    if (fs.existsSync(sourceSkill)) {
+      const destSkill = path.join(geminiSkillsDir, 'SKILL.md');
+      fs.copyFileSync(sourceSkill, destSkill);
+      results.push({ file: destSkill, action: 'installed' });
+    }
+  } catch (err) {
+    console.error('Skill copy warning:', err.message);
+  }
+
   return results;
 }
 
