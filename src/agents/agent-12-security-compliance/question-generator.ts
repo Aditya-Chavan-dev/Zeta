@@ -10,24 +10,24 @@ export class QuestionGenerator {
         return {
           id: 'q-sec-stride',
           category: 'STRIDE Threat Mitigation & Residual Risk Tolerance',
-          question: 'What vulnerability severity threshold should strictly block CI/CD pipelines and release gating?',
-          contextWhyNeeded: 'Defines the automated security enforcement barrier preventing high-risk code from reaching production.',
+          question: 'How should the build system react when security vulnerabilities or compromised packages are detected? (Security Gates)',
+          contextWhyNeeded: 'Decides whether security bugs immediately stop your build or just display warning notes.',
           top3Options: [
             {
-              title: 'Block on CRITICAL and HIGH CVEs (Recommended)',
-              description: 'Zero unresolved Critical (24h SLA) or High (72h SLA) vulnerabilities permitted. Medium/Low are tracked with warning tickets.',
-              tradeOffs: 'Industry standard; ensures robust perimeter and execution defense without paralyzing developer flow on low-severity issues.',
+              title: 'Block on dangerous, high-severity bugs only',
+              description: 'Stops builds on critical vulnerabilities (like remote exploits or credential leaks). Tracks minor warnings without slowing you down.',
+              tradeOffs: 'Industry standard; protects from actual disasters while keeping fast developer velocity.',
               recommended: true
             },
             {
-              title: 'Zero Vulnerability Policy (Block on CRITICAL, HIGH, and MEDIUM)',
-              description: 'All CVEs regardless of severity block build pipelines until patched or explicitly granted temporary waiver.',
-              tradeOffs: 'Maximum hardening; can stall development velocity on transitive low-risk library dependencies.'
+              title: 'Zero-vulnerability lockdown (Block on any warning)',
+              description: 'Refuses to build if there is even a minor warning or low-risk package notice.',
+              tradeOffs: 'Maximum paranoid defense, but you might get blocked by harmless 3rd-party library notices.'
             },
             {
-              title: 'Advisory Mode (Notify Only, Block on Critical Exploits)',
-              description: 'Only actively exploitable remote code execution (RCE) flaws block; all others log warnings.',
-              tradeOffs: 'Maximum velocity; incurs high technical debt and security drift over time.'
+              title: 'Advisory mode (Show warnings, never block)',
+              description: 'Prints security alerts in the terminal but lets everything build anyway.',
+              tradeOffs: 'Fastest shipping speed, but dangerous vulnerabilities can easily slip into production unnoticed.'
             }
           ]
         };
@@ -36,24 +36,24 @@ export class QuestionGenerator {
         return {
           id: 'q-sec-privacy',
           category: 'Data Privacy & Local Sandboxing Boundary',
-          question: 'How strictly should the zero-cloud-egress data privacy boundary be enforced?',
-          contextWhyNeeded: 'Guarantees proprietary customer source code and architectural models never leak to external third parties.',
+          question: 'How strictly should zero-cloud data privacy be enforced? (Privacy Boundary)',
+          contextWhyNeeded: 'Guarantees your code, data, and secret keys never leak to external third-party servers.',
           top3Options: [
             {
-              title: 'Strict Zero-Cloud Egress (100% Local Execution Boundary) (Recommended)',
-              description: 'All governance analysis, state storage, and artifact compilation run exclusively in local workstation process with zero network calls.',
-              tradeOffs: 'Total privacy compliance (GDPR, SOC2, HIPAA compliant by design); no dependency on external services.',
+              title: '100% Local & Offline execution',
+              description: 'All governance analysis, state storage, and artifacts run exclusively on your computer with zero network calls.',
+              tradeOffs: 'Complete privacy by design (GDPR/HIPAA compliant); zero external downtime risk.',
               recommended: true
             },
             {
-              title: 'Air-Gapped Offline Enforcement (Socket Socket Disconnect)',
-              description: 'Actively sever and reject any outbound socket or HTTP/HTTPS connection from the IDE extension process.',
-              tradeOffs: 'Absolute cryptographic isolation; prevents legitimate developer tools from checking package registry versions.'
+              title: 'Air-gapped network kill-switch',
+              description: 'Actively severs and rejects any outbound network socket or HTTP request from the process.',
+              tradeOffs: 'Absolute cryptographic isolation; prevents checking package registries for updates.'
             },
             {
-              title: 'Opt-In Sanity Telemetry (Sanitized Error Signatures)',
-              description: 'Allow sending stripped exception class names and line numbers to a diagnostic collector with explicit user opt-in.',
-              tradeOffs: 'Helps maintainers spot bugs; requires telemetry consent prompts and scrubbing validation.'
+              title: 'Opt-in anonymous crash telemetry',
+              description: 'Allows sending stripped error names and line numbers with explicit user consent.',
+              tradeOffs: 'Helps fix bugs faster, but requires user consent prompts and telemetry scrubbing.'
             }
           ]
         };
@@ -63,24 +63,24 @@ export class QuestionGenerator {
         return {
           id: 'q-sec-license',
           category: 'Open-Source License & SBOM Policy',
-          question: 'Which open-source license governance and Software Bill of Materials (SBOM) standard should be enforced?',
-          contextWhyNeeded: 'Prevents viral copyleft licenses (GPL/AGPL) from contaminating proprietary software codebases.',
+          question: 'Which open-source software licenses should be permitted in dependencies? (Safe Licensing)',
+          contextWhyNeeded: 'Prevents accidentally using libraries with viral copyleft rules that could force open-sourcing proprietary code.',
           top3Options: [
             {
-              title: 'Permissive Only (MIT, Apache-2.0, BSD-3-Clause, ISC) with CycloneDX SBOM (Recommended)',
-              description: 'Strictly permit business-friendly permissive licenses; automatically ban viral copyleft (GPL/AGPL); generate CycloneDX SBOM on build.',
-              tradeOffs: 'Eliminates legal and IP contamination risks; industry standard for commercial and enterprise software.',
+              title: 'Permissive licenses only (MIT, Apache 2.0, BSD, ISC)',
+              description: 'Allows standard business-friendly licenses and automatically blocks viral copyleft (GPL/AGPL). Generates a package inventory (SBOM) on build.',
+              tradeOffs: 'Zero legal headaches; industry standard for commercial and open software.',
               recommended: true
             },
             {
-              title: 'Ultra-Restrictive MIT Only',
-              description: 'Only permit MIT-licensed dependencies; reject Apache, BSD, or any licenses requiring patent grant clauses.',
-              tradeOffs: 'Extremely simple legal review; severely limits the choice of usable open-source packages.'
+              title: 'Ultra-strict MIT only',
+              description: 'Only permits packages using the simple MIT license; rejects Apache, BSD, or complex licenses.',
+              tradeOffs: 'Dead-simple legal rules, but eliminates many great Apache and BSD packages.'
             },
             {
-              title: 'Dual Permissive & Weak Copyleft (Allow MPL-2.0 / LGPL with isolation)',
-              description: 'Allow weak copyleft libraries if consumed as dynamic unlinked libraries or independent modules.',
-              tradeOffs: 'Broader dependency selection; requires ongoing legal audit of module boundary linking.'
+              title: 'Permissive with isolated weak copyleft (Allow MPL-2.0 / LGPL)',
+              description: 'Permits weak copyleft libraries only if kept separate as dynamic unlinked modules.',
+              tradeOffs: 'More package choices, but requires checking module link boundaries periodically.'
             }
           ]
         };

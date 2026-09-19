@@ -52,7 +52,8 @@ export const SessionStateSchema = z.object({
   stepSummaries: z.record(z.string(), StepSummarySchema),
   uncommittedBuffer: UncommittedBufferSchema,
   toolVersion: z.string().optional(),
-  stayOnOldVersion: z.boolean().optional()
+  stayOnOldVersion: z.boolean().optional(),
+  tone: z.enum(['builder', 'enterprise']).default('builder').optional()
 });
 
 export type SessionState = z.infer<typeof SessionStateSchema>;

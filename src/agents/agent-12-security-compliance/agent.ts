@@ -6,6 +6,7 @@ import { PreconditionVerifier } from './precondition-verifier.js';
 import { SecurityAuditor } from './security-auditor.js';
 import { QuestionGenerator } from './question-generator.js';
 import { ArtifactCompiler } from './artifact-compiler.js';
+import { BuilderTranslator } from '../../core/formatters/builder-translator.js';
 import { AgentResponse, Step11SecurityComplianceDraft } from './types.js';
 
 export class Agent12SecurityCompliance {
@@ -66,15 +67,21 @@ export class Agent12SecurityCompliance {
       if (this.draft.unresolvedAreas.length > 0) {
         const nextArea = this.draft.unresolvedAreas[0];
         const question = QuestionGenerator.generateForArea(nextArea, this.draft);
+        const state = StateManager.load(this.workspaceRoot);
+        const tone = state?.tone || 'builder';
 
-        const optionsText = question.top3Options
-          .map((opt, i) => `${i + 1}. **${opt.title}**\n   - Description: ${opt.description}\n   - Trade-offs: ${opt.tradeOffs}`)
-          .join('\n\n');
+        const message = BuilderTranslator.formatQuestion({
+          stepNumber: 11,
+          category: question.category,
+          question: question.question,
+          top3Options: question.top3Options,
+          tone
+        });
 
         return {
           step: 11,
           isLocked: false,
-          message: `### Security, Privacy & Compliance Assessment: ${question.category}\n\n${question.question}\n\n${optionsText}\n\nPlease select an option (1, 2, or 3) or provide your custom security specification:`,
+          message,
           question
         };
       }
@@ -94,7 +101,7 @@ export class Agent12SecurityCompliance {
       isLocked: false,
       isReadyForSignoff: true,
       documentPath: 'docs/SECURITY_PRIVACY_AND_COMPLIANCE.md',
-      message: `Security, Privacy & Compliance architecture has been audited and compiled into \`docs/SECURITY_PRIVACY_AND_COMPLIANCE.md\`.\n\nAll STRIDE threat models, zero-cloud-egress boundaries, secrets scanning, and SBOM licensing rules are satisfied.\n\nPlease review and reply with **Approve** to lock Step 11 and advance to Step 12 (Governance, Lifecycle & Deprecation).`
+      message: `👉 **What we are doing right now**: Finalizing security, privacy, and safe licensing rules.\n\nAll security policies, zero-cloud data privacy, and safe package rules have been audited and compiled into \`docs/SECURITY_PRIVACY_AND_COMPLIANCE.md\`.\n\nPlease review and reply with **Approve** to lock Step 11 and advance to Step 12 (Governance, Lifecycle & Deprecation).`
     };
   }
 

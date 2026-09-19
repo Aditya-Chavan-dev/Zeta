@@ -40,6 +40,7 @@ export interface SessionState {
   uncommittedBuffer: UncommittedBuffer;
   toolVersion?: string;
   stayOnOldVersion?: boolean;
+  tone?: 'builder' | 'enterprise';
 }
 
 export interface ResumeAssessment {

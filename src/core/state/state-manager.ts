@@ -26,6 +26,7 @@ export class StateManager {
       version: this.CURRENT_VERSION,
       toolVersion: this.CURRENT_TOOL_VERSION,
       stayOnOldVersion: false,
+      tone: 'builder',
       projectId: projectId || `proj_${crypto.randomBytes(4).toString('hex')}`,
       activeStep: 0,
       stepStatus: 'IN_PROGRESS',
@@ -36,6 +37,19 @@ export class StateManager {
       uncommittedBuffer: {}
     };
 
+    this.save(workspaceRoot, state);
+    return state;
+  }
+
+  /**
+   * Sets the language and communication tone for the workspace ('builder' or 'enterprise').
+   */
+  public static setTone(workspaceRoot: string, tone: 'builder' | 'enterprise'): SessionState {
+    const state = this.load(workspaceRoot);
+    if (!state) {
+      throw new Error('No state found to update tone');
+    }
+    state.tone = tone;
     this.save(workspaceRoot, state);
     return state;
   }
