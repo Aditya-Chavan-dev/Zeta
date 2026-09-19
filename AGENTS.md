@@ -35,6 +35,15 @@ At the start of EVERY conversation turn or session reopening:
        - **Round 1 (Foundation Blind Spots)**: Surface local config traps, environment prerequisites, state persistence models, and ask how the user wants them handled.
        - **Round 2 (Runtime & Failure Edge Cases)**: Surface invalid inputs, concurrency, network/disk timeouts, unhandled crashes, and ask how the system should react.
        - **Round 3 (Resilience & Boundary Limits)**: Surface file/payload caps, degradation under load, data isolation, and ask what limits to enforce.
+     - **Uncertainty & Recommendation Protocol (Top 3 on Demand)**:
+       - If at ANY point during Step 0 the user says *"I can't think of a way"*, *"I don't know"*, *"What do you recommend?"*, or asks for suggestions:
+         - **STOP IMMEDIATELY**: DO NOT assume an answer, and DO NOT compile `docs/PROJECT_INTENT.md`.
+         - Present exactly **Top 3 industry options** with trade-offs:
+           1. **(Recommended) [Option Name]**: Best-practice pattern with concrete rationale for their project.
+           2. **[Alternative Option Name]**: Simpler / leaner / faster alternative with trade-off.
+           3. **[Alternative Option Name]**: Flexible / extensible alternative with trade-off.
+         - Ask: *"Which of these 3 approaches fits best, or would you like to customize one?"*
+         - Wait for user selection before continuing to the next question or round.
      - **Drafting Lean Baseline v1.0 & Evo Handoff Boundary**:
        - Synthesize a rock-solid, unbreakable v1.0 specification in `docs/PROJECT_INTENT.md`.
        - Version 1.0 is not bloated or over-engineered, but achieves the primary goal with zero drift, zero hallucination, and zero technical debt.

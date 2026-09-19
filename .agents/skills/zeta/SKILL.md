@@ -61,6 +61,15 @@ When activated in chat:
        - **Round 1 (Foundation Blind Spots)**: Local configs, environment prerequisites, state persistence, filesystem traps.
        - **Round 2 (Runtime & Failure Edge Cases)**: Invalid inputs, concurrency, timeouts, unhandled exception paths, rate limits.
        - **Round 3 (Resilience & Boundary Limits)**: File/payload caps, load degradation, data isolation, recovery behavior.
+     - **Uncertainty & Recommendation Protocol (Top 3 on Demand)**:
+       - If at ANY point during Step 0 the user says *"I can't think of a way"*, *"I don't know"*, *"What do you recommend?"*, or asks for suggestions:
+         - **STOP IMMEDIATELY**: DO NOT assume an answer, and DO NOT compile `docs/PROJECT_INTENT.md`.
+         - Present exactly **Top 3 industry options** with trade-offs:
+           1. **(Recommended) [Option Name]**: Best-practice pattern with concrete rationale for their project.
+           2. **[Alternative Option Name]**: Simpler / leaner / faster alternative with trade-off.
+           3. **[Alternative Option Name]**: Flexible / extensible alternative with trade-off.
+         - Ask: *"Which of these 3 approaches fits best, or would you like to customize one?"*
+         - Wait for user selection before continuing to the next question or round.
      - **Drafting Lean Baseline v1.0 & Evo Handoff Boundary**:
        - Synthesize an unbreakable v1.0 specification in `docs/PROJECT_INTENT.md` achieving the core goal with zero drift, zero hallucination, and zero tech debt.
        - ZETA builds the rock-solid foundation across all 15 stages. Once complete, ZETA packages `docs/` for **Evo (Evolution Engine)** to handle ongoing evolution.
@@ -68,7 +77,7 @@ When activated in chat:
    - **Path B (User requests suggestions)**: Ask targeted discovery questions (domain, target users, platform preference), present Top 3 project concepts with trade-offs, and launch Step 0 once an idea is chosen.
 2. **In-Progress Steps**:
    - Read the active step from `.zeta/state.json`.
-   - **For Step 0**: Follow the 3-round clarification + 3-round blind spots protocol with direct open-ended questions. NEVER present options 1, 2, 3 or suggestions.
+   - **For Step 0**: Follow the 3-round clarification + 3-round blind spots protocol with direct open-ended questions. If the user expresses indecision or asks for recommendations, present Top 3 options. NEVER finalize or compile `docs/PROJECT_INTENT.md` without resolving the user's question.
    - **For Steps 1–14**: Present active technical/architectural questions with Top 3 trade-offs where appropriate, or apply user input to the draft.
 3. **Gating & Sign-off**:
    - When all areas for the step are resolved, output the compiled summary and ask:

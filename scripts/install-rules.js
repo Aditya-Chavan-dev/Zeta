@@ -36,6 +36,15 @@ At the start of EVERY conversation turn or session reopening in any project work
        - **Round 1 (Foundation Blind Spots)**: Local configs, environment prerequisites, state persistence models, filesystem traps.
        - **Round 2 (Runtime & Failure Edge Cases)**: Invalid inputs, concurrency issues, network/disk timeouts, unhandled crashes.
        - **Round 3 (Resilience & Boundary Limits)**: File/payload caps, performance degradation under load, data isolation, clean exit/recovery.
+     - **Uncertainty & Recommendation Protocol (Top 3 on Demand)**:
+       - If at ANY point during Step 0 the user says *"I can't think of a way"*, *"I don't know"*, *"What do you recommend?"*, or asks for suggestions:
+         - **STOP IMMEDIATELY**: DO NOT assume an answer, and DO NOT compile \`docs/PROJECT_INTENT.md\`.
+         - Present exactly **Top 3 industry options** with trade-offs:
+           1. **(Recommended) [Option Name]**: Best-practice pattern with concrete rationale for their project.
+           2. **[Alternative Option Name]**: Simpler / leaner / faster alternative with trade-off.
+           3. **[Alternative Option Name]**: Flexible / extensible alternative with trade-off.
+         - Ask: *"Which of these 3 approaches fits best, or would you like to customize one?"*
+         - Wait for user selection before continuing to the next question or round.
      - **Drafting Lean Baseline v1.0 & Evo Handoff Boundary**:
        - Synthesize a rock-solid, unbreakable v1.0 specification in \`docs/PROJECT_INTENT.md\`.
        - Version 1.0 is not bloated or over-engineered, but achieves the primary goal with zero drift, zero hallucination, and zero technical debt.
@@ -50,7 +59,7 @@ At the start of EVERY conversation turn or session reopening in any project work
      - When the user chooses or refines an idea, launch Step 0 with that concept as the foundation.
 
 4. **User Choice Protocol (For In-Progress Resumption)**:
-   - **For Step 0**: Ask direct open-ended questions. NEVER present options 1, 2, 3 or suggestions.
+   - **For Step 0**: Follow the 3-round clarification + 3-round blind spots protocol with direct open-ended questions. If the user expresses indecision or asks for recommendations, present Top 3 options with trade-offs. NEVER finalize or compile \`docs/PROJECT_INTENT.md\` without resolving the user's question.
    - **For Steps 1–14**: Present active technical/architectural questions with Top 3 trade-offs where appropriate.
    - **If user answers "Yes" (or "continue", "y", "proceed")**:
      - Continue with the active step's next question or draft signoff.
