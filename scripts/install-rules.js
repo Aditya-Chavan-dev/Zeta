@@ -31,7 +31,13 @@ At the start of EVERY conversation turn or session reopening in any project work
    - Greenfield software only (no legacy cloud migration bloat).
    - Always require explicit \`"Approve"\` handshake to lock steps.
    - Always present Top 3 industry options for architectural choices.
-   - Zero cloud egress (100% local persistence).`;
+   - Zero cloud egress (100% local persistence).
+
+## Mandatory Response Signature (Active Plugin Indicator)
+In EVERY response, prefix the very first line with the active ZETA status badge so the user can verify the governance plugin is attached:
+- If steps are in progress: \`[⚡ ZETA: ACTIVE | Step [X]/15 - [Step Name]]\`
+- If all 15 stages are complete: \`[⚡ ZETA: ACTIVE | Lifecycle Complete (15/15)]\`
+If this badge is ever absent, the user knows the governance plugin has been detached or bypassed.`;
 
 const FULL_BLOCK = `${BLOCK_START}\n${RULE_BODY}\n${BLOCK_END}`;
 
