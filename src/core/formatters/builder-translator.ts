@@ -237,19 +237,19 @@ export class BuilderTranslator {
       'Prior milestone verified and locked in state store.',
       'Disk artifact integrity and checksums validated.',
       'Zero regression across previous lifecycle stages.'
-    ]).slice(0, 3).map(b => `• ${b}`).join('\n');
+    ]).slice(0, 3).map(b => `- ${b}`).join('\n\n');
 
     const presentBullets = (params.presentActionBullets || [
       'Tackling core design and architectural decisions for this stage.',
       'Applying anti-bloat filters to keep codebase minimal and lean.',
       'Gathering targeted developer intent before code execution.'
-    ]).slice(0, 3).map(b => `• ${b}`).join('\n');
+    ]).slice(0, 3).map(b => `- ${b}`).join('\n\n');
 
     const nextBullets = (params.nextUnlockBullets || [
       'Generates authoritative stage specification document.',
       'Locks stage hash in tamper-evident state ledger.',
       'Unlocks subsequent lifecycle milestone without drift.'
-    ]).slice(0, 3).map(b => `• ${b}`).join('\n');
+    ]).slice(0, 3).map(b => `- ${b}`).join('\n\n');
 
     const categoryHeader = params.category
       ? `\n### Focus Area: ${this.translateCategory(params.category)}\n`
@@ -259,7 +259,7 @@ export class BuilderTranslator {
     if (params.top3Options && params.top3Options.length > 0) {
       optionsSection = '\n' + params.top3Options.map((opt, i) => {
         const recBadge = opt.recommended ? ' *(Recommended)*' : '';
-        return `${i + 1}. **${opt.title}**${recBadge}\n   • **What it does**: ${opt.description}\n   • **Trade-off**: ${opt.tradeOffs}`;
+        return `${i + 1}. **${opt.title}**${recBadge}\n   - **What it does**: ${opt.description}\n   - **Trade-off**: ${opt.tradeOffs}`;
       }).join('\n\n') + '\n\n*Reply with **1**, **2**, or **3**, or describe your own preference:*';
     }
 
@@ -270,14 +270,23 @@ export class BuilderTranslator {
     const termCard = this.formatTermCard(step, params.termOverride);
 
     return `📖 **The Story So Far**: ${previous}
+
 ${pastBullets}
 
+---
+
 🔨 **What We Are Doing Right Now**: ${whatDoing}
+
 ${presentBullets}
 
+---
+
 🚀 **What Happens Next**: ${nextOutcome}
+
 ${nextBullets}
 ${categoryHeader}${questionSection}${mainSection}${optionsSection}
+
+---
 
 ### Next Action (under 2 minutes)
 ${nextAction}
