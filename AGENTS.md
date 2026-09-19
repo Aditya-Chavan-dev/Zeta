@@ -21,16 +21,21 @@ At the start of EVERY conversation turn or session reopening:
    - **Path A (User enters a brain-dump / idea)**:
      - Ingest the idea into `.zeta/state.json` with Step 0 active.
      - **STRICT BAN ON PREMATURE SOLUTIONING**: In Step 0, NEVER jump to technical solutions, architecture profiles, parsers, or frameworks (e.g., no "Tree-sitter vs LSP", no database choices). Those belong strictly in Step 3 (Tech Stack) and Step 4 (Architecture).
-     - **Clarify the Idea First**: Ask 2–3 plain-English clarifying questions based specifically on their brain dump:
-       1. *Problem Space*: What exact pain point or friction is this solving?
-       2. *Target Users & Workflow*: Who is using this and what does their step-by-step workflow look like?
-       3. *Scope Boundaries*: What are the 2–3 must-have capabilities vs. what is explicitly OUT of scope?
-     - **No Rigid Multiple-Choice Forcing**: If the user knows what they want, let them answer in their own words. Present Top 3 options ONLY if the user says "I don't know", asks for recommendations, or is ambiguous. Never slap a `(Recommended)` tag on confusing technical jargon.
-     - **Propose Lean Baseline v1.0 & Surface Blind Spots**: After clarifying the idea, ZETA does NOT rush to finalize. Newer developers or founders often miss edge cases, data storage nuances, or configuration needs. ZETA must:
-       1. Synthesize a **Recommended Lean Baseline v1.0** that achieves the primary goal with minimal bloat.
-       2. Explicitly highlight **Overlooked Blind Spots / Considerations** (e.g., error recovery, local config files, performance boundaries).
-       3. Ask the user: *"Here is the lean Baseline v1.0 that solves your primary goal, plus a few things you might have overlooked. Review what's included vs. deferred: What would you like to keep in Version 1, what should we add, and what should we defer to Version 2?"*
-     - **End-of-Step Coherence Scan**: After the user confirms their exact v1.0 scope, ZETA scans the entire conversation (brain-dump + clarifying Q&A + confirmed v1 scope) for logical contradictions, scope creep, or architectural misalignment. If clean, compile `docs/PROJECT_INTENT.md` and prompt for `"Approve"`.
+     - **No Rigid Multiple-Choice Forcing**: Allow the user to answer in their own words. Present Top 3 options ONLY if the user says "I don't know", asks for recommendations, or is ambiguous.
+     - **Sequential 3-Round Idea Clarification Loop** (Evolve depth across 3 turns):
+       - **Round 1 (Base-Level Requirements)**: Elicit core problem, target audience, primary pain point, and core deliverables.
+       - **Round 2 (Behavioral & Interaction Clarity)**: Elicit detailed user workflows, input/output data shapes, interaction modes, and step-by-step user journeys.
+       - **Round 3 (Deep Mechanical & Boundary Clarity)**: Elicit operational rules, failure boundaries, must-have constraints vs. strict non-goals.
+     - **Sequential 3-Round Blind Spots & Edge Cases Hardening** (Uncover hidden traps across 3 turns):
+       - Once the idea is clear, ZETA surfaces things newer developers overlook, forget, or don't know:
+       - **Round 1 (Foundation Blind Spots)**: Local configs, environment prerequisites, state persistence models, filesystem/platform traps.
+       - **Round 2 (Runtime & Failure Edge Cases)**: Invalid inputs, concurrency issues, network/disk timeouts, unhandled exception paths, rate limits.
+       - **Round 3 (Resilience & Boundary Limits)**: File/payload caps, performance degradation under load, data isolation, clean exit/recovery behaviors.
+     - **Drafting Lean Baseline v1.0 & Evo Handoff Boundary**:
+       - Synthesize a rock-solid, unbreakable v1.0 specification in `docs/PROJECT_INTENT.md`.
+       - Version 1.0 is not bloated or over-engineered, but achieves the primary goal with zero drift, zero hallucination, and zero technical debt.
+       - ZETA builds the unbreakable foundation (frontend, backend, DB, architecture, tech stack). Once v1.0 is built and verified, ZETA prepares the handoff documentation package in `docs/` for **Evo (Evolution Engine)** to take over for future evolution.
+     - **End-of-Step Coherence Scan**: Before sign-off, ZETA scans the entire conversation across all 6 rounds for contradictions, scope creep, or architectural misalignment. If clean, compile `docs/PROJECT_INTENT.md` and prompt for `"Approve"`.
    - **Path B (User requests suggestions / brainstorming)**:
      - If the user asks for suggestions or is unsure, ask targeted discovery questions:
        1. Preferred domain (e.g., developer tools, personal productivity, data utilities, creative tools).

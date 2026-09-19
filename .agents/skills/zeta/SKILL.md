@@ -48,10 +48,18 @@ When activated in chat:
    - **Path A (User provides brain-dump)**:
      - Initialize `.zeta/state.json` with Step 0 active.
      - **STRICT BAN ON PREMATURE SOLUTIONING**: NEVER ask about technical implementations (no ASTs, parsers, LSPs, databases) in Step 0.
-     - Ask 2–3 plain-English clarifying questions based specifically on their idea (problem to solve, target users & workflows, core scope vs non-goals).
-     - Present Top 3 options ONLY if the user says "I don't know" or asks for suggestions. If the user knows what they want, let them answer in their own words without forcing choices.
-     - **Propose Lean Baseline v1.0 & Surface Blind Spots**: Before finalizing, synthesize a lean MVP baseline for Version 1.0, proactively surface overlooked technical/product blind spots (e.g., config handling, error edges, performance limits), and ask the user what to keep in v1 vs. defer to v2.
-     - **Coherence Scan**: Scan the entire conversation for contradictions and compile `docs/PROJECT_INTENT.md` when coherent.
+     - **Sequential 3-Round Idea Clarification Loop**:
+       - **Round 1 (Base Requirements)**: Core problem, target audience, primary pain point, and deliverables.
+       - **Round 2 (Behavioral & Interaction Clarity)**: Detailed user workflows, data shapes, and user journeys.
+       - **Round 3 (Deep Mechanical & Boundary Clarity)**: Operational rules, failure boundaries, must-haves vs non-goals.
+     - **Sequential 3-Round Blind Spots & Edge Cases Hardening**:
+       - **Round 1 (Foundation Blind Spots)**: Local configs, environment prerequisites, state persistence, filesystem traps.
+       - **Round 2 (Runtime & Failure Edge Cases)**: Invalid inputs, concurrency, timeouts, unhandled exception paths, rate limits.
+       - **Round 3 (Resilience & Boundary Limits)**: File/payload caps, load degradation, data isolation, recovery behavior.
+     - **Drafting Lean Baseline v1.0 & Evo Handoff Boundary**:
+       - Synthesize an unbreakable v1.0 specification in `docs/PROJECT_INTENT.md` achieving the core goal with zero drift, zero hallucination, and zero tech debt.
+       - ZETA builds the rock-solid foundation across all 15 stages. Once complete, ZETA packages `docs/` for **Evo (Evolution Engine)** to handle ongoing evolution.
+     - **Coherence Scan**: Scan the entire conversation across all 6 rounds for contradictions, compile `docs/PROJECT_INTENT.md`, and prompt for `"Approve"`.
    - **Path B (User requests suggestions)**: Ask targeted discovery questions (domain, target users, platform preference), present Top 3 project concepts with trade-offs, and launch Step 0 once an idea is chosen.
 2. **In-Progress Steps**:
    - Read the active step from `.zeta/state.json`.
