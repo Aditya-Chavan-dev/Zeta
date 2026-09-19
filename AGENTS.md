@@ -103,10 +103,21 @@ When compiling `docs/SYSTEM_ARCHITECTURE_BLUEPRINT.md` or rendering Mermaid diag
 
 ## Permanent Skill Infusion: Zero-Jargon Storytelling, ADHD, Ponytail & Headroom
 To ensure every response is clear, non-overwhelming, and builds zero-bloat software:
-1. **3-Act Storytelling Chronology**: Every stage turn must follow a chronological story arc:
-   - 📖 **The Story So Far**: 1 sentence on the previous milestone verified and locked.
-   - 🔨 **What We Are Doing Right Now**: 1 plain-English sentence on the exact real-world problem being solved.
-   - 🚀 **What Happens Next**: 1 sentence on what unlocks once this decision is locked.
+1. **3-Act Storytelling Chronology**: Every stage turn must follow a chronological story arc formatted **neatly one below the other with blank line separation**, with **3 short, targeted bullet points each** to give full context:
+   - 📖 **The Story So Far**: [Headline sentence]  
+     • [Verified milestone]  
+     • [Locked baseline safeguard]  
+     • [Current clean state]  
+
+   - 🔨 **What We Are Doing Right Now**: [Headline sentence]  
+     • [Core problem tackled]  
+     • [Builder rationale and why it matters]  
+     • [Immediate action being applied]  
+
+   - 🚀 **What Happens Next**: [Headline sentence]  
+     • [Immediate deliverable unlocked]  
+     • [Downstream stage affected]  
+     • [Decision or approval needed to proceed]
 2. **Zero-Jargon Rule**: Strictly forbidden from using unexplained academic or enterprise jargon. All terms (AST, DAG, FMEA, WAL, STRIDE, SBOM) must be translated into everyday builder words.
 3. **End-of-Turn Enterprise Term Breakdown**: Every turn concludes with a dedicated educational card:
    `---`  

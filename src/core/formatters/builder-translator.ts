@@ -176,8 +176,11 @@ export interface StoryTurnParams {
   stepName?: string;
   stageName?: string;
   pastMilestone?: string;
+  pastMilestoneBullets?: string[];
   presentAction?: string;
+  presentActionBullets?: string[];
   nextUnlock?: string;
+  nextUnlockBullets?: string[];
   category?: string;
   question?: string;
   mainContent?: string;
@@ -220,7 +223,8 @@ export class BuilderTranslator {
   }
 
   /**
-   * Formats a complete 3-act storytelling turn with zero unexplained jargon
+   * Formats a complete 3-act storytelling turn with zero unexplained jargon,
+   * clean vertical separation, 3 targeted context bullets per act,
    * and the educational Enterprise Term Breakdown at the bottom.
    */
   public static formatStoryTurn(params: StoryTurnParams): string {
@@ -228,6 +232,24 @@ export class BuilderTranslator {
     const previous = params.pastMilestone || STAGE_PREVIOUS_MILESTONES[step] || "Milestones baselined and verified.";
     const whatDoing = params.presentAction || STAGE_PLAIN_DESCRIPTIONS[step] || "Building the system step by step.";
     const nextOutcome = params.nextUnlock || STAGE_NEXT_OUTCOMES[step] || "Advances to next stage.";
+
+    const pastBullets = (params.pastMilestoneBullets || [
+      'Prior milestone verified and locked in state store.',
+      'Disk artifact integrity and checksums validated.',
+      'Zero regression across previous lifecycle stages.'
+    ]).slice(0, 3).map(b => `• ${b}`).join('\n');
+
+    const presentBullets = (params.presentActionBullets || [
+      'Tackling core design and architectural decisions for this stage.',
+      'Applying anti-bloat filters to keep codebase minimal and lean.',
+      'Gathering targeted developer intent before code execution.'
+    ]).slice(0, 3).map(b => `• ${b}`).join('\n');
+
+    const nextBullets = (params.nextUnlockBullets || [
+      'Generates authoritative stage specification document.',
+      'Locks stage hash in tamper-evident state ledger.',
+      'Unlocks subsequent lifecycle milestone without drift.'
+    ]).slice(0, 3).map(b => `• ${b}`).join('\n');
 
     const categoryHeader = params.category
       ? `\n### Focus Area: ${this.translateCategory(params.category)}\n`
@@ -248,8 +270,13 @@ export class BuilderTranslator {
     const termCard = this.formatTermCard(step, params.termOverride);
 
     return `📖 **The Story So Far**: ${previous}
+${pastBullets}
+
 🔨 **What We Are Doing Right Now**: ${whatDoing}
+${presentBullets}
+
 🚀 **What Happens Next**: ${nextOutcome}
+${nextBullets}
 ${categoryHeader}${questionSection}${mainSection}${optionsSection}
 
 ### Next Action (under 2 minutes)

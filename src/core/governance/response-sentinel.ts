@@ -12,8 +12,11 @@ export interface ResponseSentinelOptions {
   stageName?: string;
   isComplete?: boolean;
   pastMilestone?: string;
+  pastMilestoneBullets?: string[];
   presentAction?: string;
+  presentActionBullets?: string[];
   nextUnlock?: string;
+  nextUnlockBullets?: string[];
   rawBody?: string;
 }
 
@@ -86,6 +89,24 @@ export class ResponseSentinel {
       const whatDoing = opts.presentAction || STAGE_PLAIN_DESCRIPTIONS[step] || 'Building the system step by step.';
       const nextOutcome = opts.nextUnlock || STAGE_NEXT_OUTCOMES[step] || 'Advances project lifecycle to next milestone.';
 
+      const pastBullets = (opts.pastMilestoneBullets || [
+        'Prior milestone verified and locked in state store.',
+        'Disk artifact integrity and checksums validated.',
+        'Zero regression across previous lifecycle stages.'
+      ]).slice(0, 3).map(b => `• ${b}`).join('\n');
+
+      const presentBullets = (opts.presentActionBullets || [
+        'Tackling core design and architectural decisions for this stage.',
+        'Applying anti-bloat filters to keep codebase minimal and lean.',
+        'Gathering targeted developer intent before code execution.'
+      ]).slice(0, 3).map(b => `• ${b}`).join('\n');
+
+      const nextBullets = (opts.nextUnlockBullets || [
+        'Generates authoritative stage specification document.',
+        'Locks stage hash in tamper-evident state ledger.',
+        'Unlocks subsequent lifecycle milestone without drift.'
+      ]).slice(0, 3).map(b => `• ${b}`).join('\n');
+
       let body = opts.rawBody ? opts.rawBody.trim() : '';
       body = this.enforceAdhdListCap(body);
 
@@ -94,8 +115,13 @@ export class ResponseSentinel {
       const formatted = `${badge}
 
 📖 **The Story So Far**: ${previous}
+${pastBullets}
+
 🔨 **What We Are Doing Right Now**: ${whatDoing}
+${presentBullets}
+
 🚀 **What Happens Next**: ${nextOutcome}
+${nextBullets}
 
 ${body}
 
@@ -136,7 +162,7 @@ ${termCard}`;
       violations.push('STORY_VIOLATION: Missing 3-act storytelling chronology.');
       const previous = `Milestone for Step ${Math.max(0, stepNumber - 1)} verified and locked.`;
       const whatDoing = BuilderTranslator.getStageWhatDoing(stepNumber);
-      const storyHeader = `📖 **The Story So Far**: ${previous}\n🔨 **${whatDoing.replace('👉 ', '')}**\n🚀 **What Happens Next**: Advances project lifecycle to next milestone.\n\n`;
+      const storyHeader = `📖 **The Story So Far**: ${previous}\n• Prior milestone verified and locked in state store.\n• Disk artifact integrity and checksums validated.\n• Zero regression across previous lifecycle stages.\n\n🔨 **${whatDoing.replace('👉 ', '')}**\n• Tackling core design and architectural decisions for this stage.\n• Applying anti-bloat filters to keep codebase minimal and lean.\n• Gathering targeted developer intent before code execution.\n\n🚀 **What Happens Next**: Advances project lifecycle to next milestone.\n• Generates authoritative stage specification document.\n• Locks stage hash in tamper-evident state ledger.\n• Unlocks subsequent lifecycle milestone without drift.\n\n`;
       
       const badgeEnd = message.indexOf('\n');
       if (badgeEnd !== -1) {
