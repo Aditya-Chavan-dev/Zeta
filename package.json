@@ -1,0 +1,39 @@
+{
+  "name": "zeta-architect",
+  "version": "1.0.0",
+  "description": "ZETA: Zero-to-End Technical Architect — Autonomous engineering governance for greenfield software",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "zeta": "./bin/zeta.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    ".agents",
+    "scripts",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "npx tsx --test tests/**/*.test.ts",
+    "build": "tsc",
+    "setup:global": "node scripts/install-rules.js"
+  },
+  "keywords": [
+    "governance",
+    "ai-ide",
+    "autonomous-agents",
+    "antigravity"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "typescript": "^7.0.2"
+  }
+}
