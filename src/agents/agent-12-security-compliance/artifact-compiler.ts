@@ -72,6 +72,9 @@ ${privacyMd}
 |---|---|---|
 ${slaMd}
 
+> **Weekly Vulnerability & Dependency Hygiene Routine**:
+> ${draft.weeklyHygieneCadence || 'Weekly automated reminder to clean up Medium & Low vulnerabilities so technical debt does not accumulate.'}
+
 ---
 
 ## 6. Software Bill of Materials (SBOM) & License Compliance

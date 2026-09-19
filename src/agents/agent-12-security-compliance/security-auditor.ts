@@ -155,6 +155,13 @@ export class SecurityAuditor {
         draft.vulnerabilitySlas[2].blockCiPipeline = true; // Medium also blocks
       } else if (answer.includes('3') || answer.toLowerCase().includes('permissive')) {
         draft.vulnerabilitySlas[1].blockCiPipeline = false; // High does not block
+      } else {
+        // Default Option 1: Dangerous block + weekly cleanup reminder for minor warnings
+        draft.vulnerabilitySlas[0].blockCiPipeline = true; // Critical blocks
+        draft.vulnerabilitySlas[1].blockCiPipeline = true; // High blocks
+        draft.vulnerabilitySlas[2].blockCiPipeline = false; // Medium reports
+        draft.vulnerabilitySlas[3].blockCiPipeline = false; // Low reports
+        draft.weeklyHygieneCadence = 'Weekly automated reminder to clean up Medium & Low vulnerabilities so technical debt does not accumulate.';
       }
     } else if (area === 'Data Privacy & Local Sandboxing Boundary') {
       if (isNegative) {

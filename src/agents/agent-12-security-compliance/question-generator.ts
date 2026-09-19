@@ -14,9 +14,9 @@ export class QuestionGenerator {
           contextWhyNeeded: 'Decides whether security bugs immediately stop your build or just display warning notes.',
           top3Options: [
             {
-              title: 'Block on dangerous, high-severity bugs only',
-              description: 'Stops builds on critical vulnerabilities (like remote exploits or credential leaks). Tracks minor warnings without slowing you down.',
-              tradeOffs: 'Industry standard; protects from actual disasters while keeping fast developer velocity.',
+              title: 'Block on dangerous bugs + Weekly cleanup reminder for minor warnings (Recommended)',
+              description: 'Strictly blocks builds on critical & high-risk exploits (remote execution, credential leaks). Displays low & medium warnings in reports and prompts for a once-a-week cleanup so debt never accumulates.',
+              tradeOffs: 'Best balance: eliminates critical disasters immediately without stopping fast daily work, while preventing minor debt from building up.',
               recommended: true
             },
             {

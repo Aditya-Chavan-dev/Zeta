@@ -114,17 +114,15 @@ SRE operational baseline locked for Step 10.
 ---
 
 ## 5. Vulnerability Remediation SLAs & Pipeline Gating
-| CVE Severity | Mandatory Remediation SLA | Automated CI/CD Gate |
-|---|---|---|
+| CVE Severity | Mandatory Remediation SLA | Automated CI/CD Gate | Reporting & Hygiene Action |
+|---|---|---|---|
+| **CRITICAL** | 24 hours | **YES (HARD BLOCK)** | Fails build immediately; requires patch |
+| **HIGH** | 72 hours | **YES (HARD BLOCK)** | Fails build immediately; requires patch |
+| **MEDIUM** | 336 hours | **NO (WARNING & REPORT)** | Surfaced in build reports; flagged for weekly cleanup |
+| **LOW** | 720 hours | **NO (WARNING & REPORT)** | Surfaced in build reports; flagged for weekly cleanup |
 
-| **CRITICAL** | 24 hours | **YES (HARD BLOCK)** |
-
-| **HIGH** | 72 hours | **YES (HARD BLOCK)** |
-
-| **MEDIUM** | 336 hours | **NO (WARNING)** |
-
-| **LOW** | 720 hours | **NO (WARNING)** |
-
+> **Weekly Vulnerability & Dependency Hygiene Routine**:
+> Non-blocking (Medium & Low) vulnerabilities are reported directly to the user in build summaries. A weekly maintenance reminder prompts the developer to run dependency cleanups (`npm audit fix`) so minor vulnerabilities and technical debt do not build up over time.
 
 ---
 

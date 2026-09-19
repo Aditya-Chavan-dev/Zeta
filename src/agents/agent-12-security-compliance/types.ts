@@ -39,6 +39,7 @@ export interface Step11SecurityComplianceDraft {
   privacyControls: PrivacyDataControl[];
   licenseCompliance: LicenseComplianceRecord;
   vulnerabilitySlas: VulnerabilitySlaPolicy[];
+  weeklyHygieneCadence?: string;
   cryptographicVerification: string[];
   unresolvedAreas: string[];
   step0IntentTldr: string;
