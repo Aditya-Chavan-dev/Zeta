@@ -128,9 +128,12 @@ export class GovernanceAuditor {
    */
   public static applyAnswer(draft: Step12GovernanceLifecycleDraft, area: string, answer: string): void {
     draft.unresolvedAreas = draft.unresolvedAreas.filter(a => a !== area);
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
 
     if (area === 'Breaking Change Notice & Deprecation Timeline') {
-      if (answer.includes('2') || answer.toLowerCase().includes('accelerated')) {
+      if (isNegative) {
+        draft.deprecationPhases = [];
+      } else if (answer.includes('2') || answer.toLowerCase().includes('accelerated')) {
         draft.deprecationPhases[0].durationWeeks = 2;
         draft.deprecationPhases[1].durationWeeks = 4;
       } else if (answer.includes('3') || answer.toLowerCase().includes('extended')) {
@@ -138,14 +141,19 @@ export class GovernanceAuditor {
         draft.deprecationPhases[1].durationWeeks = 16;
       }
     } else if (area === 'State Schema Migration & Rollback Guarantee') {
-      if (answer.includes('2') || answer.toLowerCase().includes('backup-only')) {
+      if (isNegative) {
+        draft.schemaMigrations[0].migrationMechanism = 'None (Single-version schema, no migration overhead)';
+        draft.schemaMigrations[0].rollbackGuaranteed = false;
+      } else if (answer.includes('2') || answer.toLowerCase().includes('backup-only')) {
         draft.schemaMigrations[0].migrationMechanism = 'Snapshot backup and complete rewrite without rollback guarantee';
         draft.schemaMigrations[0].rollbackGuaranteed = false;
       } else if (answer.includes('3') || answer.toLowerCase().includes('immutable')) {
         draft.backwardCompatibilityGuarantee = 'Indefinite backward compatibility across all historical versions';
       }
     } else if (area === 'Architectural Drift Detection & Enforcement Policy') {
-      if (answer.includes('2') || answer.toLowerCase().includes('warning')) {
+      if (isNegative) {
+        draft.driftGuardrails[0].breachAction = 'Ignore drift (Architectural enforcement disabled by user)';
+      } else if (answer.includes('2') || answer.toLowerCase().includes('warning')) {
         draft.driftGuardrails[0].breachAction = 'Emit non-blocking warning in UI without halting execution';
       } else if (answer.includes('3') || answer.toLowerCase().includes('strict')) {
         draft.driftGuardrails[0].breachAction = 'Hard failure requiring explicit architectural waiver commit';

@@ -144,21 +144,30 @@ export class SecurityAuditor {
    */
   public static applyAnswer(draft: Step11SecurityComplianceDraft, area: string, answer: string): void {
     draft.unresolvedAreas = draft.unresolvedAreas.filter(a => a !== area);
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
 
     if (area === 'STRIDE Threat Mitigation & Residual Risk Tolerance') {
-      if (answer.includes('2') || answer.toLowerCase().includes('strict')) {
+      if (isNegative) {
+        draft.vulnerabilitySlas[0].blockCiPipeline = false;
+        draft.vulnerabilitySlas[1].blockCiPipeline = false;
+        draft.vulnerabilitySlas[2].blockCiPipeline = false;
+      } else if (answer.includes('2') || answer.toLowerCase().includes('strict')) {
         draft.vulnerabilitySlas[2].blockCiPipeline = true; // Medium also blocks
       } else if (answer.includes('3') || answer.toLowerCase().includes('permissive')) {
         draft.vulnerabilitySlas[1].blockCiPipeline = false; // High does not block
       }
     } else if (area === 'Data Privacy & Local Sandboxing Boundary') {
-      if (answer.includes('2') || answer.toLowerCase().includes('isolated')) {
+      if (isNegative) {
+        draft.privacyControls[0].sanitizationRule = 'Standard local file handling (no custom sandboxing)';
+      } else if (answer.includes('2') || answer.toLowerCase().includes('isolated')) {
         draft.privacyControls[0].sanitizationRule = 'Air-gapped offline environment with strict socket disconnect';
       } else if (answer.includes('3') || answer.toLowerCase().includes('cloud')) {
         draft.privacyControls[0].egressBoundary = 'RESTRICTED_TELEMETRY';
       }
     } else if (area === 'Open-Source License & SBOM Policy') {
-      if (answer.includes('2') || answer.toLowerCase().includes('permissive')) {
+      if (isNegative) {
+        draft.licenseCompliance.allowedLicenses = ['Unrestricted / User-directed'];
+      } else if (answer.includes('2') || answer.toLowerCase().includes('permissive')) {
         draft.licenseCompliance.allowedLicenses.push('MPL-2.0');
       } else if (answer.includes('3') || answer.toLowerCase().includes('mit-only')) {
         draft.licenseCompliance.allowedLicenses = ['MIT'];

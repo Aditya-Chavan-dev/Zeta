@@ -107,14 +107,18 @@ export class Agent04TechStrategy {
    * Applies selected technology choice into draft TDRs.
    */
   private applyAnswerToDraft(question: ClarifyingQuestion, answer: string): void {
-    let selectedTitle = answer;
-    let selectedDesc = answer;
-    const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
-    if (matchNumber) {
-      const idx = parseInt(matchNumber[1], 10) - 1;
-      if (question.top3Options[idx]) {
-        selectedTitle = question.top3Options[idx].title;
-        selectedDesc = question.top3Options[idx].description;
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
+    let selectedTitle = isNegative ? 'None (Explicitly excluded by user)' : answer;
+    let selectedDesc = isNegative ? 'User opted out of this technology layer' : answer;
+
+    if (!isNegative) {
+      const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
+      if (matchNumber) {
+        const idx = parseInt(matchNumber[1], 10) - 1;
+        if (question.top3Options[idx]) {
+          selectedTitle = question.top3Options[idx].title;
+          selectedDesc = question.top3Options[idx].description;
+        }
       }
     }
 
@@ -127,10 +131,10 @@ export class Agent04TechStrategy {
       id: newTdrId,
       category: 'COMMUNICATION_PROTOCOL',
       selectedTech: selectedTitle,
-      version: 'Production LTS',
+      version: isNegative ? 'N/A' : 'Production LTS',
       justification: selectedDesc,
       rejectedAlternatives,
-      tradeOffsAccepted: 'Selected based on lowest latency and zero-daemon constraint.'
+      tradeOffsAccepted: isNegative ? 'Excluded per explicit user constraint.' : 'Selected based on lowest latency and zero-daemon constraint.'
     });
   }
 

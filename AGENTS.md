@@ -8,6 +8,20 @@ At the start of EVERY conversation turn or session reopening:
 2. **If `.zeta/state.json` exists**:
    - The project is governed by this system.
    - Read `.zeta/state.json` before taking any actions.
+   - **Mid-Session Tool Update Sentinel**:
+     - Check `toolVersion` in `.zeta/state.json`. If older than active tool version (`1.1.0`) and `stayOnOldVersion` is not `true`:
+       - Prompt the user with the update notification:
+         > *"🔔 **ZETA Tool Update Available (v1.0.0 → v1.1.0)**:*  
+         > *The ZETA governance tool was just updated with the following improvements:*  
+         > *• 3-Round Idea Clarification & 3-Round Blind Spots hardening in Step 0.*  
+         > *• Strict 'No' comprehension: negative answers explicitly exclude features rather than auto-selecting.*  
+         > *• Dynamic mid-session version upgrading with opt-out rollback preservation.*  
+         >  
+         > *Would you like to upgrade to the new workflow or stay on the old version? (Reply **'Upgrade'** to adopt or **'Stay on old version'** to keep current workflow)."*
+       - If user replies *"Stay on old version"* (or "stay", "old", "keep"):
+         - Set `stayOnOldVersion: true` in state and remain on the current workflow.
+       - If user replies *"Upgrade"* (or "yes", "update", "ok", or continues):
+         - Set `toolVersion: "1.1.0"`, `stayOnOldVersion: false` in state and immediately use updated workflow.
    - If the active step is `< 15`, greet the user with the current active stage:
      > *"Welcome back to [Project ID]! Active Stage: Step [X] — [Step Name]."*
    - If there is an `uncommittedBuffer.lastUserMessage`, remind the user of the pending turn.
@@ -57,9 +71,25 @@ At the start of EVERY conversation turn or session reopening:
      - Present Top 3 concrete project concepts with trade-offs.
      - When the user chooses or refines an idea, launch Step 0 with that concept as the foundation.
 
+4. **Strict "No" & Refusal Comprehension (ALL STAGES 0–14)**:
+   - When the user responds with "No", "None", "Neither", "Skip", "Don't add this", "False", or any refusal:
+     1. **NEVER SELECT AN OPTION ON YOUR OWN.**
+     2. **NEVER DEFAULT TO OPTION 1 OR (RECOMMENDED).**
+     3. **NEVER TREAT "NO" AS AN INTENT TO QUIT ZETA MODE.** (Quitting requires an explicit command: `"quit zeta"` or `"exit zeta"`).
+     4. **RECORD THE EXCLUSION ACCURATELY**:
+        - In Step 0: Add the feature/concept directly to `outOfScope` or `nonGoals`.
+        - In Step 1: Mark requirement as `EXCLUDED` / `NOT_IN_SCOPE`.
+        - In Step 2: Mark risk mitigation as `ACCEPTED_RISK (No mitigation needed)`.
+        - In Step 3: Record `None (Explicitly excluded by user)` for that technology component.
+        - In Steps 4–14: Record the pattern/dimension as `EXCLUDED` or `DISABLED`.
+     5. Acknowledge cleanly: *"Noted: [Item] excluded from scope."* and proceed to the next item.
+
+5. **Quitting ZETA Mode**:
+   - Only trigger the exit warning if the user explicitly types `"quit zeta"`, `"exit zeta"`, or `"stop zeta"`.
+   - Normal "No" answers to stage questions must NEVER trigger the quit warning.
+
 ## Mandatory Response Signature (Active Plugin Indicator)
 In EVERY response, prefix the very first line with the active ZETA status badge so the user can verify the governance plugin is attached:
 - If steps are in progress: `[⚡ ZETA: ACTIVE | Step [X]/15 - [Step Name]]`
 - If all 15 stages are complete: `[⚡ ZETA: ACTIVE | Lifecycle Complete (15/15)]`
-If this badge is ever absent, the user knows the governance plugin has been detached or bypassed.
 

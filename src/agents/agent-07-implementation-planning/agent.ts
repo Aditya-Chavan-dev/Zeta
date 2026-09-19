@@ -121,26 +121,32 @@ export class Agent07ImplementationPlanning {
    * Applies selected planning choice into draft plan.
    */
   private applyAnswerToDraft(question: ClarifyingQuestion, answer: string): void {
-    let selectedTitle = answer;
-    let selectedDesc = answer;
-    const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
-    if (matchNumber) {
-      const idx = parseInt(matchNumber[1], 10) - 1;
-      if (question.top3Options[idx]) {
-        selectedTitle = question.top3Options[idx].title;
-        selectedDesc = question.top3Options[idx].description;
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
+    let selectedTitle = isNegative ? 'Excluded by user' : answer;
+    let selectedDesc = isNegative ? 'Planning element excluded from release' : answer;
+
+    if (!isNegative) {
+      const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
+      if (matchNumber) {
+        const idx = parseInt(matchNumber[1], 10) - 1;
+        if (question.top3Options[idx]) {
+          selectedTitle = question.top3Options[idx].title;
+          selectedDesc = question.top3Options[idx].description;
+        }
       }
     }
 
     if (question.category === 'Delivery Sequencing Strategy') {
-      this.agentState.draft.sequencingStrategy = selectedTitle;
+      this.agentState.draft.sequencingStrategy = isNegative ? 'Direct single-stage release (No complex sequencing)' : selectedTitle;
     } else {
-      this.agentState.draft.qualityGates.push({
-        gateName: question.category,
-        triggerPoint: selectedTitle,
-        mandatoryChecks: [selectedDesc],
-        passThreshold: '100% adherence'
-      });
+      if (!isNegative) {
+        this.agentState.draft.qualityGates.push({
+          gateName: question.category,
+          triggerPoint: selectedTitle,
+          mandatoryChecks: [selectedDesc],
+          passThreshold: '100% adherence'
+        });
+      }
     }
   }
 

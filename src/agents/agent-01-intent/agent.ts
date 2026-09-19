@@ -109,13 +109,16 @@ export class Agent01Intent {
    * Applies user response into the draft based on domain context.
    */
   private applyAnswerToDraft(question: ClarifyingQuestion, answer: string): void {
-    // Check if user selected one of the Top 3 options (e.g., "1", "option 1", or matching text)
-    let selectedOptionText = answer;
-    const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
-    if (matchNumber) {
-      const idx = parseInt(matchNumber[1], 10) - 1;
-      if (question.top3Options[idx]) {
-        selectedOptionText = `${question.top3Options[idx].title}: ${question.top3Options[idx].description}`;
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
+    let selectedOptionText = isNegative ? 'Excluded by user (Out of scope)' : answer;
+
+    if (!isNegative) {
+      const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
+      if (matchNumber) {
+        const idx = parseInt(matchNumber[1], 10) - 1;
+        if (question.top3Options[idx]) {
+          selectedOptionText = `${question.top3Options[idx].title}: ${question.top3Options[idx].description}`;
+        }
       }
     }
 
@@ -134,8 +137,14 @@ export class Agent01Intent {
         this.agentState.draft.businessIntent.businessObjective = selectedOptionText;
         break;
       case 'Scope & Boundaries':
-        this.agentState.draft.scopeBoundaries.initialScope = [selectedOptionText];
-        this.agentState.draft.scopeBoundaries.outOfScope = ['Legacy codebase reverse-engineering', 'Third-party cloud daemons'];
+        if (isNegative) {
+          if (!this.agentState.draft.scopeBoundaries.outOfScope) {
+            this.agentState.draft.scopeBoundaries.outOfScope = [];
+          }
+          this.agentState.draft.scopeBoundaries.outOfScope.push(question.question || 'User excluded feature');
+        } else {
+          this.agentState.draft.scopeBoundaries.initialScope = [selectedOptionText];
+        }
         break;
       case 'Success Definition':
         this.agentState.draft.successDefinition.successCriteria = [selectedOptionText];

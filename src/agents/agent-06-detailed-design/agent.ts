@@ -118,14 +118,18 @@ export class Agent06DetailedDesign {
    * Applies selected design choice into draft technical design.
    */
   private applyAnswerToDraft(question: ClarifyingQuestion, answer: string): void {
-    let selectedTitle = answer;
-    let selectedDesc = answer;
-    const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
-    if (matchNumber) {
-      const idx = parseInt(matchNumber[1], 10) - 1;
-      if (question.top3Options[idx]) {
-        selectedTitle = question.top3Options[idx].title;
-        selectedDesc = question.top3Options[idx].description;
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
+    let selectedTitle = isNegative ? 'Excluded by user' : answer;
+    let selectedDesc = isNegative ? 'User opted out / design requirement omitted' : answer;
+
+    if (!isNegative) {
+      const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
+      if (matchNumber) {
+        const idx = parseInt(matchNumber[1], 10) - 1;
+        if (question.top3Options[idx]) {
+          selectedTitle = question.top3Options[idx].title;
+          selectedDesc = question.top3Options[idx].description;
+        }
       }
     }
 
@@ -134,7 +138,7 @@ export class Agent06DetailedDesign {
       code: newCode,
       category: 'VALIDATION',
       description: `${question.category}: ${selectedTitle}`,
-      httpStatusEquivalent: 400,
+      httpStatusEquivalent: isNegative ? 200 : 400,
       recoveryGuidance: selectedDesc
     });
   }

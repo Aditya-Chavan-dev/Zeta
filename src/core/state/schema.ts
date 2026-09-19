@@ -50,7 +50,9 @@ export const SessionStateSchema = z.object({
   lastTurnTimestamp: z.string().datetime({ offset: true }).or(z.string().min(10)),
   lockedSteps: z.array(z.number().int().min(0).max(14)),
   stepSummaries: z.record(z.string(), StepSummarySchema),
-  uncommittedBuffer: UncommittedBufferSchema
+  uncommittedBuffer: UncommittedBufferSchema,
+  toolVersion: z.string().optional(),
+  stayOnOldVersion: z.boolean().optional()
 });
 
 export type SessionState = z.infer<typeof SessionStateSchema>;

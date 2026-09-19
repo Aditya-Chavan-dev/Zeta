@@ -38,6 +38,8 @@ export interface SessionState {
   lockedSteps: number[];
   stepSummaries: Record<string, StepSummary>;
   uncommittedBuffer: UncommittedBuffer;
+  toolVersion?: string;
+  stayOnOldVersion?: boolean;
 }
 
 export interface ResumeAssessment {

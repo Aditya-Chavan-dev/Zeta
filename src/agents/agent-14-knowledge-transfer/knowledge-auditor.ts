@@ -158,9 +158,12 @@ export class KnowledgeAuditor {
    */
   public static applyAnswer(draft: Step13KnowledgeTransferDraft, area: string, answer: string): void {
     draft.unresolvedAreas = draft.unresolvedAreas.filter(a => a !== area);
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
 
     if (area === 'Developer Onboarding Velocity & Ramp-up Target') {
-      if (answer.includes('2') || answer.toLowerCase().includes('rapid')) {
+      if (isNegative) {
+        draft.onboardingMilestones = [];
+      } else if (answer.includes('2') || answer.toLowerCase().includes('rapid')) {
         draft.onboardingMilestones[0].expectedDurationMinutes = 10;
         draft.onboardingMilestones[1].expectedDurationMinutes = 30;
       } else if (answer.includes('3') || answer.toLowerCase().includes('deep')) {
@@ -168,13 +171,17 @@ export class KnowledgeAuditor {
         draft.onboardingMilestones[1].expectedDurationMinutes = 90;
       }
     } else if (area === 'API Reference & Interactive Sandbox Format') {
-      if (answer.includes('2') || answer.toLowerCase().includes('typedoc')) {
+      if (isNegative) {
+        draft.quickstartGuides[0].terminalCommands = [];
+      } else if (answer.includes('2') || answer.toLowerCase().includes('typedoc')) {
         draft.quickstartGuides[0].terminalCommands.push('npx typedoc --out docs/api src/');
       } else if (answer.includes('3') || answer.toLowerCase().includes('interactive')) {
         draft.quickstartGuides[0].terminalCommands.push('npm run sandbox');
       }
     } else if (area === 'Documentation Freshness & Cross-Check Policy') {
-      if (answer.includes('2') || answer.toLowerCase().includes('ci-gate')) {
+      if (isNegative) {
+        draft.docFreshnessCadence = 'Manual developer maintenance (No automated CI gating)';
+      } else if (answer.includes('2') || answer.toLowerCase().includes('ci-gate')) {
         draft.docFreshnessCadence = 'Strict CI Gate: reject PRs if code symbols drift from docs/ without documentation update';
       } else if (answer.includes('3') || answer.toLowerCase().includes('monthly')) {
         draft.docFreshnessCadence = 'Monthly peer review audit of markdown docs/';

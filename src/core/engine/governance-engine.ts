@@ -36,6 +36,28 @@ export class GovernanceEngine {
   }
 
   /**
+   * Checks if user input expresses a refusal, negative answer, or exclusion.
+   * e.g. "no", "none", "skip", "neither", "don't want this", "n", "false", "no thanks", "exclude", "not needed"
+   */
+  public static isNegativeResponse(input: string): boolean {
+    const trimmed = input.trim().toLowerCase();
+    return (
+      /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|omit|not\s+needed|reject|do\s+not\s+include)$/i.test(trimmed) ||
+      /^no[,\.\s]/i.test(trimmed)
+    );
+  }
+
+  /**
+   * Checks if user explicitly requests to terminate or quit ZETA governance mode.
+   * Must be an explicit invocation such as "quit zeta", "exit zeta", "stop zeta".
+   * Never conflates a simple "no" with quitting ZETA.
+   */
+  public static isExplicitQuitIntent(input: string): boolean {
+    const trimmed = input.trim().toLowerCase();
+    return /^(?:quit\s+zeta|exit\s+zeta|stop\s+zeta|cancel\s+zeta)$/i.test(trimmed);
+  }
+
+  /**
    * Evaluates whether the active stage can be approved and locked.
    */
   public evaluateApprovalPreconditions(activeState: SessionState): ApprovalEvaluationResult {

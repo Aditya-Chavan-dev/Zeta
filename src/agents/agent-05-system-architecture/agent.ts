@@ -115,14 +115,18 @@ export class Agent05SystemArchitecture {
    * Applies selected architecture decision into draft ADRs.
    */
   private applyAnswerToDraft(question: ClarifyingQuestion, answer: string): void {
-    let selectedTitle = answer;
-    let selectedDesc = answer;
-    const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
-    if (matchNumber) {
-      const idx = parseInt(matchNumber[1], 10) - 1;
-      if (question.top3Options[idx]) {
-        selectedTitle = question.top3Options[idx].title;
-        selectedDesc = question.top3Options[idx].description;
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
+    let selectedTitle = isNegative ? 'Excluded by user' : answer;
+    let selectedDesc = isNegative ? 'User opted out of this architectural pattern' : answer;
+
+    if (!isNegative) {
+      const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
+      if (matchNumber) {
+        const idx = parseInt(matchNumber[1], 10) - 1;
+        if (question.top3Options[idx]) {
+          selectedTitle = question.top3Options[idx].title;
+          selectedDesc = question.top3Options[idx].description;
+        }
       }
     }
 
@@ -130,10 +134,10 @@ export class Agent05SystemArchitecture {
     this.agentState.draft.adrs.push({
       id: newAdrId,
       title: `${question.category}: ${selectedTitle}`,
-      status: 'ACCEPTED',
+      status: isNegative ? 'SUPERSEDED' : 'ACCEPTED',
       context: question.contextWhyNeeded,
       decision: selectedDesc,
-      consequences: 'Improves system modularity and eliminates runtime coupling between agents.'
+      consequences: isNegative ? 'Pattern omitted from architecture.' : 'Improves system modularity and eliminates runtime coupling between agents.'
     });
   }
 

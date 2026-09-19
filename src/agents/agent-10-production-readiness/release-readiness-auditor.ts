@@ -161,24 +161,31 @@ export class ReleaseReadinessAuditor {
    */
   public static applyAnswer(draft: Step9ProductionReadinessDraft, area: string, answer: string): void {
     draft.unresolvedAreas = draft.unresolvedAreas.filter(a => a !== area);
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
 
     if (area === 'Production Deployment Packaging & Distribution Model') {
-      if (answer.includes('2') || answer.toLowerCase().includes('tarball')) {
+      if (isNegative) {
+        draft.deploymentTargets[0].runtime = 'None / Excluded (Direct local execution)';
+      } else if (answer.includes('2') || answer.toLowerCase().includes('tarball')) {
         draft.deploymentTargets[0].runtime = 'Pre-compiled tarball release bundle';
       } else if (answer.includes('3') || answer.toLowerCase().includes('docker')) {
         draft.deploymentTargets[0].runtime = 'Docker OCI container image';
       }
     } else if (area === 'Zero-Downtime Rollout & Update Protocol') {
-      if (answer.includes('2') || answer.toLowerCase().includes('canary')) {
+      if (isNegative) {
+        draft.zeroDowntimeStrategy = 'None (Standard direct deployment / no zero-downtime overhead)';
+      } else if (answer.includes('2') || answer.toLowerCase().includes('canary')) {
         draft.zeroDowntimeStrategy = 'Canary 10% pilot rollout with automated rollback';
       } else if (answer.includes('3') || answer.toLowerCase().includes('maintenance')) {
         draft.zeroDowntimeStrategy = 'Maintenance window with scheduled downtime banner';
       }
     } else if (area === 'Observability, Crash Telemetry & Log Rotation') {
-      if (answer.includes('2') || answer.toLowerCase().includes('syslog')) {
+      if (isNegative) {
+        draft.monitoringAndObservability = ['Telemetry and remote logging explicitly excluded by user'];
+      } else if (answer.includes('2') || answer.toLowerCase().includes('syslog')) {
         draft.monitoringAndObservability.push('Syslog daemon stream forwarding');
       } else if (answer.includes('3') || answer.toLowerCase().includes('stdout')) {
-        draft.monitoringAndObservability.push('Standard stdout logging only');
+        draft.monitoringAndObservability.push('POSIX stdout JSON stream format');
       }
     }
   }

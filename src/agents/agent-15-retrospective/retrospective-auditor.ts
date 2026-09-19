@@ -142,21 +142,28 @@ export class RetrospectiveAuditor {
    */
   public static applyAnswer(draft: Step14RetrospectiveDraft, area: string, answer: string): void {
     draft.unresolvedAreas = draft.unresolvedAreas.filter(a => a !== area);
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
 
     if (area === 'Continuous Improvement Sprint Prioritization') {
-      if (answer.includes('2') || answer.toLowerCase().includes('ide')) {
+      if (isNegative) {
+        draft.continuousImprovementActions = [];
+      } else if (answer.includes('2') || answer.toLowerCase().includes('ide')) {
         draft.continuousImprovementActions[0].targetHorizon = 'Immediate (Next Sprint)';
       } else if (answer.includes('3') || answer.toLowerCase().includes('git')) {
         draft.continuousImprovementActions[1].targetHorizon = 'Immediate (Next Sprint)';
       }
     } else if (area === 'Technical Debt Allocation Budget') {
-      if (answer.includes('2') || answer.toLowerCase().includes('20')) {
+      if (isNegative) {
+        draft.techDebtBudgetPercent = 0;
+      } else if (answer.includes('2') || answer.toLowerCase().includes('20')) {
         draft.techDebtBudgetPercent = 20;
       } else if (answer.includes('3') || answer.toLowerCase().includes('10')) {
         draft.techDebtBudgetPercent = 10;
       }
     } else if (area === 'Retrospective Cadence & Team Feedback Loop') {
-      if (answer.includes('2') || answer.toLowerCase().includes('monthly')) {
+      if (isNegative) {
+        draft.fidelityMetrics = [];
+      } else if (answer.includes('2') || answer.toLowerCase().includes('monthly')) {
         draft.fidelityMetrics.push({
           domain: 'Retrospective Cadence',
           intendedInvariant: 'Monthly post-release retrospective check-in',

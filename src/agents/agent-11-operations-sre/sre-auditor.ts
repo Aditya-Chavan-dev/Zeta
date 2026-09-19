@@ -177,21 +177,28 @@ export class SreAuditor {
    */
   public static applyAnswer(draft: Step10OperationsSreDraft, area: string, answer: string): void {
     draft.unresolvedAreas = draft.unresolvedAreas.filter(a => a !== area);
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
 
     if (area === 'Incident Triage & Auto-Escalation Protocol') {
-      if (answer.includes('2') || answer.toLowerCase().includes('manual')) {
+      if (isNegative) {
+        draft.incidentRunbooks[0].escalationPath = 'None / Excluded (Single-user local tool, no automated escalation)';
+      } else if (answer.includes('2') || answer.toLowerCase().includes('manual')) {
         draft.incidentRunbooks[0].escalationPath = 'Manual developer review required for all SEV-1 incidents';
       } else if (answer.includes('3') || answer.toLowerCase().includes('silent')) {
         draft.incidentRunbooks[0].escalationPath = 'Silent retry without user notification';
       }
     } else if (area === 'State Disaster Recovery & Snapshot Retention Window') {
-      if (answer.includes('2') || answer.toLowerCase().includes('30')) {
+      if (isNegative) {
+        draft.disasterRecoveryPlans[0].retentionWindow = 'Single latest state only (No automated retention history)';
+      } else if (answer.includes('2') || answer.toLowerCase().includes('30')) {
         draft.disasterRecoveryPlans[0].retentionWindow = 'Latest 30 step snapshots';
       } else if (answer.includes('3') || answer.toLowerCase().includes('single')) {
         draft.disasterRecoveryPlans[0].retentionWindow = 'Single latest snapshot only';
       }
     } else if (area === 'Log Rotation & Storage Maintenance Cadence') {
-      if (answer.includes('2') || answer.toLowerCase().includes('daily')) {
+      if (isNegative) {
+        draft.maintenanceTasks = [];
+      } else if (answer.includes('2') || answer.toLowerCase().includes('daily')) {
         draft.maintenanceTasks[0].frequency = 'daily';
       } else if (answer.includes('3') || answer.toLowerCase().includes('monthly')) {
         draft.maintenanceTasks[0].frequency = 'monthly';

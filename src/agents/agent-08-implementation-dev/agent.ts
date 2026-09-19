@@ -124,19 +124,23 @@ export class Agent08ImplementationDev {
    * Applies selected construction choice into draft RC report.
    */
   private applyAnswerToDraft(question: ClarifyingQuestion, answer: string): void {
-    let selectedTitle = answer;
-    let selectedDesc = answer;
-    const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
-    if (matchNumber) {
-      const idx = parseInt(matchNumber[1], 10) - 1;
-      if (question.top3Options[idx]) {
-        selectedTitle = question.top3Options[idx].title;
-        selectedDesc = question.top3Options[idx].description;
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
+    let selectedTitle = isNegative ? 'Excluded by user' : answer;
+    let selectedDesc = isNegative ? 'Construction element omitted' : answer;
+
+    if (!isNegative) {
+      const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
+      if (matchNumber) {
+        const idx = parseInt(matchNumber[1], 10) - 1;
+        if (question.top3Options[idx]) {
+          selectedTitle = question.top3Options[idx].title;
+          selectedDesc = question.top3Options[idx].description;
+        }
       }
     }
 
     if (question.category === 'Release Candidate Tagging & Packaging Format') {
-      this.agentState.draft.releaseCandidateTag = selectedTitle.split(' ')[0] || 'v0.8.0-rc1';
+      this.agentState.draft.releaseCandidateTag = isNegative ? 'v1.0.0-lean' : (selectedTitle.split(' ')[0] || 'v0.8.0-rc1');
     } else {
       this.agentState.draft.verificationLabNotes += ` | ${question.category}: ${selectedTitle} (${selectedDesc})`;
     }

@@ -114,14 +114,20 @@ export class Agent02Requirements {
    * Applies user response into the draft based on category.
    */
   private applyAnswerToDraft(question: ClarifyingQuestion, answer: string): void {
-    let selectedOption = answer;
-    const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
-    if (matchNumber) {
-      const idx = parseInt(matchNumber[1], 10) - 1;
-      if (question.top3Options[idx]) {
-        selectedOption = `${question.top3Options[idx].title}: ${question.top3Options[idx].description}`;
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
+    let selectedOption = isNegative ? 'Excluded by user' : answer;
+
+    if (!isNegative) {
+      const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
+      if (matchNumber) {
+        const idx = parseInt(matchNumber[1], 10) - 1;
+        if (question.top3Options[idx]) {
+          selectedOption = `${question.top3Options[idx].title}: ${question.top3Options[idx].description}`;
+        }
       }
     }
+
+    const priority = isNegative ? 'COULD_HAVE' : 'MUST_HAVE';
 
     switch (question.category) {
       case 'Performance & Latency':
@@ -131,7 +137,7 @@ export class Agent02Requirements {
           title: 'Response Latency Budget',
           metric: 'Turn Latency',
           targetThreshold: selectedOption,
-          priority: 'MUST_HAVE'
+          priority
         });
         break;
 

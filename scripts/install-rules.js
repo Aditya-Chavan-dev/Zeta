@@ -11,6 +11,20 @@ const RULE_BODY = `# Autonomous Greenfield Engineering Governance Rule (Always A
 At the start of EVERY conversation turn or session reopening in any project workspace:
 1. **Check for State Store**: Look for \`.zeta/state.json\` in the workspace root.
 2. **If State Store Exists and Active Step < 15**:
+   - **Mid-Session Tool Update Sentinel**:
+     - Check \`toolVersion\` in \`.zeta/state.json\`. If older than active tool version (\`1.1.0\`) and \`stayOnOldVersion\` is not \`true\`:
+       - Surface the update notification:
+         > *"🔔 **ZETA Tool Update Available (v1.0.0 → v1.1.0)**:*  
+         > *The ZETA governance tool was just updated with the following improvements:*  
+         > *• 3-Round Idea Clarification & 3-Round Blind Spots hardening in Step 0.*  
+         > *• Strict 'No' comprehension: negative answers explicitly exclude features rather than auto-selecting.*  
+         > *• Dynamic mid-session version upgrading with opt-out rollback preservation.*  
+         >  
+         > *Would you like to upgrade to the new workflow or stay on the old version? (Reply **'Upgrade'** to adopt or **'Stay on old version'** to keep current workflow)."*
+       - If user replies *"Stay on old version"* (or "stay", "old", "keep"):
+         - Pin \`stayOnOldVersion: true\` and continue with current workflow.
+       - If user replies *"Upgrade"* (or "yes", "update", "ok", or continues):
+         - Set \`toolVersion: "1.1.0"\`, \`stayOnOldVersion: false\` in state and immediately adopt the updated workflow.
    - Greet the user with the resumption prompt:
      > *"Active Greenfield Project Detected: \`[Project ID]\`. Current Stage: **Step [X] — [Step Name]**.\\nWould you like to continue with ZETA Mode for this project? (Yes / No)"*
    - If there is an \`uncommittedBuffer.lastUserMessage\`, display it as pending context.
@@ -58,21 +72,27 @@ At the start of EVERY conversation turn or session reopening in any project work
      - Present Top 3 concrete project concepts with trade-offs.
      - When the user chooses or refines an idea, launch Step 0 with that concept as the foundation.
 
-4. **User Choice Protocol (For In-Progress Resumption)**:
+4. **In-Progress Steps & Strict "No" Comprehension**:
    - **For Step 0**: Follow the 3-round clarification + 3-round blind spots protocol with direct open-ended questions. If the user expresses indecision or asks for recommendations, present Top 3 options with trade-offs. NEVER finalize or compile \`docs/PROJECT_INTENT.md\` without resolving the user's question.
    - **For Steps 1–14**: Present active technical/architectural questions with Top 3 trade-offs where appropriate.
-   - **If user answers "Yes" (or "continue", "y", "proceed")**:
-     - Continue with the active step's next question or draft signoff.
-     - Enforce the 15-stage sequential gating (never allow out-of-order execution or edits).
-   - **If user answers "No" (or "stop", "exit", "quit")**:
-     - **DO NOT quit immediately.** Surface the mandatory safety prompt:
-       > *"⚠️ **WARNING: Quitting ZETA Mode will disable the skill until you evoke it again.**\\n*This might cause vibe coded errors or Technical debt.*\\n\\n*Proceed at your own risk. Please confirm: Are you sure you want to quit ZETA Mode? (Confirm / Cancel)*"
-     - If the user responds with **"Confirm"**:
-       - Formally pause and quit ZETA Mode for the current session.
-     - If the user responds with **"Cancel"**:
-       - Resume the active step cleanly.
+   - **Strict "No" & Refusal Comprehension (ALL STAGES 0–14)**:
+     - When the user responds with "No", "None", "Neither", "Skip", "Don't add this", "False", or any refusal:
+       1. **NEVER SELECT AN OPTION ON YOUR OWN.**
+       2. **NEVER DEFAULT TO OPTION 1 OR (RECOMMENDED).**
+       3. **NEVER TREAT "NO" AS AN INTENT TO QUIT ZETA MODE.** (Quitting requires an explicit command: \`"quit zeta"\` or \`"exit zeta"\`).
+       4. **RECORD THE EXCLUSION ACCURATELY**:
+          - In Step 0: Add the feature/concept directly to \`outOfScope\` or \`nonGoals\`.
+          - In Step 1: Mark requirement as \`EXCLUDED\` / \`NOT_IN_SCOPE\`.
+          - In Step 2: Mark risk mitigation as \`ACCEPTED_RISK (No mitigation needed)\`.
+          - In Step 3: Record \`None (Explicitly excluded by user)\` for that technology component.
+          - In Steps 4–14: Record the pattern/dimension as \`EXCLUDED\` or \`DISABLED\`.
+       5. Acknowledge cleanly: *"Noted: [Item] excluded from scope."* and proceed to the next item.
 
-4. **Strict Invariants**:
+5. **Quitting ZETA Mode**:
+   - Only trigger the exit warning if the user explicitly types \`"quit zeta"\`, \`"exit zeta"\`, or \`"stop zeta"\`.
+   - Normal "No" answers to stage questions must NEVER trigger the quit warning.
+
+6. **Strict Invariants**:
    - Greenfield software only (no legacy cloud migration bloat).
    - Always require explicit \`"Approve"\` handshake to lock steps.
    - Top 3 options strictly reserved for architectural/tech-stack choices in Steps 3 & 4 (NEVER in Step 0).

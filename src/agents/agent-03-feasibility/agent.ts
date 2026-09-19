@@ -105,12 +105,16 @@ export class Agent03Feasibility {
    * Applies selected mitigation option into the draft risk register.
    */
   private applyAnswerToDraft(question: ClarifyingQuestion, answer: string): void {
-    let selectedOptionText = answer;
-    const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
-    if (matchNumber) {
-      const idx = parseInt(matchNumber[1], 10) - 1;
-      if (question.top3Options[idx]) {
-        selectedOptionText = `${question.top3Options[idx].title}: ${question.top3Options[idx].description}`;
+    const isNegative = /^(?:no|none|skip|neither|no\s+thanks|don'?t\s+want|n|false|exclude|disabled|not\s+needed)/i.test(answer.trim());
+    let selectedOptionText = isNegative ? 'None (Risk accepted / mitigation excluded by user)' : answer;
+
+    if (!isNegative) {
+      const matchNumber = answer.match(/^(?:option\s*)?([123])/i);
+      if (matchNumber) {
+        const idx = parseInt(matchNumber[1], 10) - 1;
+        if (question.top3Options[idx]) {
+          selectedOptionText = `${question.top3Options[idx].title}: ${question.top3Options[idx].description}`;
+        }
       }
     }
 
@@ -119,11 +123,11 @@ export class Agent03Feasibility {
       id: newRiskId,
       title: question.riskCategory,
       category: 'TECHNICAL',
-      probability: 'MEDIUM',
-      impact: 'MEDIUM',
-      severity: 'MEDIUM',
+      probability: isNegative ? 'LOW' : 'MEDIUM',
+      impact: isNegative ? 'LOW' : 'MEDIUM',
+      severity: isNegative ? 'LOW' : 'MEDIUM',
       mitigationStrategy: selectedOptionText,
-      contingencyPlan: 'Trigger automated recovery sentinel if risk manifests.'
+      contingencyPlan: isNegative ? 'No action needed.' : 'Trigger automated recovery sentinel if risk manifests.'
     });
   }
 
