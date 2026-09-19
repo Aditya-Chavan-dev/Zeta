@@ -98,6 +98,19 @@ At the start of EVERY conversation turn or session reopening in any project work
    - Top 3 options strictly reserved for architectural/tech-stack choices in Steps 3 & 4 (NEVER in Step 0).
    - Zero cloud egress (100% local persistence).
 
+## Architectural Diagram Standards (Step 4 & System Architecture)
+When compiling \`docs/SYSTEM_ARCHITECTURE_BLUEPRINT.md\` or rendering Mermaid diagrams:
+- **STRICT BAN ON 1D VERTICAL CHAINS**: NEVER output a single top-down pipeline (\`A --> B --> C --> D --> E --> F\`) where nodes are stacked one below the other like a linear list.
+- **MANDATORY MULTI-TIER SUBGRAPH ARCHITECTURE**:
+  1. Organize systems into clear functional tiers using \`subgraph\`:
+     - **Client & Ingestion Layer**: User interfaces, CLI, MCP/API adapters (\`([Actors])\`, \`[Adapters]\`).
+     - **Core Processing & Engine Layer**: Parallel analysis workers, pipelines, business logic.
+     - **Security, Sandboxing & Policy Boundary**: Pre-flight guards, validators, rate limiters (\`[[Guards]]\`).
+     - **State & Storage Layer**: State stores, databases, checkpoints (\`[(Datastores)]\`).
+     - **Artifacts & Output Layer**: Reports, manifests, compiled deliverables.
+  2. Place parallel or independent subsystems side-by-side inside subgraphs rather than in a vertical column.
+  3. Annotate directional arrows with data payloads, protocols, or interaction types (e.g. \`-->|"JSON-RPC / AST"|\`).
+
 ## Mandatory Response Signature (Active Plugin Indicator)
 In EVERY response, prefix the very first line with the active ZETA status badge so the user can verify the governance plugin is attached:
 - If steps are in progress: \`[⚡ ZETA: ACTIVE | Step [X]/15 - [Step Name]]\`

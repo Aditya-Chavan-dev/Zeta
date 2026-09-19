@@ -112,6 +112,19 @@ When activated in chat:
    - Only trigger the exit warning if user explicitly types `"quit zeta"`, `"exit zeta"`, or `"stop zeta"`.
    - Normal "No" answers to stage questions must NEVER trigger the quit warning.
 
-5. **Response Badge**:
+5. **Architectural Diagram Standards (Step 4 & System Architecture)**:
+   - **STRICT BAN ON 1D VERTICAL CHAINS**: NEVER output a single top-down pipeline (`A --> B --> C --> D --> E --> F`) where nodes are stacked one below the other like a linear list.
+   - **MANDATORY MULTI-TIER SUBGRAPH ARCHITECTURE**:
+     1. Organize systems into clear functional tiers using `subgraph`:
+        - **Client & Ingestion Layer**: User interfaces, CLI, MCP/API adapters (`([Actors])`, `[Adapters]`).
+        - **Core Processing & Engine Layer**: Parallel analysis workers, pipelines, business logic.
+        - **Security, Sandboxing & Policy Boundary**: Pre-flight guards, validators, rate limiters (`[[Guards]]`).
+        - **State & Storage Layer**: State stores, databases, checkpoints (`[(Datastores)]`).
+        - **Artifacts & Output Layer**: Reports, manifests, compiled deliverables.
+     2. Place parallel or independent subsystems side-by-side inside subgraphs rather than in a vertical column.
+     3. Annotate directional arrows with data payloads, protocols, or interaction types (e.g. `-->|"JSON-RPC / AST"|`).
+
+6. **Response Badge**:
    - Prefix EVERY response with `[⚡ ZETA: ACTIVE | Step [X]/15 - [Step Name]]` (or `[⚡ ZETA: ACTIVE | Lifecycle Complete (15/15)]`).
+
 

@@ -85,13 +85,38 @@ export class ArchitectureDesigner {
       }
     ];
 
-    const mermaidC4Diagram = `graph TD
-  User([Software Engineer]) -->|Interacts via Chat| Bridge[Runtime Bridge COMP-01]
-  Bridge -->|Dispatches Turn| Dispatcher[Agent Dispatcher COMP-04]
-  Dispatcher -->|Gating Preconditions| Governance[Governance Engine COMP-03]
-  Governance -->|Atomic State Read/Write| StateStore[(State Manager .zeta/state.json COMP-02)]
-  Dispatcher -->|Compiles Markdown| Docs[(docs/*.md Stage Artifacts)]
-`;
+    const mermaidC4Diagram = `flowchart TB
+  subgraph InterfaceLayer ["Client & Interface Layer"]
+    User([Software Engineer])
+    ChatBridge["Runtime Chat Bridge\n(COMP-01)"]
+  end
+
+  subgraph OrchestrationLayer ["Orchestration & Governance Core"]
+    Dispatcher["Agent Dispatcher & Router\n(COMP-04)"]
+    Governance["Governance Engine\n(COMP-03)"]
+    PreconditionSentinel["Precondition Sentinel\n(Integrity & Gating)"]
+  end
+
+  subgraph LifecycleAgents ["15-Stage Lifecycle Agent Domain"]
+    AgentPool["Agents 00-14\n(Intent -> QA -> Retro)"]
+    QuestionEngine["Question & Option\nGenerator"]
+  end
+
+  subgraph StorageLayer ["Persistence & Audit Boundary"]
+    StateStore[(".zeta/state.json\n(Atomic State Manager COMP-02)")]
+    SqliteWAL[(".zeta/governance.db\n(WAL SQLite Storage)")]
+    DocArtifacts[("docs/*.md\n(Canonical Specifications)")]
+  end
+
+  User -->|"Chat Prompt / Stdio"| ChatBridge
+  ChatBridge -->|"Dispatch Turn"| Dispatcher
+  Dispatcher -->|"Evaluate Stage Gating"| Governance
+  Governance -->|"Verify Stage Preconditions"| PreconditionSentinel
+  Dispatcher -->|"Invoke Stage Architect"| AgentPool
+  AgentPool -->|"Generate Questions / Top 3"| QuestionEngine
+  Governance -->|"Atomic Read / Write"| StateStore
+  Governance -->|"Audit & WAL Logging"| SqliteWAL
+  AgentPool -->|"Compile Signed Document"| DocArtifacts`;
 
     return {
       step0Tldr,
