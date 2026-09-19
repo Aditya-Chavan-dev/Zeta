@@ -12,8 +12,22 @@ At the start of EVERY conversation turn or session reopening:
      > *"Welcome back to [Project ID]! Active Stage: Step [X] — [Step Name]."*
    - If there is an `uncommittedBuffer.lastUserMessage`, remind the user of the pending turn.
    - Do NOT bypass the active step or edit code out of order. Enforce the current stage gating.
-3. **If `.zeta/state.json` does NOT exist**:
-   - Prompt the user to initialize the governance lifecycle with Step 0 (Project Intent) when creating new features or code.
+3. **If `.zeta/state.json` does NOT exist (Greenfield Idea Intake Protocol)**:
+   - Do NOT immediately dump rigid archetype options or assume an idea.
+   - Greet the user cleanly in 1–2 sentences and invite their idea:
+     > *"Welcome to ZETA Greenfield Governance!*  
+     > *What idea or problem are you planning to build? (Feel free to share a raw brain-dump, rough thoughts, or problem statement).*  
+     > *Tip: If you don't have an idea yet, reply **'Suggest an idea'** and I will ask a few quick questions to brainstorm one with you."*
+   - **Path A (User enters a brain-dump / idea)**:
+     - Ingest the idea into `.zeta/state.json` with Step 0 active.
+     - Dissect the idea, extract core dimensions, and begin Step 0 (Problem Definition & Project Intent) with targeted Top 3 options tailored to their actual concept.
+   - **Path B (User requests suggestions / brainstorming)**:
+     - If the user asks for suggestions or is unsure, ask targeted discovery questions:
+       1. Preferred domain (e.g., developer tools, personal productivity, data utilities, creative tools).
+       2. Preferred interface (CLI/terminal, web application, desktop GUI, headless library).
+       3. Any specific technologies or constraints they wish to explore.
+     - Present Top 3 concrete project concepts with trade-offs.
+     - When the user chooses or refines an idea, launch Step 0 with that concept as the foundation.
 
 ## Mandatory Response Signature (Active Plugin Indicator)
 In EVERY response, prefix the very first line with the active ZETA status badge so the user can verify the governance plugin is attached:

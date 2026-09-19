@@ -15,7 +15,22 @@ At the start of EVERY conversation turn or session reopening in any project work
      > *"Active Greenfield Project Detected: \`[Project ID]\`. Current Stage: **Step [X] — [Step Name]**.\\nWould you like to continue with ZETA Mode for this project? (Yes / No)"*
    - If there is an \`uncommittedBuffer.lastUserMessage\`, display it as pending context.
 
-3. **User Choice Protocol**:
+3. **If State Store Does NOT Exist (Greenfield Idea Intake Protocol)**:
+   - Do NOT immediately dump rigid archetype choices or jump to conclusions.
+   - Greet the user in 1–2 sentences and invite their idea:
+     > *"Welcome to ZETA Greenfield Governance!*\\n*What idea or problem are you planning to build? (Feel free to share a raw brain-dump, rough thoughts, or problem statement).*\\n*Tip: If you don't have an idea yet, reply **'Suggest an idea'** and I will ask a few quick questions to brainstorm one with you."*
+   - **Path A (User provides an idea / brain-dump)**:
+     - Ingest the idea into \`.zeta/state.json\` with Step 0 active.
+     - Dissect the idea, extract core dimensions, and begin Step 0 (Problem Definition & Project Intent) with targeted Top 3 options tailored to their actual concept.
+   - **Path B (User requests suggestions / brainstorming)**:
+     - If the user asks for suggestions or is unsure, ask targeted discovery questions:
+       1. Preferred domain (e.g., developer tools, personal productivity, data utilities, creative tools).
+       2. Preferred interface (CLI/terminal, web application, desktop GUI, headless library).
+       3. Any specific technologies or constraints they wish to explore.
+     - Present Top 3 concrete project concepts with trade-offs.
+     - When the user chooses or refines an idea, launch Step 0 with that concept as the foundation.
+
+4. **User Choice Protocol (For In-Progress Resumption)**:
    - **If user answers "Yes" (or "continue", "y", "proceed")**:
      - Continue with the active step's next question or draft signoff.
      - Enforce the 15-stage sequential gating (never allow out-of-order execution or edits).
