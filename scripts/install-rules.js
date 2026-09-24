@@ -186,7 +186,14 @@ export function installGlobalRules() {
   const homeDir = os.homedir();
   const results = [];
 
-  // 1. Google Antigravity / Gemini IDE Global Rules (dedicated isolated rule file)
+  // 1. Google Antigravity / Gemini IDE Global Rule File (~/.gemini/GEMINI.md)
+  const geminiGlobalFile = path.join(homeDir, '.gemini', 'GEMINI.md');
+  if (fs.existsSync(path.dirname(geminiGlobalFile))) {
+    const action = safeMerge(geminiGlobalFile);
+    results.push({ file: geminiGlobalFile, action });
+  }
+
+  // Also maintain ~/.gemini/config/rules/greenfield-governance.md for modular reference
   const geminiRulesDir = path.join(homeDir, '.gemini', 'config', 'rules');
   if (fs.existsSync(geminiRulesDir)) {
     const targetFile = path.join(geminiRulesDir, 'greenfield-governance.md');
