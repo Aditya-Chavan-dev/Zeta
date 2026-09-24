@@ -44,6 +44,22 @@ const AGENT_CONSTRUCTORS = [
 ];
 
 async function main() {
+  const args = process.argv.slice(2);
+  if (args.includes('setup') || args.includes('install') || args.includes('--setup')) {
+    console.log('\x1b[36m%s\x1b[0m', '═══════════════════════════════════════════════════════════════════');
+    console.log('\x1b[1m%s\x1b[0m', '   ZETA Autonomous Engineering Governance Plugin (v1.1.0)');
+    console.log('\x1b[36m%s\x1b[0m', '═══════════════════════════════════════════════════════════════════\n');
+    const { installGlobalRules } = await import('../scripts/install-rules.js');
+    const targets = installGlobalRules();
+    console.log('\x1b[32m%s\x1b[0m', '🟢 ZETA Governance Plugin successfully installed globally!\n');
+    console.log('Configured locations:');
+    targets.forEach(t => console.log(`  ▫️ [${t.action}] ${t.file}`));
+    console.log('\n\x1b[1mWhat this means:\x1b[0m');
+    console.log('  • Every AI IDE (Antigravity, Claude, Gemini, Cursor) will automatically adopt ZETA on every new project.');
+    console.log('  • To deactivate in any chat at any time, simply type: "Deactivate Zeta".\n');
+    process.exit(0);
+  }
+
   console.log('\x1b[36m%s\x1b[0m', '═══════════════════════════════════════════════════════════════════');
   console.log('\x1b[1m%s\x1b[0m', '   Autonomous Engineering Governance Plugin (15-Stage Engine)');
   console.log('\x1b[36m%s\x1b[0m', '═══════════════════════════════════════════════════════════════════\n');

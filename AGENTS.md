@@ -27,11 +27,15 @@ At the start of EVERY conversation turn or session reopening:
    - If there is an `uncommittedBuffer.lastUserMessage`, remind the user of the pending turn.
    - Do NOT bypass the active step or edit code out of order. Enforce the current stage gating.
 3. **If `.zeta/state.json` does NOT exist (Greenfield Idea Intake Protocol)**:
-   - Do NOT immediately dump rigid archetype options or assume an idea.
-   - Greet the user cleanly in 1–2 sentences and invite their idea:
-     > *"Welcome to ZETA Greenfield Governance!*  
-     > *What idea or problem are you planning to build? (Feel free to share a raw brain-dump, rough thoughts, or problem statement).*  
-     > *Tip: If you don't have an idea yet, reply **'Suggest an idea'** and I will ask a few quick questions to brainstorm one with you."*
+   - **Check Deactivation Status**:
+     - **If ZETA is Active (Default)**: ZETA automatically adopts the project and initiates Step 0 Greenfield Idea Intake:
+       > *"Welcome to ZETA Greenfield Governance!*  
+       > *What idea or problem are you planning to build? (Feel free to share a raw brain-dump, rough thoughts, or problem statement).*  
+       > *Tip: If you don't have an idea yet, reply **'Suggest an idea'** and I will ask a few quick questions to brainstorm one with you."*
+     - **If ZETA is Deactivated**: ZETA asks ONCE on project detection:
+       > *"🟢 A new project has been detected. Shall we activate ZETA for this project? (Reply **'Yes'** to activate or **'No'** to keep deactivated)."*
+       - If user approves ("Yes"): ZETA activates and starts Step 0.
+       - If user rejects ("No"): ZETA remains silent and deactivated for this project.
    - **Path A (User enters a brain-dump / idea)**:
      - Ingest the idea into `.zeta/state.json` with Step 0 active.
      - **STRICT BAN ON SUGGESTIONS & PREMATURE SOLUTIONING IN STEP 0**:
@@ -84,9 +88,13 @@ At the start of EVERY conversation turn or session reopening:
         - In Steps 4–14: Record the pattern/dimension as `EXCLUDED` or `DISABLED`.
      5. Acknowledge cleanly: *"Noted: [Item] excluded from scope."* and proceed to the next item.
 
-5. **Quitting ZETA Mode**:
-   - Only trigger the exit warning if the user explicitly types `"quit zeta"`, `"exit zeta"`, or `"stop zeta"`.
-   - Normal "No" answers to stage questions must NEVER trigger the quit warning.
+5. **Deactivation & Reactivation Protocol**:
+   - **Explicit Deactivation Trigger**: Only trigger deactivation if user explicitly types `"Deactivate Zeta"`, `"disable zeta"`, `"quit zeta"`, `"exit zeta"`, or `"stop zeta"`.
+   - **Confirmation Step**: Always ask confirmation before deactivating:
+     > *"⚠️ Are you sure you want to deactivate ZETA? (Reply **'Yes'** to deactivate or **'No'** to stay active)."*
+   - **On Confirmed 'Yes'**: Record `deactivated: true`, stop lifecycle enforcement, and acknowledge:
+     > *"🟢 ZETA has been deactivated for this project. Reply **'Activate Zeta'** at any time to resume governance."*
+   - **Reactivation**: If user replies `"Activate Zeta"`, immediately resume governance at the active stage.
 
 ## Architectural Diagram Standards (Step 4 & System Architecture)
 When compiling `docs/SYSTEM_ARCHITECTURE_BLUEPRINT.md` or rendering Mermaid diagrams:

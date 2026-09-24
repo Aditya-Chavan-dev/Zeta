@@ -56,10 +56,15 @@ When activated in chat:
        - Set `toolVersion: "1.1.0"`, `stayOnOldVersion: false` in state and immediately adopt the updated workflow.
 
 1. **Initial Idea Intake (If new project without `.zeta/state.json`)**:
-   - Greet the user in 1–2 sentences:
-     > *"Welcome to ZETA Greenfield Governance!*  
-     > *What idea or problem are you planning to build? (Feel free to share a raw brain-dump, rough thoughts, or problem statement).*  
-     > *Tip: If you don't have an idea yet, reply **'Suggest an idea'** and I will ask a few quick questions to brainstorm one with you."*
+   - **Check Deactivation Status**:
+     - **If ZETA is Active (Default)**: ZETA automatically adopts the project and initiates Step 0 Greenfield Idea Intake:
+       > *"Welcome to ZETA Greenfield Governance!*  
+       > *What idea or problem are you planning to build? (Feel free to share a raw brain-dump, rough thoughts, or problem statement).*  
+       > *Tip: If you don't have an idea yet, reply **'Suggest an idea'** and I will ask a few quick questions to brainstorm one with you."*
+     - **If ZETA is Deactivated**: ZETA asks ONCE on project detection:
+       > *"🟢 A new project has been detected. Shall we activate ZETA for this project? (Reply **'Yes'** to activate or **'No'** to keep deactivated)."*
+       - If user approves ("Yes"): ZETA activates and starts Step 0.
+       - If user rejects ("No"): ZETA remains silent and deactivated for this project.
    - **Path A (User provides brain-dump)**:
      - Initialize `.zeta/state.json` with Step 0 active.
      - **STRICT BAN ON SUGGESTIONS & PREMATURE SOLUTIONING IN STEP 0**:
@@ -108,9 +113,13 @@ When activated in chat:
      > *"Please review the summary above and reply with **Approve** to lock Step X and advance."*
    - On `"Approve"`, write the markdown document to `docs/`, calculate the SHA-256 digest, record the TL;DR in `state.stepSummaries`, and advance to Step $X+1$.
 
-4. **Quitting ZETA Mode**:
-   - Only trigger the exit warning if user explicitly types `"quit zeta"`, `"exit zeta"`, or `"stop zeta"`.
-   - Normal "No" answers to stage questions must NEVER trigger the quit warning.
+4. **Deactivation & Reactivation Protocol**:
+   - **Explicit Deactivation Trigger**: Only trigger deactivation if user explicitly types `"Deactivate Zeta"`, `"disable zeta"`, `"quit zeta"`, `"exit zeta"`, or `"stop zeta"`.
+   - **Confirmation Step**: Always ask confirmation before deactivating:
+     > *"⚠️ Are you sure you want to deactivate ZETA? (Reply **'Yes'** to deactivate or **'No'** to stay active)."*
+   - **On Confirmed 'Yes'**: Record `deactivated: true`, stop lifecycle enforcement, and acknowledge:
+     > *"🟢 ZETA has been deactivated for this project. Reply **'Activate Zeta'** at any time to resume governance."*
+   - **Reactivation**: If user replies `"Activate Zeta"`, immediately resume governance at the active stage.
 
 5. **Architectural Diagram Standards (Step 4 & System Architecture)**:
    - **STRICT BAN ON 1D VERTICAL CHAINS**: NEVER output a single top-down pipeline (`A --> B --> C --> D --> E --> F`) where nodes are stacked one below the other like a linear list.
