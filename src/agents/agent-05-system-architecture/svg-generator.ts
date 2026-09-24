@@ -4,7 +4,7 @@ import { Step4ArchitectureDraft } from './types.js';
  * Generates a high-resolution, dark-mode vector SVG blueprint of the system architecture.
  * Self-contained, zero cloud dependencies, crisp at retina resolutions.
  */
-export function generateArchitectureSvg(draft?: Step4ArchitectureDraft): string {
+export function generateArchitectureSvg(_draft?: Step4ArchitectureDraft): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="100%" height="100%" style="background:#0b0f17; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   <defs>
     <!-- Gradients -->

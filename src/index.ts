@@ -1,6 +1,22 @@
 // Core Engine
 export { StateManager } from './core/state/state-manager.js';
 export { ResumeSentinel } from './core/state/resume-sentinel.js';
+export { GovernanceEngine } from './core/engine/governance-engine.js';
+export { SqliteStore } from './core/state/sqlite-store.js';
+export { HeadroomCompressor } from './core/headroom/headroom-compressor.js';
+export { LifecycleRegistry, CANONICAL_LIFECYCLE } from './core/lifecycle/lifecycle-map.js';
+export { ResponseSentinel } from './core/governance/response-sentinel.js';
+export { BuilderTranslator } from './core/formatters/builder-translator.js';
+export { JsonToSqliteMigrator } from './core/migration/json-migrator.js';
+export { CrashLogger } from './core/logging/crash-logger.js';
+export { BackupRing } from './core/state/backup-ring.js';
+export { IntentComparator } from './core/drift/intent-comparator.js';
+export { DriftInterceptor } from './core/drift/interceptor.js';
+export { ImpactCascadeAnalyzer } from './core/drift/impact-cascade.js';
+export { BaselineUpdater } from './core/drift/baseline-updater.js';
+export { InitHook } from './core/bootstrap/init-hook.js';
+
+// Legacy State Types (from types.ts)
 export type {
   SessionState,
   StepSummary,
@@ -9,6 +25,29 @@ export type {
   UncommittedBuffer,
   ResumeAssessment
 } from './core/state/types.js';
+
+// Zod Schemas & SQL-layer Types (from schema.ts)
+export {
+  SessionStateSchema,
+  StepSummarySchema,
+  StepStatusSchema,
+  UncommittedBufferSchema,
+  ArtifactSnapshotSchema,
+  AuditEventSchema,
+  AgentTurnResultSchema,
+  ExitCode
+} from './core/state/schema.js';
+export type {
+  ArtifactSnapshot,
+  AuditEvent,
+  AgentTurnResult
+} from './core/state/schema.js';
+
+// Lifecycle Types
+export type { LifecycleStageDefinition } from './core/lifecycle/lifecycle-map.js';
+
+// Store Interface
+export type { IStateStore, IntegrityCheckResult } from './core/state/state-store.interface.js';
 
 // 15 Sequential Agents
 export { Agent01Intent } from './agents/agent-01-intent/index.js';

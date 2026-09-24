@@ -170,6 +170,8 @@ export class SecurityAuditor {
         draft.privacyControls[0].sanitizationRule = 'Air-gapped offline environment with strict socket disconnect';
       } else if (answer.includes('3') || answer.toLowerCase().includes('cloud')) {
         draft.privacyControls[0].egressBoundary = 'RESTRICTED_TELEMETRY';
+      } else if (answer.trim()) {
+        draft.privacyControls[0].sanitizationRule = `Custom: ${answer.trim()}`;
       }
     } else if (area === 'Open-Source License & SBOM Policy') {
       if (isNegative) {
@@ -178,6 +180,8 @@ export class SecurityAuditor {
         draft.licenseCompliance.allowedLicenses.push('MPL-2.0');
       } else if (answer.includes('3') || answer.toLowerCase().includes('mit-only')) {
         draft.licenseCompliance.allowedLicenses = ['MIT'];
+      } else if (answer.trim()) {
+        draft.licenseCompliance.allowedLicenses.push(`Custom: ${answer.trim()}`);
       }
     }
   }

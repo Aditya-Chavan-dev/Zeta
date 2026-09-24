@@ -3,6 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import Database from 'better-sqlite3';
 import { IStateStore, IntegrityCheckResult } from './state-store.interface.js';
+import { BackupRing } from './backup-ring.js';
 import {
   SessionState,
   SessionStateSchema,
@@ -252,6 +253,12 @@ export class SqliteStore implements IStateStore {
     });
 
     tx();
+
+    // Fire-and-forget per-turn backup (never blocks the turn)
+    try {
+      BackupRing.createTurnBackup(this).catch(() => {});
+    } catch {}
+
     return state;
   }
 

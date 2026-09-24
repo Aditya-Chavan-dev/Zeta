@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { IStateStore } from '../state/state-store.interface.js';
-import { LifecycleRegistry, LifecycleStageDefinition } from '../lifecycle/lifecycle-map.js';
+import { LifecycleRegistry } from '../lifecycle/lifecycle-map.js';
 import { ExitCode, SessionState, AgentTurnResult } from '../state/schema.js';
 import { ResponseSentinel } from '../governance/response-sentinel.js';
 
@@ -176,7 +176,7 @@ export class GovernanceEngine {
     const sha256 = crypto.createHash('sha256').update(compiled.fullDocument).digest('hex');
 
     // Lock step in store
-    const updatedState = this.store.lockStep(
+    this.store.lockStep(
       state.activeStep,
       {
         stepNumber: state.activeStep,

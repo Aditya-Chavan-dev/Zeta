@@ -7,11 +7,11 @@ import { ReleaseReadinessAuditor } from './release-readiness-auditor.js';
 import { QuestionGenerator } from './question-generator.js';
 import { ArtifactCompiler } from './artifact-compiler.js';
 import { AgentResponse, Step9ProductionReadinessDraft } from './types.js';
+import { DriftInterceptor } from '../../core/drift/interceptor.js';
 
 export class Agent10ProductionReadiness {
   private workspaceRoot: string;
   private draft: Step9ProductionReadinessDraft | null = null;
-  private currentQuestionIndex: number = 0;
 
   constructor(workspaceRoot: string) {
     this.workspaceRoot = workspaceRoot;
@@ -53,6 +53,17 @@ export class Agent10ProductionReadiness {
     // 3. Handle explicit Approval handshake
     if (userInput.trim().toLowerCase() === 'approve') {
       return this.lockAndCompleteStep();
+    }
+
+    // Drift check against agreed baselines
+    const drift = DriftInterceptor.evaluateWorkspace(this.workspaceRoot, userInput.trim());
+    if (drift.shouldIntercept) {
+      return {
+        step: 9,
+        message: drift.conversationalPrompt,
+        isLocked: false,
+        isReadyForSignoff: false
+      };
     }
 
     // 4. Process user input if answering an unresolved area

@@ -134,7 +134,7 @@ export class ArchitectureDesigner {
   /**
    * Initializes evaluation and flags architecture decisions requiring user confirmation.
    */
-  public static evaluate(userInput: string, s0: string, s1: string, s2: string, s3: string): DesignAnalysis {
+  public static evaluate(_userInput: string, s0: string, s1: string, s2: string, s3: string): DesignAnalysis {
     const draft = this.createEmptyDraft(s0, s1, s2, s3);
     const unresolvedArchitectureAreas: string[] = [
       'Inter-Agent Communication & Coupling',

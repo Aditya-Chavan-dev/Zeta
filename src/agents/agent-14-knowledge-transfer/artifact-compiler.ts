@@ -92,7 +92,7 @@ ${troubleshootingMd}
   /**
    * Generates a compact TL;DR (<400 words) for downstream ingestion.
    */
-  public static generateCompactTldr(draft: Step13KnowledgeTransferDraft): string {
+  public static generateCompactTldr(_draft: Step13KnowledgeTransferDraft): string {
     return `TL;DR KNOWLEDGE TRANSFER & DOCUMENTATION (STEP 13 BASELINE):
 - ADR Catalog: Full traceability of architectural trade-offs from Step 0 through Step 12 (ADR-001 to ADR-006).
 - Developer Onboarding: Sub-30-minute ramp-up milestone (Setup 15m -> Build/Run 45m -> Full Contribution Week 1).

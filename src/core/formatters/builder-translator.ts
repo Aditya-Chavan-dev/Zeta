@@ -190,10 +190,24 @@ export interface StoryTurnParams {
   tone?: 'builder' | 'enterprise';
 }
 
+export const INLINE_TERM_GISTS: Record<string, string> = {
+  'Greenfield': 'Building something completely new from scratch.',
+  'Project Intent Anchoring': 'Writing down the exact problem and target user before picking tools.',
+  'Functional Requirements': 'Checklist of exactly what the software must do and what it will never do.',
+  'FRs': 'Functional requirements: exactly what the system must do.',
+  'FMEA': 'Failure Mode & Effects Analysis: mapping out what could break and how to bounce back.',
+  'WAL': 'Write-Ahead Logging: writing notes on scratchpad before touching main ledger to prevent corruption.',
+  'STRIDE': 'Security risk checklist testing spoofing, tampering, and data leaks.',
+  'SBOM': 'Software Bill of Materials: inventory of all software ingredients and dependencies.',
+  'WBS': 'Work Breakdown Structure: chopping a big build into bite-sized tasks.',
+  'AST': 'Abstract Syntax Tree: map of code structure.',
+  'DAG': 'Directed Acyclic Graph: task dependency tree.'
+};
+
 export class BuilderTranslator {
   public static getStageWhatDoing(stepNumber: number): string {
     const summary = STAGE_PLAIN_DESCRIPTIONS[stepNumber] || 'Building and refining the project step by step.';
-    return `👉 **What we are doing right now**: ${summary}`;
+    return summary;
   }
 
   public static translateCategory(category: string): string {
@@ -212,20 +226,24 @@ export class BuilderTranslator {
   }
 
   /**
-   * Builds the end-of-turn Enterprise Term Breakdown card.
+   * Explains a domain term in a short sentence in bold brackets: Term (**Gist in bold.**).
    */
-  public static formatTermCard(stepNumber: number, override?: EnterpriseTerm): string {
-    const termInfo = override || STAGE_DEFAULT_TERMS[stepNumber] || STAGE_DEFAULT_TERMS[0];
-    return `---
-💡 **Builder Word of the Turn: ${termInfo.term}**
-• **What it is**: ${termInfo.whatItIs}
-• **Why enterprises use it**: ${termInfo.whyEnterpriseUsesIt}`;
+  public static formatInlineTerm(term: string, customGist?: string): string {
+    const gist = customGist || INLINE_TERM_GISTS[term] || 'Core engineering concept.';
+    return `${term} (**${gist}**)`;
   }
 
   /**
-   * Formats a complete 3-act storytelling turn with zero unexplained jargon,
-   * clean vertical separation, 3 targeted context bullets per act,
-   * and the educational Enterprise Term Breakdown at the bottom.
+   * Compact inline term explanation (replaces standalone card).
+   */
+  public static formatTermCard(stepNumber: number, override?: EnterpriseTerm): string {
+    const termInfo = override || STAGE_DEFAULT_TERMS[stepNumber] || STAGE_DEFAULT_TERMS[0];
+    return `🔹 **Key Concept**: ${termInfo.term} (**${termInfo.whatItIs}**)`;
+  }
+
+  /**
+   * Formats a 3-act storytelling summary turn (Summary Mode) using Palette 1A emojis
+   * (🔹, 🔸, ▫️) with zero cartoon stickers and zero standalone cards.
    */
   public static formatStoryTurn(params: StoryTurnParams): string {
     const step = params.stepNumber ?? params.stageIndex ?? 0;
@@ -237,19 +255,19 @@ export class BuilderTranslator {
       'Prior milestone verified and locked in state store.',
       'Disk artifact integrity and checksums validated.',
       'Zero regression across previous lifecycle stages.'
-    ]).slice(0, 3).map(b => `- ${b}`).join('\n\n');
+    ]).slice(0, 3).map(b => `▫️ ${b}`).join('\n\n');
 
     const presentBullets = (params.presentActionBullets || [
       'Tackling core design and architectural decisions for this stage.',
       'Applying anti-bloat filters to keep codebase minimal and lean.',
       'Gathering targeted developer intent before code execution.'
-    ]).slice(0, 3).map(b => `- ${b}`).join('\n\n');
+    ]).slice(0, 3).map(b => `▫️ ${b}`).join('\n\n');
 
     const nextBullets = (params.nextUnlockBullets || [
       'Generates authoritative stage specification document.',
       'Locks stage hash in tamper-evident state ledger.',
       'Unlocks subsequent lifecycle milestone without drift.'
-    ]).slice(0, 3).map(b => `- ${b}`).join('\n\n');
+    ]).slice(0, 3).map(b => `▫️ ${b}`).join('\n\n');
 
     const categoryHeader = params.category
       ? `\n### Focus Area: ${this.translateCategory(params.category)}\n`
@@ -259,7 +277,7 @@ export class BuilderTranslator {
     if (params.top3Options && params.top3Options.length > 0) {
       optionsSection = '\n' + params.top3Options.map((opt, i) => {
         const recBadge = opt.recommended ? ' *(Recommended)*' : '';
-        return `${i + 1}. **${opt.title}**${recBadge}\n   - **What it does**: ${opt.description}\n   - **Trade-off**: ${opt.tradeOffs}`;
+        return `${i + 1}. **${opt.title}**${recBadge}\n   ▫️ **What it does**: ${opt.description}\n   ▫️ **Trade-off**: ${opt.tradeOffs}`;
       }).join('\n\n') + '\n\n*Reply with **1**, **2**, or **3**, or describe your own preference:*';
     }
 
@@ -267,31 +285,27 @@ export class BuilderTranslator {
     const mainSection = params.mainContent ? `\n\n${params.mainContent}` : '';
     const nextAction = params.nextActionPrompt || 'Reply with your choice to lock this step.';
 
-    const termCard = this.formatTermCard(step, params.termOverride);
-
-    return `📖 **The Story So Far**: ${previous}
+    return `🔹 **The Story So Far**: ${previous}
 
 ${pastBullets}
 
 ---
 
-🔨 **What We Are Doing Right Now**: ${whatDoing}
+🔹 **What We Are Doing Right Now**: ${whatDoing}
 
 ${presentBullets}
 
 ---
 
-🚀 **What Happens Next**: ${nextOutcome}
+🔹 **What Happens Next**: ${nextOutcome}
 
 ${nextBullets}
 ${categoryHeader}${questionSection}${mainSection}${optionsSection}
 
 ---
 
-### Next Action (under 2 minutes)
-${nextAction}
-
-${termCard}`;
+🔸 **Next Action (under 2 minutes)**:
+${nextAction}`;
   }
 
   /**

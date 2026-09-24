@@ -99,7 +99,7 @@ export class QaAuditor {
    * Evaluates quality assurance evidence and flags remaining questions requiring user confirmation.
    */
   public static evaluate(
-    userInput: string,
+    _userInput: string,
     s0: string, s1: string, s2: string, s3: string, s4: string, s5: string, s6: string, s7: string
   ): AuditAnalysis {
     const draft = this.createEmptyDraft(s0, s1, s2, s3, s4, s5, s6, s7);

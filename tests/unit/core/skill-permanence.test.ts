@@ -35,7 +35,7 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
       });
 
       const firstLine = formatted.split('\n')[0];
-      assert.strictEqual(firstLine, '[⚡ ZETA: ACTIVE | Step 3/15 - System Architecture Blueprint]');
+      assert.strictEqual(firstLine, '🟢 [ZETA: ACTIVE | Step 3/15 - System Architecture Blueprint]');
     });
 
     test('Ensures completed lifecycle displays (15/15) badge', () => {
@@ -50,7 +50,7 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
       });
 
       const firstLine = formatted.split('\n')[0];
-      assert.strictEqual(firstLine, '[⚡ ZETA: ACTIVE | Lifecycle Complete (15/15)]');
+      assert.strictEqual(firstLine, '🟢 [ZETA: ACTIVE | Lifecycle Complete (15/15)]');
     });
 
     test('Enforces hard cap of maximum 5 items per list', () => {
@@ -73,7 +73,7 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
   });
 
   describe('Suite 2: Zero-Jargon Storytelling & Term Breakdown', () => {
-    test('Formats all 3 chronological story acts', () => {
+    test('Formats all 3 chronological story acts in Summary Mode', () => {
       const story = BuilderTranslator.formatStoryTurn({
         stageIndex: 0,
         stageName: 'Project Intent & Problem Framing',
@@ -82,9 +82,10 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
         nextUnlock: 'Authoritative requirements baseline in Step 1'
       });
 
-      assert.ok(story.includes('📖 **The Story So Far**: None (Greenfield start)'));
-      assert.ok(story.includes('🔨 **What We Are Doing Right Now**: Clarifying the core problem without technical buzzwords'));
-      assert.ok(story.includes('🚀 **What Happens Next**: Authoritative requirements baseline in Step 1'));
+      assert.ok(story.includes('🔹 **The Story So Far**: None (Greenfield start)'));
+      assert.ok(story.includes('🔹 **What We Are Doing Right Now**: Clarifying the core problem without technical buzzwords'));
+      assert.ok(story.includes('🔹 **What Happens Next**: Authoritative requirements baseline in Step 1'));
+      assert.ok(story.includes('🔸 **Next Action (under 2 minutes)**:'));
     });
 
     test('Translates technical jargon terms into everyday builder language', () => {
@@ -101,14 +102,12 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
       assert.ok(translated.includes('security risk checklist'));
     });
 
-    test('Appends educational Builder Word of the Turn card', () => {
-      const termCard = BuilderTranslator.formatTermCard(0);
-      assert.ok(termCard.includes('💡 **Builder Word of the Turn: Project Intent Anchoring**'));
-      assert.ok(termCard.includes('• **What it is**:'));
-      assert.ok(termCard.includes('• **Why enterprises use it**:'));
+    test('Explains domain terms inline in bold brackets', () => {
+      const formatted = BuilderTranslator.formatInlineTerm('Greenfield');
+      assert.strictEqual(formatted, 'Greenfield (**Building something completely new from scratch.**)');
     });
 
-    test('All 15 stages have defined builder term cards', () => {
+    test('All 15 stages have defined builder terms', () => {
       for (let i = 0; i <= 14; i++) {
         assert.ok(DEFAULT_STAGE_TERMS[i], `Missing stage term for stage ${i}`);
         assert.ok(DEFAULT_STAGE_TERMS[i].term.length > 0);
@@ -161,8 +160,8 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
   });
 
   describe('Suite 5: Multi-Turn Permanence & Central Governance Funnel', () => {
-    test('ResponseSentinel central funnel formats complete response with all skills active', () => {
-      const response = ResponseSentinel.validateAndFormat({
+    test('ResponseSentinel central funnel formats normal turn directly and summary turn on demand', () => {
+      const normalResponse = ResponseSentinel.validateAndFormat({
         stageIndex: 1,
         stageName: 'System Requirements Specification',
         isComplete: false,
@@ -172,19 +171,31 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
         rawBody: 'Here is the requirements breakdown:\n1. One\n2. Two\n3. Three'
       });
 
-      // Verify ADHD badge
-      assert.ok(response.startsWith('[⚡ ZETA: ACTIVE | Step 1/15 - System Requirements Specification]'));
-      // Verify Storytelling
-      assert.ok(response.includes('📖 **The Story So Far**:'));
-      assert.ok(response.includes('🔨 **What We Are Doing Right Now**:'));
-      assert.ok(response.includes('🚀 **What Happens Next**:'));
-      // Verify Builder Word Card
-      assert.ok(response.includes('💡 **Builder Word of the Turn: Functional Requirements (FRs)**'));
-      // Verify list cap preserved
-      assert.ok(response.includes('1. One'));
+      // Verify Palette 1A badge
+      assert.ok(normalResponse.startsWith('🟢 [ZETA: ACTIVE | Step 1/15 - System Requirements Specification]'));
+      // Normal turn has NO 3-act wall
+      assert.ok(!normalResponse.includes('The Story So Far'));
+      assert.ok(normalResponse.includes('🔹 **Current Focus**:'));
+      assert.ok(normalResponse.includes('🔸 **Next Action (under 2 minutes)**:'));
+      assert.ok(normalResponse.includes('1. One'));
+
+      // Summary Mode turn has the 3-act story
+      const summaryResponse = ResponseSentinel.validateAndFormat({
+        stageIndex: 1,
+        stageName: 'System Requirements Specification',
+        isComplete: false,
+        isSummaryMode: true,
+        pastMilestone: 'Project intent ratified in Step 0',
+        presentAction: 'Defining inputs, outputs, and constraints',
+        nextUnlock: 'Threat modeling and failure modes in Step 2'
+      });
+      assert.ok(summaryResponse.includes('🔹 **The Story So Far**:'));
+      assert.ok(summaryResponse.includes('🔹 **What We Are Doing Right Now**:'));
+      assert.ok(summaryResponse.includes('🔹 **What Happens Next**:'));
+      assert.ok(summaryResponse.includes('🔸 **Next Action (under 2 minutes)**:'));
     });
 
-    test('Multiple sequential turns preserve all formatting without degradation', () => {
+    test('Multiple sequential turns preserve Palette 1A formatting without degradation', () => {
       for (let stage = 0; stage < 5; stage++) {
         const output = ResponseSentinel.validateAndFormat({
           stageIndex: stage,
@@ -196,9 +207,9 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
           rawBody: `Step ${stage} body output.`
         });
 
-        assert.ok(output.includes(`Step ${stage}/15 - ${CANONICAL_LIFECYCLE[stage].agentName}`));
-        assert.ok(output.includes('📖 **The Story So Far**:'));
-        assert.ok(output.includes('💡 **Builder Word of the Turn:'));
+        assert.ok(output.includes(`🟢 [ZETA: ACTIVE | Step ${stage}/15 - ${CANONICAL_LIFECYCLE[stage].agentName}]`));
+        assert.ok(output.includes('🔹 **Current Focus**:'));
+        assert.ok(output.includes('🔸 **Next Action (under 2 minutes)**:'));
       }
     });
   });

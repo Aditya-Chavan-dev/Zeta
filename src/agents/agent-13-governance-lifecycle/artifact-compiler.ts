@@ -84,7 +84,7 @@ ${guardrailsMd}
   /**
    * Generates a compact TL;DR (<400 words) for downstream ingestion.
    */
-  public static generateCompactTldr(draft: Step12GovernanceLifecycleDraft): string {
+  public static generateCompactTldr(_draft: Step12GovernanceLifecycleDraft): string {
     return `TL;DR GOVERNANCE, LIFECYCLE & DEPRECATION (STEP 12 BASELINE):
 - SemVer Policy: Strict SemVer 2.0.0; breaking changes require MAJOR bump and minimum 2 prior minor deprecation cycles.
 - Deprecation Lifecycle: 4-phase rollout (Announcement 4w -> Soft Deprecation 8w -> Hard Deprecation 4w -> Sunsetting in next MAJOR).

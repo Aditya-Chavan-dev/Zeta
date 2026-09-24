@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step7ImplementationDevDraft } from './types.js';
+import { ClarifyingQuestion, Step7ImplementationDevDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 options for a specific construction area.
    */
-  public static generateForArea(area: string, draft: Step7ImplementationDevDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step7ImplementationDevDraft): ClarifyingQuestion {
     switch (area) {
       case 'Release Candidate Tagging & Packaging Format':
         return {

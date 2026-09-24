@@ -4,6 +4,8 @@ import readline from 'readline';
 import path from 'path';
 import { StateManager } from '../dist/core/state/state-manager.js';
 import { ResumeSentinel } from '../dist/core/state/resume-sentinel.js';
+import { InitHook } from '../dist/core/bootstrap/init-hook.js';
+import { CrashLogger } from '../dist/core/logging/crash-logger.js';
 import { Agent01Intent } from '../dist/agents/agent-01-intent/agent.js';
 import { Agent02Requirements } from '../dist/agents/agent-02-requirements/agent.js';
 import { Agent03Feasibility } from '../dist/agents/agent-03-feasibility/agent.js';
@@ -46,14 +48,9 @@ async function main() {
   console.log('\x1b[1m%s\x1b[0m', '   Autonomous Engineering Governance Plugin (15-Stage Engine)');
   console.log('\x1b[36m%s\x1b[0m', '═══════════════════════════════════════════════════════════════════\n');
 
-  let state = StateManager.load(workspaceRoot);
-  if (!state) {
-    state = StateManager.initialize(workspaceRoot);
-    console.log(`[INIT] Initialized new session in ${path.join(workspaceRoot, '.zeta', 'state.json')}\n`);
-  } else {
-    const assessment = ResumeSentinel.assess(state, workspaceRoot);
-    console.log(assessment.resumptionGreeting + '\n');
-  }
+  const initResult = InitHook.activate(workspaceRoot);
+  console.log(initResult.greeting + '\n');
+  let state = initResult.state;
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -99,7 +96,11 @@ async function main() {
   rl.close();
 }
 
-main().catch(err => {
+main().catch(async err => {
+  try {
+    const { CrashLogger } = await import('../dist/core/logging/crash-logger.js');
+    CrashLogger.log(workspaceRoot, err, { source: 'cli-main' });
+  } catch {}
   console.error('\x1b[31m%s\x1b[0m', `Fatal Error: ${err.message}`);
   process.exit(1);
 });

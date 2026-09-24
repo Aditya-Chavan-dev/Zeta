@@ -8,6 +8,7 @@ import { QuestionGenerator } from './question-generator.js';
 import { ArtifactCompiler } from './artifact-compiler.js';
 import { BuilderTranslator } from '../../core/formatters/builder-translator.js';
 import { AgentResponse, Step11SecurityComplianceDraft } from './types.js';
+import { DriftInterceptor } from '../../core/drift/interceptor.js';
 
 export class Agent12SecurityCompliance {
   private workspaceRoot: string;
@@ -55,6 +56,17 @@ export class Agent12SecurityCompliance {
     // 3. Handle explicit Approval handshake
     if (userInput.trim().toLowerCase() === 'approve') {
       return this.lockAndCompleteStep();
+    }
+
+    // Drift check against agreed baselines
+    const drift = DriftInterceptor.evaluateWorkspace(this.workspaceRoot, userInput.trim());
+    if (drift.shouldIntercept) {
+      return {
+        step: 11,
+        message: drift.conversationalPrompt,
+        isLocked: false,
+        isReadyForSignoff: false
+      };
     }
 
     // 4. Process user input if answering an unresolved area

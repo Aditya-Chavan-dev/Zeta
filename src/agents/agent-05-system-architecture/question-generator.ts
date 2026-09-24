@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step4ArchitectureDraft } from './types.js';
+import { ClarifyingQuestion, Step4ArchitectureDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 architectural patterns for a specific architecture area.
    */
-  public static generateForArea(area: string, draft: Step4ArchitectureDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step4ArchitectureDraft): ClarifyingQuestion {
     switch (area) {
       case 'Inter-Agent Communication & Coupling':
         return {

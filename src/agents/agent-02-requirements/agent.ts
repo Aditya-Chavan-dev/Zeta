@@ -3,11 +3,12 @@ import * as path from 'path';
 import * as crypto from 'crypto';
 import { StateManager } from '../../core/state/state-manager.js';
 import { StepSummary } from '../../core/state/types.js';
-import { Step1RequirementsDraft, ClarifyingQuestion, Agent02State } from './types.js';
+import { ClarifyingQuestion, Agent02State } from './types.js';
 import { IntentVerifier } from './intent-verifier.js';
 import { RequirementsElicitor } from './requirements-elicitor.js';
 import { QuestionGenerator } from './question-generator.js';
-import { ArtifactCompiler, CompiledRequirementsArtifacts } from './artifact-compiler.js';
+import { ArtifactCompiler } from './artifact-compiler.js';
+import { DriftInterceptor } from '../../core/drift/interceptor.js';
 
 export interface Agent02TurnResponse {
   message: string;
@@ -62,6 +63,18 @@ export class Agent02Requirements {
     if (this.agentState.isComplete) {
       if (text.toLowerCase() === 'approve') {
         return this.finalizeAndLock();
+      }
+    }
+
+    // Drift check against agreed baselines
+    if (text.toLowerCase() !== 'approve') {
+      const drift = DriftInterceptor.evaluateWorkspace(this.workspaceRoot, text);
+      if (drift.shouldIntercept) {
+        return {
+          message: drift.conversationalPrompt,
+          isReadyForSignoff: false,
+          isLocked: false
+        };
       }
     }
 

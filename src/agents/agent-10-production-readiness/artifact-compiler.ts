@@ -114,7 +114,7 @@ ${observabilityMd}
   /**
    * Generates a compact TL;DR (<400 words) for downstream ingestion.
    */
-  public static generateCompactTldr(draft: Step9ProductionReadinessDraft): string {
+  public static generateCompactTldr(_draft: Step9ProductionReadinessDraft): string {
     return `TL;DR PRODUCTION READINESS & DEPLOYMENT (STEP 9 BASELINE):
 - Target Environments: Local IDE extension host (<512MB RAM, 50MB disk) and ephemeral CI/CD container runner.
 - Release Gates: GATE-01 (State signature integrity), GATE-02 (Exit code 0 on all test suites), GATE-03 (Atomic recovery verified).

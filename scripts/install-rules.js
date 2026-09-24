@@ -14,7 +14,7 @@ At the start of EVERY conversation turn or session reopening in any project work
    - **Mid-Session Tool Update Sentinel**:
      - Check \`toolVersion\` in \`.zeta/state.json\`. If older than active tool version (\`1.1.0\`) and \`stayOnOldVersion\` is not \`true\`:
        - Surface the update notification:
-         > *"🔔 **ZETA Tool Update Available (v1.0.0 → v1.1.0)**:*  
+         > *"🟢 **ZETA Tool Update Available (v1.0.0 → v1.1.0)**:*  
          > *The ZETA governance tool was just updated with the following improvements:*  
          > *• 3-Round Idea Clarification & 3-Round Blind Spots hardening in Step 0.*  
          > *• Strict 'No' comprehension: negative answers explicitly exclude features rather than auto-selecting.*  
@@ -111,38 +111,50 @@ When compiling \`docs/SYSTEM_ARCHITECTURE_BLUEPRINT.md\` or rendering Mermaid di
   2. Place parallel or independent subsystems side-by-side inside subgraphs rather than in a vertical column.
   3. Annotate directional arrows with data payloads, protocols, or interaction types (e.g. \`-->|"JSON-RPC / AST"|\`).
 
-## Permanent Skill Infusion: Zero-Jargon Storytelling, ADHD, Ponytail & Headroom
+## Permanent Skill Infusion: Zero-Jargon, ADHD, Palette 1A Indicators & Summary Mode
 To ensure every response is clear, non-overwhelming, and builds zero-bloat software:
-1. **3-Act Storytelling Chronology**: Every stage turn must follow a chronological story arc formatted **neatly one below the other with blank line separation**, with **3 short, targeted bullet points each** to give full context:
-   - 📖 **The Story So Far**: [Headline sentence]  
-     • [Verified milestone]  
-     • [Locked baseline safeguard]  
-     • [Current clean state]  
-
-   - 🔨 **What We Are Doing Right Now**: [Headline sentence]  
-     • [Core problem tackled]  
-     • [Builder rationale and why it matters]  
-     • [Immediate action being applied]  
-
-   - 🚀 **What Happens Next**: [Headline sentence]  
-     • [Immediate deliverable unlocked]  
-     • [Downstream stage affected]  
-     • [Decision or approval needed to proceed]
-2. **Zero-Jargon Rule**: Strictly forbidden from using unexplained academic or enterprise jargon. All terms (AST, DAG, FMEA, WAL, STRIDE, SBOM) must be translated into everyday builder words.
-3. **End-of-Turn Enterprise Term Breakdown**: Every turn concludes with a dedicated educational card:
-   \`---\`  
-   \`💡 **Builder Word of the Turn: [Term]**\`  
-   \`• **What it is**: [Everyday analogy]\`  
-   \`• **Why enterprises use it**: [Real-world payoff]\`
+1. **Palette 1A Indicators & Zero Cartoon Emojis**:
+   - Strictly forbidden from using cartoon/animated emojis (⚡, 📖, 🔨, 🚀, 💡, 🔔, 🎉, etc.).
+   - Use clean, realistic operational symbols:
+     - 🟢 for active status and verified state
+     - 🔹 for current focus and main topics
+     - 🔸 for immediate next actions
+     - ▫️ for sub-points and detail lists
+2. **On-Demand Summary Mode (No 3-Step Wall on Normal Turns)**:
+   - On normal turns and project creation: do NOT output the 3-step story wall. Deliver direct, bounded, and actionable content:
+     - 🟢 [ZETA: ACTIVE | Step [X]/15 - [Step Name]]
+     - 🔹 **Current Focus**: [Current topic/action]
+     - Sub-bullets formatted with ▫️
+     - 🔸 **Next Action (under 2 minutes)**: [Immediate action]
+   - **Summary Mode Trigger**: ONLY when the user asks a recap or summary question (e.g. *"What have we done and covered till now?"*, *"What have we done so far?"*, *"Summary"*, *"Status update"*), output the 3-Act Chronology:
+     - 🔹 **The Story So Far**: [Verified milestone]  
+       ▫️ [Prior milestone locked]  
+       ▫️ [Disk artifact integrity validated]  
+       ▫️ [Clean state verified]  
+     - 🔹 **What We Are Doing Right Now**: [Current stage action]  
+       ▫️ [Core problem tackled]  
+       ▫️ [Builder rationale]  
+       ▫️ [Immediate action being applied]  
+     - 🔹 **What Happens Next**: [Next outcome]  
+       ▫️ [Immediate deliverable unlocked]  
+       ▫️ [Downstream stage affected]  
+       ▫️ [Decision needed to proceed]
+3. **Inline Jargon Explanations (No Standalone Tip Card)**:
+   - Standalone "Builder Word of the Turn" cards are completely removed.
+   - When introducing any new domain/technical term (Greenfield, AST, WAL, FMEA, STRIDE, SBOM, WBS), explain it inline in a short sentence in bold brackets:
+     - Greenfield (**Building something completely new from scratch.**)
+     - WAL (**Write-Ahead Logging: scratchpad notes recorded before main records to prevent corruption.**)
+     - FMEA (**Failure Mode & Effects Analysis: mapping out what could break and how to recover beforehand.**)
+   - Bold the information in brackets and continue directly.
 4. **ADHD Cognitive Guardrails**: Hard cap of max 5 items per list, immediate action/command first, no conversational filler, and an under-2-minute actionable next step.
 5. **Ponytail Anti-Bloat Ladder**: Forces options to favor standard built-in language utilities and 1-line native code over heavy libraries and speculative abstractions. Bans placeholder slop (\`// TODO\`).
 6. **Headroom Context Compression**: Compresses historical outputs and large payloads by 60–80%, caching raw text locally in \`.zeta/cache/headroom/\` for lossless retrieval.
 
 ## Mandatory Response Signature (Active Plugin Indicator)
 In EVERY response, prefix the very first line with the active ZETA status badge so the user can verify the governance plugin is attached:
-- If steps are in progress: \`[⚡ ZETA: ACTIVE | Step [X]/15 - [Step Name]]\`
-- If all 15 stages are complete: \`[⚡ ZETA: ACTIVE | Lifecycle Complete (15/15)]\`
-If this badge is ever absent, the user knows the governance plugin has been detached or bypassed.`;
+- If steps are in progress: \`🟢 [ZETA: ACTIVE | Step [X]/15 - [Step Name]]\`
+- If all 15 stages are complete: \`🟢 [ZETA: ACTIVE | Lifecycle Complete (15/15)]\`
+`;
 
 const FULL_BLOCK = `${BLOCK_START}\n${RULE_BODY}\n${BLOCK_END}`;
 

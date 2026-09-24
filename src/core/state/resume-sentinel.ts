@@ -12,12 +12,12 @@ export class ResumeSentinel {
     6: 'Implementation Planning & Work Breakdown',
     7: 'Implementation / Development',
     8: 'Verification, Validation & QA',
-    9: 'Release & Production Readiness',
-    10: 'Deployment & Production Launch',
-    11: 'Production Operations & Monitoring',
-    12: 'Post-Release Product Validation',
-    13: 'Maintenance, Lifecycle & Change Management',
-    14: 'Retirement & Decommissioning'
+    9: 'Production Readiness & Deployment',
+    10: 'Operations, Maintenance & SRE',
+    11: 'Security, Privacy & Compliance',
+    12: 'Governance, Lifecycle & Deprecation',
+    13: 'Knowledge Transfer & Documentation',
+    14: 'Project Retrospective & Continuous Improvement'
   };
 
   public static getStepName(stepNumber: number): string {

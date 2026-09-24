@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step8VerificationQaDraft } from './types.js';
+import { ClarifyingQuestion, Step8VerificationQaDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 options for a specific QA audit area.
    */
-  public static generateForArea(area: string, draft: Step8VerificationQaDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step8VerificationQaDraft): ClarifyingQuestion {
     switch (area) {
       case 'Adversarial Chaos & Stress Test Scope':
         return {

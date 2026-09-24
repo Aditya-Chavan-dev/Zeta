@@ -37,12 +37,12 @@ The system executes 15 specialized agents in strict sequence:
 | **6** | **Implementation Planning & Work Breakdown** | *What do we build and in what order?* | `docs/IMPLEMENTATION_PLAN_AND_WBS.md` |
 | **7** | **Implementation / Software Construction** | *Build and construct the software.* | `docs/IMPLEMENTED_RELEASE_CANDIDATE.md` + Code |
 | **8** | **Verification, Validation & Quality Assurance** | *Did we build it correctly?* | `docs/VERIFICATION_AND_QA_PACKAGE.md` |
-| **9** | **Release & Production Readiness** | *Is it safe and ready to release?* | `docs/RELEASE_AND_PRODUCTION_READINESS.md` |
-| **10** | **Deployment & Production Launch** | *Put it into production safely.* | `docs/PRODUCTION_LAUNCH_RECORD.md` |
-| **11** | **Production Operations & Incident Management** | *Keep the system healthy & stable.* | `docs/OPERATIONS_AND_INCIDENT_RECORD.md` |
-| **12** | **Post-Release Review & Product Validation** | *Did it achieve the intended outcome?* | `docs/PRODUCT_VALIDATION_PACKAGE.md` |
-| **13** | **Maintenance, Lifecycle & Change Management** | *How do we safely evolve the system?* | `docs/SYSTEM_LIFECYCLE_RECORD.md` |
-| **14** | **Retirement & Decommissioning** | *How do we safely shut it down?* | `docs/DECOMMISSIONING_AND_RETIREMENT_RECORD.md` |
+| **9** | **Production Readiness & Deployment** | *Is it production-ready with release gates and rollback?* | `docs/PRODUCTION_READINESS_AND_DEPLOYMENT.md` |
+| **10** | **Operations, Maintenance & SRE** | *How do we keep it healthy with SLOs and incident response?* | `docs/OPERATIONS_MAINTENANCE_AND_SRE.md` |
+| **11** | **Security, Privacy & Compliance** | *Is it secured against threats with privacy controls?* | `docs/SECURITY_PRIVACY_AND_COMPLIANCE.md` |
+| **12** | **Governance, Lifecycle & Deprecation** | *How do we version and evolve without breaking state?* | `docs/GOVERNANCE_LIFECYCLE_AND_DEPRECATION.md` |
+| **13** | **Knowledge Transfer & Documentation** | *Is it fully documented with onboarding and ADRs?* | `docs/KNOWLEDGE_TRANSFER_AND_DOCUMENTATION.md` |
+| **14** | **Project Retrospective & Continuous Improvement** | *What went well and what is the kaizen plan?* | `docs/PROJECT_RETROSPECTIVE_AND_IMPROVEMENT.md` |
 
 ---
 

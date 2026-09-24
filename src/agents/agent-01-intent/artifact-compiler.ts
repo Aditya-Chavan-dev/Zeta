@@ -27,7 +27,6 @@ export class ArtifactCompiler {
     const scope = d.scopeBoundaries;
     const succ = d.successDefinition;
     const constr = d.assumptionsConstraints;
-    const eco = d.ecosystem;
     const trust = d.trustCompliance;
     const ops = d.operationalImpact;
     const econ = d.economicsFeasibility;

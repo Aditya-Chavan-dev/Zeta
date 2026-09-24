@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step1RequirementsDraft } from './types.js';
+import { ClarifyingQuestion, Step1RequirementsDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 industry options for a specific missing requirement category.
    */
-  public static generateForCategory(category: string, draft: Step1RequirementsDraft): ClarifyingQuestion {
+  public static generateForCategory(category: string, _draft: Step1RequirementsDraft): ClarifyingQuestion {
     switch (category) {
       case 'Performance & Latency':
         return {

@@ -1,5 +1,4 @@
 import { StateManager } from '../../core/state/state-manager.js';
-import { SessionState } from '../../core/state/types.js';
 
 export interface IntentVerificationResult {
   isValid: boolean;
@@ -48,7 +47,7 @@ export class IntentVerifier {
   /**
    * Checks incoming requirement input against out-of-scope intent boundaries.
    */
-  public static checkScopeDrift(requirementText: string, step0Tldr: string): string[] {
+  public static checkScopeDrift(requirementText: string, _step0Tldr: string): string[] {
     const violations: string[] = [];
     const text = requirementText.toLowerCase();
 

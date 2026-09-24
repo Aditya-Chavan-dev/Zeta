@@ -96,7 +96,7 @@ export class DetailedDesigner {
   /**
    * Evaluates detailed design specifications and flags areas requiring user confirmation.
    */
-  public static evaluate(userInput: string, s0: string, s1: string, s2: string, s3: string, s4: string): DetailedDesignAnalysis {
+  public static evaluate(_userInput: string, s0: string, s1: string, s2: string, s3: string, s4: string): DetailedDesignAnalysis {
     const draft = this.createEmptyDraft(s0, s1, s2, s3, s4);
     const unresolvedDesignAreas: string[] = [
       'Input Validation & Sanitization Schema',

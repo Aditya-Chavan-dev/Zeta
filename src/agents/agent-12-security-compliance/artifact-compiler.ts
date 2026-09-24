@@ -100,7 +100,7 @@ ${cryptoMd}
   /**
    * Generates a compact TL;DR (<400 words) for downstream ingestion.
    */
-  public static generateCompactTldr(draft: Step11SecurityComplianceDraft): string {
+  public static generateCompactTldr(_draft: Step11SecurityComplianceDraft): string {
     return `TL;DR SECURITY, PRIVACY & COMPLIANCE (STEP 11 BASELINE):
 - Threat Model (STRIDE): Tampering mitigated by SHA-256 state signatures; Disclosure mitigated by automated token scrubbing; DoS mitigated by turn backoff.
 - Data Privacy: Strict Zero-Cloud-Egress boundary; all state and documents executed locally within workstation sandbox.

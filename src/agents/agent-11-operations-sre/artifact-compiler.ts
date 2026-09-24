@@ -97,7 +97,7 @@ ${maintenanceMd}
   /**
    * Generates a compact TL;DR (<400 words) for downstream ingestion.
    */
-  public static generateCompactTldr(draft: Step10OperationsSreDraft): string {
+  public static generateCompactTldr(_draft: Step10OperationsSreDraft): string {
     return `TL;DR OPERATIONS & SRE (STEP 10 BASELINE):
 - Service Level Objectives: 99.99% atomic persistence success, P95 latency <= 1000ms, 99.9% crash-free sessions.
 - Incident Response: SEV-1 (EPERM/state corruption) MTTR <= 5m with automated fallback to .zeta/state.json.bak; SEV-2 MTTR <= 15m; SEV-3 self-healing.

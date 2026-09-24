@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step10OperationsSreDraft } from './types.js';
+import { ClarifyingQuestion, Step10OperationsSreDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 options for an operational SRE area.
    */
-  public static generateForArea(area: string, draft: Step10OperationsSreDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step10OperationsSreDraft): ClarifyingQuestion {
     switch (area) {
       case 'Incident Triage & Auto-Escalation Protocol':
         return {

@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step12GovernanceLifecycleDraft } from './types.js';
+import { ClarifyingQuestion, Step12GovernanceLifecycleDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 options for a lifecycle/governance area.
    */
-  public static generateForArea(area: string, draft: Step12GovernanceLifecycleDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step12GovernanceLifecycleDraft): ClarifyingQuestion {
     switch (area) {
       case 'Breaking Change Notice & Deprecation Timeline':
         return {

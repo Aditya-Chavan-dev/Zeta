@@ -79,8 +79,10 @@ export class HeadroomCompressor {
   public static retrieve(workspaceRoot: string, tokenOrHash: string): string | null {
     let hash = tokenOrHash;
     if (tokenOrHash.startsWith('HEADROOM:')) {
-      const parts = tokenOrHash.split(':');
-      hash = parts[2] || tokenOrHash;
+      const lastColonIndex = tokenOrHash.lastIndexOf(':');
+      if (lastColonIndex !== -1) {
+        hash = tokenOrHash.slice(lastColonIndex + 1);
+      }
     }
 
     const cachePath = path.join(workspaceRoot, this.CACHE_DIR, `${hash}.json`);

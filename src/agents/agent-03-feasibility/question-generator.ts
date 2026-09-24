@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step2FeasibilityDraft } from './types.js';
+import { ClarifyingQuestion, Step2FeasibilityDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 mitigation strategies for a specific risk area.
    */
-  public static generateForRiskArea(riskArea: string, draft: Step2FeasibilityDraft): ClarifyingQuestion {
+  public static generateForRiskArea(riskArea: string, _draft: Step2FeasibilityDraft): ClarifyingQuestion {
     switch (riskArea) {
       case 'State Drift & Schema Migration Risk':
         return {

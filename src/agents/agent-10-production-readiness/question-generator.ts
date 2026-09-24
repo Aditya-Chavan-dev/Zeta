@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step9ProductionReadinessDraft } from './types.js';
+import { ClarifyingQuestion, Step9ProductionReadinessDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 options for a specific production readiness area.
    */
-  public static generateForArea(area: string, draft: Step9ProductionReadinessDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step9ProductionReadinessDraft): ClarifyingQuestion {
     switch (area) {
       case 'Production Deployment Packaging & Distribution Model':
         return {

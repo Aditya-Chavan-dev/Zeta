@@ -91,7 +91,7 @@ ${actionsMd}
   /**
    * Generates a compact TL;DR (<400 words) for final archival.
    */
-  public static generateCompactTldr(draft: Step14RetrospectiveDraft): string {
+  public static generateCompactTldr(_draft: Step14RetrospectiveDraft): string {
     return `TL;DR PROJECT RETROSPECTIVE & CONTINUOUS IMPROVEMENT (STEP 14 - FINAL MILESTONE):
 - Full Lifecycle Completed: All 15 sequential stages (Steps 0 through 14) fully locked with cryptographic SHA-256 verification.
 - Architectural Fidelity: 100% score on greenfield scope adherence, zero cloud egress, and sequential stage gating.

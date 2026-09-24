@@ -170,6 +170,8 @@ export class ReleaseReadinessAuditor {
         draft.deploymentTargets[0].runtime = 'Pre-compiled tarball release bundle';
       } else if (answer.includes('3') || answer.toLowerCase().includes('docker')) {
         draft.deploymentTargets[0].runtime = 'Docker OCI container image';
+      } else if (answer.trim()) {
+        draft.deploymentTargets[0].runtime = `Custom: ${answer.trim()}`;
       }
     } else if (area === 'Zero-Downtime Rollout & Update Protocol') {
       if (isNegative) {
@@ -178,6 +180,8 @@ export class ReleaseReadinessAuditor {
         draft.zeroDowntimeStrategy = 'Canary 10% pilot rollout with automated rollback';
       } else if (answer.includes('3') || answer.toLowerCase().includes('maintenance')) {
         draft.zeroDowntimeStrategy = 'Maintenance window with scheduled downtime banner';
+      } else if (answer.trim()) {
+        draft.zeroDowntimeStrategy = `Custom: ${answer.trim()}`;
       }
     } else if (area === 'Observability, Crash Telemetry & Log Rotation') {
       if (isNegative) {
@@ -186,6 +190,8 @@ export class ReleaseReadinessAuditor {
         draft.monitoringAndObservability.push('Syslog daemon stream forwarding');
       } else if (answer.includes('3') || answer.toLowerCase().includes('stdout')) {
         draft.monitoringAndObservability.push('POSIX stdout JSON stream format');
+      } else if (answer.trim()) {
+        draft.monitoringAndObservability.push(`Custom: ${answer.trim()}`);
       }
     }
   }

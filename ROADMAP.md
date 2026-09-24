@@ -9,14 +9,14 @@
 **Objective**: Guarantee that user state is never lost, even on abrupt browser or IDE shutdowns.  
 **Estimated Time**: 2 Hours  
 
-* [ ] **1.1 State Schema Definition (`src/core/state/types.ts`)**
+* [x] **1.1 State Schema Definition (`src/core/state/types.ts`)**
   - Define `SessionState`, `StepStatus` (`NOT_STARTED`, `IN_PROGRESS`, `AWAITING_APPROVAL`, `LOCKED`), `UncommittedBuffer`, and `StepSummaries`.
-* [ ] **1.2 Atomic Per-Turn State Manager (`src/core/state/state-manager.ts`)**
+* [x] **1.2 Atomic Per-Turn State Manager (`src/core/state/state-manager.ts`)**
   - Implement read/write logic for `.zeta/state.json`.
   - Guarantee atomic file writes (write to `.tmp` then rename) to prevent corruption during unexpected terminations.
-* [ ] **1.3 Session Resume & Recovery Sentinel (`src/core/state/resume-sentinel.ts`)**
+* [x] **1.3 Session Resume & Recovery Sentinel (`src/core/state/resume-sentinel.ts`)**
   - Implement startup check: if `.zeta/state.json` exists, load last active step, recover uncommitted buffer, and generate the greeting summary.
-* [ ] **1.4 Automated Unit Tests (`tests/unit/state-manager.test.ts`)**
+* [x] **1.4 Automated Unit Tests (`tests/unit/state-manager.test.ts`)**
   - Test per-turn saves, abrupt shutdown simulations, buffer recovery, and corruption prevention.
 
 ---
@@ -25,18 +25,18 @@
 **Objective**: Build the strict sequential state machine that guides the user from Step 0 to Step 14 without rushing or skipping.  
 **Estimated Time**: 3.5 Hours  
 
-* [ ] **2.1 Agent State Machine (`src/core/swarm/pipeline-runner.ts`)**
+* [x] **2.1 Agent State Machine (`src/core/swarm/pipeline-runner.ts`)**
   - Implement sequential transitions: Step 0 $\rightarrow$ Step 1 $\rightarrow \dots \rightarrow$ Step 14.
   - Enforce prerequisite check: Step $N$ cannot start until Step $N-1$ is `LOCKED`.
-* [ ] **2.2 Human Handshake Gate (`src/core/swarm/handshake-gate.ts`)**
+* [x] **2.2 Human Handshake Gate (`src/core/swarm/handshake-gate.ts`)**
   - When an agent completes a step's draft, pause execution.
   - Prompt user with step summary and require explicit confirmation (`"Approve"`) to freeze.
-* [ ] **2.3 Context Compression Engine (TL;DR Compiler) (`src/core/context/summary-compiler.ts`)**
+* [x] **2.3 Context Compression Engine (TL;DR Compiler) (`src/core/context/summary-compiler.ts`)**
   - Automatically extract an executive summary whenever an artifact in `docs/` is locked.
   - Pass lightweight summaries to downstream agents to eliminate LLM context overflow.
-* [ ] **2.4 Artifact Storage Writer (`src/core/artifacts/writer.ts`)**
+* [x] **2.4 Artifact Storage Writer (`src/core/artifacts/writer.ts`)**
   - Standardize output writing to `docs/PROJECT_INTENT.md`, `docs/REQUIREMENTS_SPECIFICATION.md`, etc.
-* [ ] **2.5 Automated Unit Tests (`tests/unit/pipeline-runner.test.ts`)**
+* [x] **2.5 Automated Unit Tests (`tests/unit/pipeline-runner.test.ts`)**
   - Test sequential progression, handshake approval locks, and context compression.
 
 ---
@@ -45,17 +45,17 @@
 **Objective**: Detect when the user's intent shifts during natural conversation and report downstream impacts before updating.  
 **Estimated Time**: 3 Hours  
 
-* [ ] **3.1 Semantic Intent Comparator (`src/core/drift/intent-comparator.ts`)**
+* [x] **3.1 Semantic Intent Comparator (`src/core/drift/intent-comparator.ts`)**
   - Compare incoming user prompts against locked `PROJECT_INTENT.md` and `SSOT.md`.
   - Flag deviations exceeding divergence threshold without needing manual commands.
-* [ ] **3.2 Conversational Drift Interceptor (`src/core/drift/interceptor.ts`)**
+* [x] **3.2 Conversational Drift Interceptor (`src/core/drift/interceptor.ts`)**
   - Intercept drift and ask naturally: *"This diverges from our agreed requirements. Did your goal change?"*
-* [ ] **3.3 Impact Cascade Analyzer (`src/core/drift/impact-cascade.ts`)**
+* [x] **3.3 Impact Cascade Analyzer (`src/core/drift/impact-cascade.ts`)**
   - When the user confirms an intentional change, analyze all locked downstream stages.
   - Generate the multi-stage Impact Cascade Report (e.g. changes to Feasibility, Tech Stack, or Architecture).
-* [ ] **3.4 Surgical Baseline Updater (`src/core/drift/baseline-updater.ts`)**
+* [x] **3.4 Surgical Baseline Updater (`src/core/drift/baseline-updater.ts`)**
   - Update only the affected sections of the target document, preserving unimpacted specifications.
-* [ ] **3.5 Automated Unit Tests (`tests/unit/drift-detector.test.ts`)**
+* [x] **3.5 Automated Unit Tests (`tests/unit/core/drift-detection.test.ts`)**
   - Test false-alarm suppression, true drift detection, cascade reporting, and surgical updates.
 
 ---
@@ -64,15 +64,15 @@
 **Objective**: Wire the plugin into the IDE lifecycle and validate with a live project simulation.  
 **Estimated Time**: 2.5 Hours  
 
-* [ ] **4.1 Zero-Config Bootstrap Hook (`src/core/bootstrap/init-hook.ts`)**
+* [x] **4.1 Zero-Config Bootstrap Hook (`src/core/bootstrap/init-hook.ts`)**
   - Trigger automatically on Message 1 when `.zeta/state.json` is absent.
   - Direct raw brain-dump directly into Agent 01.
-* [ ] **4.2 End-to-End Project Lifecycle Simulation (`tests/integration/swarm-e2e.test.ts`)**
+* [x] **4.2 End-to-End Project Lifecycle Simulation (`tests/integration/swarm-e2e.test.ts`)**
   - Simulate a complete user journey:
     1. Raw brain-dump input.
     2. Agent 01 clarification and locking.
     3. Step 1 requirements handshake.
     4. Mid-project user goal change $\rightarrow$ Impact Cascade report $\rightarrow$ confirmed update.
     5. Mid-turn crash and successful resume.
-* [ ] **4.3 Plugin Packaging & Distribution Configuration (`package.json`, `tsconfig.json`)**
+* [x] **4.3 Plugin Packaging & Distribution Configuration (`package.json`, `tsconfig.json`)**
   - Clean build scripts, production entrypoint, and documentation.

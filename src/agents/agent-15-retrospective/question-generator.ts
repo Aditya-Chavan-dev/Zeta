@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step14RetrospectiveDraft } from './types.js';
+import { ClarifyingQuestion, Step14RetrospectiveDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 options for a retrospective area.
    */
-  public static generateForArea(area: string, draft: Step14RetrospectiveDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step14RetrospectiveDraft): ClarifyingQuestion {
     switch (area) {
       case 'Continuous Improvement Sprint Prioritization':
         return {

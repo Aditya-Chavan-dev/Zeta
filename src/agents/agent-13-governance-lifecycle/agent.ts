@@ -7,6 +7,7 @@ import { GovernanceAuditor } from './governance-auditor.js';
 import { QuestionGenerator } from './question-generator.js';
 import { ArtifactCompiler } from './artifact-compiler.js';
 import { AgentResponse, Step12GovernanceLifecycleDraft } from './types.js';
+import { DriftInterceptor } from '../../core/drift/interceptor.js';
 
 export class Agent13GovernanceLifecycle {
   private workspaceRoot: string;
@@ -55,6 +56,17 @@ export class Agent13GovernanceLifecycle {
     // 3. Handle explicit Approval handshake
     if (userInput.trim().toLowerCase() === 'approve') {
       return this.lockAndCompleteStep();
+    }
+
+    // Drift check against agreed baselines
+    const drift = DriftInterceptor.evaluateWorkspace(this.workspaceRoot, userInput.trim());
+    if (drift.shouldIntercept) {
+      return {
+        step: 12,
+        message: drift.conversationalPrompt,
+        isLocked: false,
+        isReadyForSignoff: false
+      };
     }
 
     // 4. Process user input if answering an unresolved area

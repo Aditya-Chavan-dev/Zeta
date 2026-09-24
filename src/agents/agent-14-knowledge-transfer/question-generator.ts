@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step13KnowledgeTransferDraft } from './types.js';
+import { ClarifyingQuestion, Step13KnowledgeTransferDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 options for a knowledge transfer area.
    */
-  public static generateForArea(area: string, draft: Step13KnowledgeTransferDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step13KnowledgeTransferDraft): ClarifyingQuestion {
     switch (area) {
       case 'Developer Onboarding Velocity & Ramp-up Target':
         return {

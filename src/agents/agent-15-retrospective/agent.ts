@@ -7,6 +7,7 @@ import { RetrospectiveAuditor } from './retrospective-auditor.js';
 import { QuestionGenerator } from './question-generator.js';
 import { ArtifactCompiler } from './artifact-compiler.js';
 import { AgentResponse, Step14RetrospectiveDraft } from './types.js';
+import { DriftInterceptor } from '../../core/drift/interceptor.js';
 
 export class Agent15Retrospective {
   private workspaceRoot: string;
@@ -57,6 +58,17 @@ export class Agent15Retrospective {
     // 3. Handle explicit Approval handshake
     if (userInput.trim().toLowerCase() === 'approve') {
       return this.lockAndCompleteProject();
+    }
+
+    // Drift check against agreed baselines
+    const drift = DriftInterceptor.evaluateWorkspace(this.workspaceRoot, userInput.trim());
+    if (drift.shouldIntercept) {
+      return {
+        step: 14,
+        message: drift.conversationalPrompt,
+        isLocked: false,
+        isReadyForSignoff: false
+      };
     }
 
     // 4. Process user input if answering an unresolved area

@@ -186,6 +186,8 @@ export class SreAuditor {
         draft.incidentRunbooks[0].escalationPath = 'Manual developer review required for all SEV-1 incidents';
       } else if (answer.includes('3') || answer.toLowerCase().includes('silent')) {
         draft.incidentRunbooks[0].escalationPath = 'Silent retry without user notification';
+      } else if (answer.trim()) {
+        draft.incidentRunbooks[0].escalationPath = `Custom: ${answer.trim()}`;
       }
     } else if (area === 'State Disaster Recovery & Snapshot Retention Window') {
       if (isNegative) {
@@ -194,6 +196,8 @@ export class SreAuditor {
         draft.disasterRecoveryPlans[0].retentionWindow = 'Latest 30 step snapshots';
       } else if (answer.includes('3') || answer.toLowerCase().includes('single')) {
         draft.disasterRecoveryPlans[0].retentionWindow = 'Single latest snapshot only';
+      } else if (answer.trim()) {
+        draft.disasterRecoveryPlans[0].retentionWindow = `Custom: ${answer.trim()}`;
       }
     } else if (area === 'Log Rotation & Storage Maintenance Cadence') {
       if (isNegative) {
@@ -202,6 +206,10 @@ export class SreAuditor {
         draft.maintenanceTasks[0].frequency = 'daily';
       } else if (answer.includes('3') || answer.toLowerCase().includes('monthly')) {
         draft.maintenanceTasks[0].frequency = 'monthly';
+      } else if (answer.trim()) {
+        if (draft.maintenanceTasks.length > 0) {
+          draft.maintenanceTasks[0].procedure += ` | User specification: ${answer.trim()}`;
+        }
       }
     }
   }

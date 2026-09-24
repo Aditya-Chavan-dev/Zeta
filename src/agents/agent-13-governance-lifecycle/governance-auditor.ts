@@ -149,6 +149,8 @@ export class GovernanceAuditor {
         draft.schemaMigrations[0].rollbackGuaranteed = false;
       } else if (answer.includes('3') || answer.toLowerCase().includes('immutable')) {
         draft.backwardCompatibilityGuarantee = 'Indefinite backward compatibility across all historical versions';
+      } else if (answer.trim()) {
+        draft.schemaMigrations[0].migrationMechanism = `Custom: ${answer.trim()}`;
       }
     } else if (area === 'Architectural Drift Detection & Enforcement Policy') {
       if (isNegative) {
@@ -157,6 +159,8 @@ export class GovernanceAuditor {
         draft.driftGuardrails[0].breachAction = 'Emit non-blocking warning in UI without halting execution';
       } else if (answer.includes('3') || answer.toLowerCase().includes('strict')) {
         draft.driftGuardrails[0].breachAction = 'Hard failure requiring explicit architectural waiver commit';
+      } else if (answer.trim()) {
+        draft.driftGuardrails[0].breachAction = `Custom: ${answer.trim()}`;
       }
     }
   }

@@ -1,4 +1,4 @@
-import { Step3TechStrategyDraft, TechnologyDecisionRecord, StackCandidateEvaluation } from './types.js';
+import { Step3TechStrategyDraft, TechnologyDecisionRecord } from './types.js';
 
 export interface SelectionAnalysis {
   draft: Step3TechStrategyDraft;
@@ -42,7 +42,7 @@ export class StackSelector {
   /**
    * Initializes evaluation and flags remaining stack categories requiring user confirmation.
    */
-  public static evaluate(userInput: string, step0Tldr: string, step1Tldr: string, step2Tldr: string): SelectionAnalysis {
+  public static evaluate(_userInput: string, step0Tldr: string, step1Tldr: string, step2Tldr: string): SelectionAnalysis {
     const draft = this.createEmptyDraft(step0Tldr, step1Tldr, step2Tldr);
     const unselectedCategories: string[] = [
       'Communication & Extension Protocol',

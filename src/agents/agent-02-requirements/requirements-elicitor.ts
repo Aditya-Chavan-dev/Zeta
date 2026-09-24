@@ -1,4 +1,4 @@
-import { Step1RequirementsDraft, FunctionalRequirement, NonFunctionalRequirement } from './types.js';
+import { Step1RequirementsDraft } from './types.js';
 
 export interface ElicitationAnalysis {
   draft: Step1RequirementsDraft;

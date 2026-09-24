@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step3TechStrategyDraft } from './types.js';
+import { ClarifyingQuestion, Step3TechStrategyDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 candidate options for a specific technology category.
    */
-  public static generateForCategory(category: string, draft: Step3TechStrategyDraft): ClarifyingQuestion {
+  public static generateForCategory(category: string, _draft: Step3TechStrategyDraft): ClarifyingQuestion {
     switch (category) {
       case 'Communication & Extension Protocol':
         return {

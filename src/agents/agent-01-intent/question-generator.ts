@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step0IntentDraft } from './types.js';
+import { ClarifyingQuestion, Step0IntentDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted clarifying question with Top 3 industry options for a specific missing domain.
    */
-  public static generateForDomain(domain: string, draft: Step0IntentDraft): ClarifyingQuestion {
+  public static generateForDomain(domain: string, _draft: Step0IntentDraft): ClarifyingQuestion {
     switch (domain) {
       case 'Problem Space':
         return {

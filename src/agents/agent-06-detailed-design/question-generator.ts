@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step5DetailedDesignDraft } from './types.js';
+import { ClarifyingQuestion, Step5DetailedDesignDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 design patterns for a specific technical design area.
    */
-  public static generateForArea(area: string, draft: Step5DetailedDesignDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step5DetailedDesignDraft): ClarifyingQuestion {
     switch (area) {
       case 'Input Validation & Sanitization Schema':
         return {

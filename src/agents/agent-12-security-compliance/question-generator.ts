@@ -1,10 +1,10 @@
-import { ClarifyingQuestion, OptionChoice, Step11SecurityComplianceDraft } from './types.js';
+import { ClarifyingQuestion, Step11SecurityComplianceDraft } from './types.js';
 
 export class QuestionGenerator {
   /**
    * Generates a targeted question with Top 3 options for a security/compliance area.
    */
-  public static generateForArea(area: string, draft: Step11SecurityComplianceDraft): ClarifyingQuestion {
+  public static generateForArea(area: string, _draft: Step11SecurityComplianceDraft): ClarifyingQuestion {
     switch (area) {
       case 'STRIDE Threat Mitigation & Residual Risk Tolerance':
         return {

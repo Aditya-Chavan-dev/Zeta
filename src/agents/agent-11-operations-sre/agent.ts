@@ -7,6 +7,7 @@ import { SreAuditor } from './sre-auditor.js';
 import { QuestionGenerator } from './question-generator.js';
 import { ArtifactCompiler } from './artifact-compiler.js';
 import { AgentResponse, Step10OperationsSreDraft } from './types.js';
+import { DriftInterceptor } from '../../core/drift/interceptor.js';
 
 export class Agent11OperationsSre {
   private workspaceRoot: string;
@@ -53,6 +54,17 @@ export class Agent11OperationsSre {
     // 3. Handle explicit Approval handshake
     if (userInput.trim().toLowerCase() === 'approve') {
       return this.lockAndCompleteStep();
+    }
+
+    // Drift check against agreed baselines
+    const drift = DriftInterceptor.evaluateWorkspace(this.workspaceRoot, userInput.trim());
+    if (drift.shouldIntercept) {
+      return {
+        step: 10,
+        message: drift.conversationalPrompt,
+        isLocked: false,
+        isReadyForSignoff: false
+      };
     }
 
     // 4. Process user input if answering an unresolved area

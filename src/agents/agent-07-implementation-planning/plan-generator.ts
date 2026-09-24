@@ -90,7 +90,7 @@ export class PlanGenerator {
   /**
    * Evaluates implementation plan and flags remaining decisions requiring user confirmation.
    */
-  public static evaluate(userInput: string, s0: string, s1: string, s2: string, s3: string, s4: string, s5: string): PlanningAnalysis {
+  public static evaluate(_userInput: string, s0: string, s1: string, s2: string, s3: string, s4: string, s5: string): PlanningAnalysis {
     const draft = this.createEmptyDraft(s0, s1, s2, s3, s4, s5);
     const unresolvedPlanningAreas: string[] = [
       'Delivery Sequencing Strategy',

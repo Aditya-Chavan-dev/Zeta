@@ -1,4 +1,4 @@
-import { Step2FeasibilityDraft, RiskItem, ConstraintItem, DependencyItem, FeasibilityDimensionScore } from './types.js';
+import { Step2FeasibilityDraft, ConstraintItem, DependencyItem, FeasibilityDimensionScore } from './types.js';
 
 export interface EvaluationResult {
   draft: Step2FeasibilityDraft;
@@ -41,7 +41,7 @@ export class FeasibilityEvaluator {
   /**
    * Evaluates requirements against risk vectors and identifies critical risks.
    */
-  public static evaluate(userInput: string, step0Tldr: string, step1Tldr: string): EvaluationResult {
+  public static evaluate(_userInput: string, step0Tldr: string, step1Tldr: string): EvaluationResult {
     const draft = this.createEmptyDraft(step0Tldr, step1Tldr);
 
     // Initial default baseline risk: State Corruption on Abrupt Termination
