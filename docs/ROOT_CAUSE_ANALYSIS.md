@@ -36,13 +36,17 @@ Antigravity IDE discovers and injects rules into the model's system prompt (`<us
      results.push({ file: geminiGlobalFile, action });
    }
    ```
-2. **Preserved Existing Configuration**:
-   The `safeMerge()` function preserves the user's existing global ADHD rules and cleanly appends the ZETA governance block within `<!-- ZETA_GOVERNANCE_START -->` and `<!-- ZETA_GOVERNANCE_END -->`.
-3. **Verified Deployment**:
-   Ran `npm run setup:global`. Verified that `C:\Users\autot\.gemini\GEMINI.md` contains both ADHD rules and ZETA governance rules.
+2. **Single-Command Global Setup (`bin/zeta.js setup`)**:
+   Added `zeta setup` / `npx zeta-architect setup` command so any user can install across all IDEs in one command without manual file editing.
+3. **Autonomous Project Adoption & Deactivation Protocol**:
+   - **Active by default**: Automatically adopts any new greenfield project and initiates Step 0 without asking.
+   - **Deactivation with confirmation**: Type `"Deactivate Zeta"` → requires explicit confirmation `"Yes"`.
+   - **When deactivated**: Asks ONCE on new project detection: *"🟢 A new project has been detected. Shall we activate ZETA for this project? (Yes/No)"*.
+4. **Verified Live Deployment**:
+   Ran `node ./bin/zeta.js setup`. Verified that `C:\Users\autot\.gemini\GEMINI.md`, `~/.claude/CLAUDE.md`, and `~/AGENTS.md` contain the updated governance protocol.
 
 ---
 
 ## Verification & Prevention
-- **Verification**: Node inspection confirms `~/.gemini/GEMINI.md` now has both `ADHD-Friendly` and `ZETA Greenfield Idea Intake Protocol`.
+- **Verification**: Node inspection confirms `~/.gemini/GEMINI.md` now has both `ADHD-Friendly` and `ZETA Greenfield Idea Intake Protocol` with auto-adoption and deactivation flow.
 - **Prevention**: In all future releases, global rule installation tests verify `~/.gemini/GEMINI.md` directly.
