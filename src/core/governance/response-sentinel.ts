@@ -1,4 +1,4 @@
-import { BuilderTranslator, STAGE_PLAIN_DESCRIPTIONS, STAGE_PREVIOUS_MILESTONES, STAGE_NEXT_OUTCOMES } from '../formatters/builder-translator.js';
+import { STAGE_PLAIN_DESCRIPTIONS, STAGE_PREVIOUS_MILESTONES, STAGE_NEXT_OUTCOMES } from '../formatters/builder-translator.js';
 
 export interface ValidationResult {
   isValid: boolean;

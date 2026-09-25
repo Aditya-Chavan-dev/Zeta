@@ -1,6 +1,11 @@
 node_modules/
 dist/
 .zeta/
+docs/
+faults/
+scratch/
+ROADMAP.md
+SSOT.md
 .test-*/
 *.log
 .DS_Store
