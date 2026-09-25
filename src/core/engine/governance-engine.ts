@@ -172,8 +172,9 @@ export class GovernanceEngine {
     }
     fs.writeFileSync(fullDocPath, compiled.fullDocument, 'utf8');
 
-    // Compute SHA256
-    const sha256 = crypto.createHash('sha256').update(compiled.fullDocument).digest('hex');
+    // Compute SHA256 with CRLF normalization
+    const normalizedDoc = compiled.fullDocument.replace(/\r\n/g, '\n');
+    const sha256 = crypto.createHash('sha256').update(normalizedDoc).digest('hex');
 
     // Lock step in store
     this.store.lockStep(

@@ -106,9 +106,13 @@ export class StateManager {
       } catch (err: any) {
         if ((err?.code === 'EPERM' || err?.code === 'EBUSY') && retries > 1) {
           retries--;
-          const start = Date.now();
-          while (Date.now() - start < 15) {}
-          continue;
+          try {
+            fs.copyFileSync(tmpPath, statePath);
+            fs.unlinkSync(tmpPath);
+            return;
+          } catch {
+            continue;
+          }
         }
         try {
           fs.copyFileSync(tmpPath, statePath);
@@ -181,7 +185,7 @@ export class StateManager {
     }
 
     state.stepSummaries[`step_${stepNumber}`] = summary;
-    state.stepStatus = 'LOCKED';
+    state.stepStatus = stepNumber === 14 ? 'COMPLETED' : 'LOCKED';
     state.uncommittedBuffer = {};
 
     this.save(workspaceRoot, state);
@@ -229,7 +233,8 @@ export class StateManager {
       }
       try {
         const content = fs.readFileSync(fullPath, 'utf8');
-        const actualHash = crypto.createHash('sha256').update(content).digest('hex');
+        const normalizedContent = content.replace(/\r\n/g, '\n');
+        const actualHash = crypto.createHash('sha256').update(normalizedContent).digest('hex');
         if (actualHash !== summary.artifactSha256) {
           violations.push(`Cryptographic tamper detected for ${stepKey} (${summary.artifactPath}): Expected ${summary.artifactSha256}, found ${actualHash}`);
         }

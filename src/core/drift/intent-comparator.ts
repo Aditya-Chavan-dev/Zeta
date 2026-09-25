@@ -155,10 +155,16 @@ export class IntentComparator {
 
     // Check 3: Requirements contradiction (negation of in-scope items)
     const negationPatterns = /\b(?:remove|delete|drop|eliminate|get rid of|no longer|stop using|dont need|don't need)\b/i;
-    if (negationPatterns.test(userInput)) {
-      // Check if the negated thing is something in the existing baseline
+    const negationMatch = userInput.match(negationPatterns);
+    if (negationMatch && negationMatch.index !== undefined) {
+      // Isolate the clause following the negation keyword up to boundary/punctuation
+      const afterNegation = userInput.slice(negationMatch.index);
+      const clause = afterNegation.split(/[,;.\n]|(?:\binstead\b|\bkeep\b|\brather than\b)/i)[0];
+      const negatedTerms = this.extractKeyTerms(clause);
+
+      // Check if the negated clause mentions something in the existing baseline
       const baselineTerms = this.extractKeyTerms(`${step0Tldr} ${step1Tldr}`);
-      const negatedOverlap = inputTerms.filter(t => baselineTerms.includes(t));
+      const negatedOverlap = negatedTerms.filter(t => baselineTerms.includes(t));
       if (negatedOverlap.length > 0) {
         divergedDomains.push('requirements');
         const negConfidence = Math.min(0.85, 0.6 + negatedOverlap.length * 0.1);

@@ -47,12 +47,13 @@ export class SqliteStore implements IStateStore {
         // Check if process is still alive (only on same OS)
         if (lockData?.pid && lockData.pid !== process.pid) {
           try {
-            process.kill(lockData.pid, 0); // throws if process does not exist
-            // Process exists and holds lock - allow read-only or throw contention
-            // For now, allow proceeding if busy_timeout can handle sqlite, but flag contention
-          } catch {
-            // Process dead - clean up stale lock
-            fs.unlinkSync(this.lockFilePath);
+            process.kill(lockData.pid, 0); // throws ESRCH if process does not exist
+          } catch (err: any) {
+            if (err?.code === 'ESRCH') {
+              // Process truly dead - clean up stale lock
+              try { fs.unlinkSync(this.lockFilePath); } catch {}
+            }
+            // If EPERM, process is alive under another permission context - retain lock
           }
         }
       } catch {
@@ -466,7 +467,8 @@ export class SqliteStore implements IStateStore {
 
         try {
           const content = fs.readFileSync(fullPath, 'utf8');
-          const hash = crypto.createHash('sha256').update(content).digest('hex');
+          const normalized = content.replace(/\r\n/g, '\n');
+          const hash = crypto.createHash('sha256').update(normalized).digest('hex');
           if (hash !== summary.artifactSha256) {
             violations.push(`Cryptographic digest mismatch for ${key} (${summary.artifactPath}): Expected ${summary.artifactSha256}, calculated ${hash}`);
           }
