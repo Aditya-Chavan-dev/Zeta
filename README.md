@@ -1,80 +1,92 @@
-# Autonomous Engineering Governance Plugin
+# Zeta
 
-> Zero-configuration autonomous engineering governance plugin for greenfield software projects across a 15-stage sequential lifecycle.
+> Turn your idea into working software, step by step.
 
-[![Tests](https://img.shields.io/badge/tests-88%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-146%20passing-brightgreen.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
----
-
-## What It Does
-
-The Autonomous Governance Plugin enforces a strict, disciplined 15-stage lifecycle from problem definition (Step 0) to retrospective (Step 14). It guarantees:
-1. **Zero State Loss**: Atomic per-turn persistence to `.zeta/state.json` with multi-iteration Windows lock retry.
-2. **Strict Sequential Gating**: Step $N$ cannot start until Steps $0$ through $N-1$ are cryptographically locked.
-3. **Explicit Human Handshake**: Agents never self-approve. They present options and require an explicit `"Approve"` handshake.
-4. **Top 3 Industry Options**: Eliminates open-ended decision paralysis by offering curated industry options with trade-offs.
-5. **Zero Cloud Egress**: 100% local persistence on developer machine; no remote daemons or servers required.
+Zeta is an AI assistant that takes you from a rough idea to a finished, working application. Instead of jumping straight into messy code, Zeta guides you through clear steps so nothing breaks, nothing gets missed, and you always stay in control.
 
 ---
 
-## 15-Stage Lifecycle
+## How It Works
 
-| Step | Stage | Target Document |
+1. **Clarify Your Idea**: Share your idea or problem in plain English. Zeta asks a few targeted questions to make sure the goals and boundaries are crystal clear.
+2. **Pick the Right Tools**: Zeta suggests the top 3 best ways to build it with honest pros and cons. You decide what fits best.
+3. **Build Step by Step**: Zeta plans, writes, and tests the code stage by stage.
+4. **You're in Control**: Nothing advances or locks in until you review it and say **"Approve"**.
+5. **Resume Anytime**: Everything is saved directly on your computer. You can close your editor and pick up right where you left off.
+
+---
+
+## What Makes Zeta Different
+
+* **Zero Buzzwords, Zero Confusion**: Plain English guidance without overwhelming technical jargon.
+* **No Decision Paralysis**: When a technical choice is needed, Zeta provides curated Top 3 options with clear trade-offs.
+* **Never Loses Progress**: Automatically saves your project state on disk after every turn.
+* **100% Local & Private**: No cloud servers or remote accounts required. Everything stays on your machine.
+* **Doesn't Hijack Normal Coding**: Zeta only runs when you ask it to build or manage a project. For everyday questions and debugging, your editor acts normally.
+
+---
+
+## The 15 Building Steps
+
+Zeta takes you through 15 organized steps from start to finish:
+
+| Step | Stage | What Happens |
 |:---:|---|---|
-| **0** | Problem Definition & Intent | `docs/PROJECT_INTENT.md` |
-| **1** | Requirements Gathering & Elicitation | `docs/REQUIREMENTS_SPECIFICATION.md` |
-| **2** | Feasibility, Constraints & Risk | `docs/FEASIBILITY_AND_RISK_REPORT.md` |
-| **3** | Technology Strategy & Tech-Stack Selection | `docs/TECH_STACK_AND_STRATEGY.md` |
-| **4** | System Architecture & Solution Design | `docs/SYSTEM_ARCHITECTURE_BLUEPRINT.md` |
-| **5** | Detailed Technical Design & Engineering Design | `docs/DETAILED_TECHNICAL_DESIGN.md` |
-| **6** | Implementation Planning & Work Breakdown | `docs/IMPLEMENTATION_PLAN_AND_WBS.md` |
-| **7** | Implementation & Software Construction | `docs/IMPLEMENTED_RELEASE_CANDIDATE.md` |
-| **8** | Verification, Validation & QA | `docs/VERIFICATION_AND_QA_PACKAGE.md` |
-| **9** | Production Readiness & Release | `docs/PRODUCTION_READINESS_AND_DEPLOYMENT.md` |
-| **10** | Operations, Maintenance & SRE | `docs/OPERATIONS_MAINTENANCE_AND_SRE.md` |
-| **11** | Security, Privacy & Compliance | `docs/SECURITY_PRIVACY_AND_COMPLIANCE.md` |
-| **12** | Governance, Lifecycle & Deprecation Policy | `docs/GOVERNANCE_LIFECYCLE_AND_DEPRECATION.md` |
-| **13** | Knowledge Transfer & Documentation | `docs/KNOWLEDGE_TRANSFER_AND_DOCUMENTATION.md` |
-| **14** | Project Retrospective & Continuous Improvement | `docs/PROJECT_RETROSPECTIVE_AND_IMPROVEMENT.md` |
+| **0** | **Idea & Goals** | Define what you are building and why. |
+| **1** | **Features & Scope** | List must-have features vs what to leave out. |
+| **2** | **Risks & Feasibility** | Spot potential traps early before writing code. |
+| **3** | **Tech Stack** | Choose the best languages, databases, and libraries. |
+| **4** | **System Architecture** | Map out how the parts connect together. |
+| **5** | **Detailed Design** | Design exact data structures and component models. |
+| **6** | **Project Plan** | Break the project down into bite-sized tasks. |
+| **7** | **Coding & Building** | Write clean, executable code step by step. |
+| **8** | **Testing & QA** | Test every feature to make sure it actually works. |
+| **9** | **Launch Readiness** | Prepare the app so it's ready to run and ship. |
+| **10** | **Maintenance & Reliability** | Plan how to handle crashes and keep it running smoothly. |
+| **11** | **Security & Privacy** | Protect data and lock down common vulnerabilities. |
+| **12** | **Project Rules & Lifecycle** | Set clear rules for updates and future changes. |
+| **13** | **Documentation & Setup Guide** | Create easy guides so anyone can understand and run it. |
+| **14** | **Wrap-Up & Review** | Review lessons learned and prepare for future evolution. |
 
 ---
 
-## Installation & Usage
+## Quick Start
 
-### Option 1: Run via npx (Zero Install)
-Run directly in any project folder:
-```bash
-npx https://github.com/your-username/zeta-architect
-# or once published to npm:
-npx zeta
-```
+### Installation
 
-### Option 2: Clone & Run
+Clone the repository and install dependencies:
+
 ```bash
-git clone https://github.com/your-username/zeta-architect.git
-cd zeta-architect
+git clone https://github.com/Aditya-Chavan-dev/Zeta.git
+cd Zeta
 npm install
 npm run build
+```
+
+### Run Tests
+
+Verify all 146 unit tests pass:
+
+```bash
 npm test
 ```
 
-### Option 3: Antigravity / Gemini IDE In-Chat Skill
-Copy the `.agents/` folder into your repository root:
+### Install Global IDE Rules
+
+To enable Zeta inside Antigravity IDE, Gemini, or Claude Code:
+
 ```bash
-cp -r .agents/ /path/to/your-repo/.agents/
+npm run setup:global
 ```
-In chat, activate it by typing:
-> `/zeta` or `start project`
+
+In your editor chat, simply type:
+> `/zeta` or `"Start project"`
 
 ---
 
-## Testing
-
-Run the full test suite (88 tests across 31 suites):
-```bash
-npm test
-```
-
 ## License
+
 MIT

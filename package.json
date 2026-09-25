@@ -1,7 +1,7 @@
 {
   "name": "zeta-architect",
   "version": "1.1.0",
-  "description": "ZETA: Zero-to-End Technical Architect — Autonomous engineering governance for greenfield software",
+  "description": "Zeta: Turn your idea into working software, step by step.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
