@@ -5,7 +5,6 @@ import path from 'path';
 import { StateManager } from '../dist/core/state/state-manager.js';
 import { ResumeSentinel } from '../dist/core/state/resume-sentinel.js';
 import { InitHook } from '../dist/core/bootstrap/init-hook.js';
-import { CrashLogger } from '../dist/core/logging/crash-logger.js';
 import { Agent01Intent } from '../dist/agents/agent-01-intent/agent.js';
 import { Agent02Requirements } from '../dist/agents/agent-02-requirements/agent.js';
 import { Agent03Feasibility } from '../dist/agents/agent-03-feasibility/agent.js';
@@ -87,7 +86,6 @@ async function main() {
     console.log(`\n\x1b[33m>>> Step ${currentStep} Active: ${ResumeSentinel.getStepName(currentStep)} <<<\x1b[0m\n`);
 
     let isStepComplete = false;
-    let turnCount = 0;
 
     while (!isStepComplete) {
       const userInput = await prompt(`\x1b[1m[User (Step ${currentStep})] > \x1b[0m`);

@@ -79,15 +79,11 @@ export class Agent12SecurityCompliance {
       if (this.draft.unresolvedAreas.length > 0) {
         const nextArea = this.draft.unresolvedAreas[0];
         const question = QuestionGenerator.generateForArea(nextArea, this.draft);
-        const state = StateManager.load(this.workspaceRoot);
-        const tone = state?.tone || 'builder';
-
-        const message = BuilderTranslator.formatQuestion({
+        const message = BuilderTranslator.formatStoryTurn({
           stepNumber: 11,
           category: question.category,
           question: question.question,
-          top3Options: question.top3Options,
-          tone
+          top3Options: question.top3Options
         });
 
         return {

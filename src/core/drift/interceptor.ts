@@ -6,6 +6,7 @@
  */
 
 import * as fs from 'fs';
+import { StateManager } from '../state/state-manager.js';
 import { IntentComparator, DriftSignal } from './intent-comparator.js';
 
 export interface DriftInterception {
@@ -98,18 +99,8 @@ export class DriftInterceptor {
     confidenceThreshold: number = DriftInterceptor.DEFAULT_THRESHOLD
   ): DriftInterception {
     try {
-      const statePath = `${workspaceRoot}/.zeta/state.json`;
-      if (!fs.existsSync(statePath)) {
-        return {
-          shouldIntercept: false,
-          conversationalPrompt: '',
-          driftSignal: { isDrift: false, confidence: 0, divergedDomains: [], explanation: '' }
-        };
-      }
-
-      const raw = fs.readFileSync(statePath, 'utf8');
-      const state = JSON.parse(raw);
-      if (!state.lockedSteps || !state.lockedSteps.includes(0)) {
+      const state = StateManager.load(workspaceRoot);
+      if (!state || !state.lockedSteps || !state.lockedSteps.includes(0)) {
         return {
           shouldIntercept: false,
           conversationalPrompt: '',

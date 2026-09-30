@@ -112,3 +112,12 @@ export const AgentTurnResultSchema = z.object({
 export type AgentTurnResult<T = unknown> = z.infer<typeof AgentTurnResultSchema> & {
   activeDraft?: T;
 };
+
+export type StepNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
+
+export interface ResumeAssessment {
+  state: SessionState;
+  isInterrupted: boolean;
+  resumptionGreeting: string;
+  integrityViolations?: string[];
+}

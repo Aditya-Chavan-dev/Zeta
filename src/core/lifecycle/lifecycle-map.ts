@@ -3,6 +3,8 @@
  * Authoritative Single Source of Truth for stage transitions, primary artifacts, and prerequisites.
  */
 
+import { StateManager } from '../state/state-manager.js';
+
 export interface LifecycleStageDefinition {
   readonly stage: number; // 0 to 14
   readonly agentId: string; // "agent-01" to "agent-15"
@@ -167,4 +169,51 @@ export class LifecycleRegistry {
   public static getPrerequisiteStages(stage: number): number[] {
     return Array.from({ length: stage }, (_, i) => i);
   }
+
+  public static verifyStagePreconditions(workspaceRoot: string, stage: number): {
+    isValid: boolean;
+    stepSummaries: Record<string, string>;
+    errorMessage?: string;
+  } {
+    const state = StateManager.load(workspaceRoot);
+    if (!state) {
+      return {
+        isValid: false,
+        stepSummaries: {},
+        errorMessage: 'Session state does not exist. Lifecycle must start with Step 0.'
+      };
+    }
+
+    const prerequisites = this.getPrerequisiteStages(stage);
+    for (const prereq of prerequisites) {
+      if (!state.lockedSteps.includes(prereq)) {
+        const stageDef = this.getStage(prereq);
+        return {
+          isValid: false,
+          stepSummaries: {},
+          errorMessage: `Precondition Failed: Step ${prereq} (${stageDef.agentName}) is not LOCKED in .zeta/state.json.`
+        };
+      }
+
+      const summary = state.stepSummaries[`step_${prereq}`];
+      if (!summary || !summary.summary) {
+        return {
+          isValid: false,
+          stepSummaries: {},
+          errorMessage: `Step ${prereq} summary is missing from session state.`
+        };
+      }
+    }
+
+    const summaries: Record<string, string> = {};
+    for (const prereq of prerequisites) {
+      summaries[`step_${prereq}`] = state.stepSummaries[`step_${prereq}`].summary;
+    }
+
+    return {
+      isValid: true,
+      stepSummaries: summaries
+    };
+  }
 }
+

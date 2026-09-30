@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { StateManager } from '../state/state-manager.js';
-import { SessionState } from '../state/types.js';
+import { SessionState } from '../state/schema.js';
 import { ResumeSentinel } from '../state/resume-sentinel.js';
 
 export interface InitHookResult {

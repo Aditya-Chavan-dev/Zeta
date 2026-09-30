@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
 import { StateManager } from '../../core/state/state-manager.js';
-import { StepSummary } from '../../core/state/types.js';
-import { ClarifyingQuestion, Agent01State } from './types.js';
+import { StepSummary } from '../../core/state/schema.js';
+import { ClarifyingQuestion, Agent01State, Step0IntentDraft } from './types.js';
 import { IntentAnalyzer } from './intent-analyzer.js';
 import { QuestionGenerator } from './question-generator.js';
 import { ArtifactCompiler } from './artifact-compiler.js';
@@ -30,8 +30,8 @@ export class Agent01Intent {
     if (existing?.activeStep === 0 && existing?.uncommittedBuffer?.activeDraft) {
       this.agentState = {
         rawBrainDump: existing.uncommittedBuffer.lastUserMessage || '',
-        draft: existing.uncommittedBuffer.activeDraft,
-        unansweredQuestions: existing.uncommittedBuffer.unresolvedQuestions || [],
+        draft: existing.uncommittedBuffer.activeDraft as Step0IntentDraft,
+        unansweredQuestions: (existing.uncommittedBuffer.unresolvedQuestions as ClarifyingQuestion[]) || [],
         answeredQuestions: {},
         isComplete: (existing.uncommittedBuffer.unresolvedQuestions?.length || 0) === 0,
         completionPercentage: (existing.uncommittedBuffer.unresolvedQuestions?.length || 0) === 0 ? 100 : 75
@@ -251,8 +251,5 @@ export class Agent01Intent {
       q.top3Options.map((opt, i) => `${i + 1}. **${opt.title}**${opt.recommended ? ' *(Recommended)*' : ''}\n   • Details: ${opt.description}\n   • Trade-off: ${opt.tradeOffs}`).join('\n\n') +
       `\n\nReply with your preferred number (1, 2, or 3) or provide your custom choice:`;
   }
-
-  public getState(): Agent01State {
-    return this.agentState;
-  }
 }
+

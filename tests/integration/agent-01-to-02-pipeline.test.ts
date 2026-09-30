@@ -70,7 +70,7 @@ describe('End-to-End Pipeline: Agent 01 -> Agent 02 Handshake & Gating', () => {
       'Feature: Per-turn atomic persistence and interactive question generator.'
     );
     assert.equal(a2Response.error, undefined, 'Agent 2 must run without precondition errors');
-    assert.ok(agent2.getState().step0Tldr.includes('TL;DR PROJECT INTENT'), 'Agent 2 must have Step 0 TL;DR in state');
+    assert.ok(stateAfterStep0.stepSummaries['step_0'].summary.includes('TL;DR PROJECT INTENT'), 'State must have Step 0 TL;DR');
 
     // Answer all Agent 2 clarifying questions
     let a2Iterations = 0;

@@ -3,10 +3,9 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import { BuilderTranslator, DEFAULT_STAGE_TERMS } from '../../../src/core/formatters/builder-translator.js';
+import { BuilderTranslator, STAGE_DEFAULT_TERMS } from '../../../src/core/formatters/builder-translator.js';
 import { HeadroomCompressor } from '../../../src/core/headroom/headroom-compressor.js';
 import { ResponseSentinel } from '../../../src/core/governance/response-sentinel.js';
-import { GovernanceEngine } from '../../../src/core/engine/governance-engine.js';
 import { CANONICAL_LIFECYCLE } from '../../../src/core/lifecycle/lifecycle-map.js';
 
 describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom', () => {
@@ -109,10 +108,10 @@ describe('Skill Permanence: ADHD, Zero-Jargon Storytelling, Ponytail & Headroom'
 
     test('All 15 stages have defined builder terms', () => {
       for (let i = 0; i <= 14; i++) {
-        assert.ok(DEFAULT_STAGE_TERMS[i], `Missing stage term for stage ${i}`);
-        assert.ok(DEFAULT_STAGE_TERMS[i].term.length > 0);
-        assert.ok(DEFAULT_STAGE_TERMS[i].whatItIs.length > 0);
-        assert.ok(DEFAULT_STAGE_TERMS[i].whyEnterpriseUsesIt.length > 0);
+        assert.ok(STAGE_DEFAULT_TERMS[i], `Missing stage term for stage ${i}`);
+        assert.ok(STAGE_DEFAULT_TERMS[i].term.length > 0);
+        assert.ok(STAGE_DEFAULT_TERMS[i].whatItIs.length > 0);
+        assert.ok(STAGE_DEFAULT_TERMS[i].whyEnterpriseUsesIt.length > 0);
       }
     });
   });

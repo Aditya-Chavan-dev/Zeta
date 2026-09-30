@@ -131,14 +131,14 @@ export function generateArchitectureSvg(_draft?: Step4ArchitectureDraft): string
       <text x="120" y="110" fill="#64748b" font-size="10" text-anchor="middle">Zero-Loss Interruption Sentinel</text>
     </g>
 
-    <!-- Datastore 2: SQLite WAL Store -->
+    <!-- Datastore 2: Headroom Context Cache -->
     <g transform="translate(380, 410)">
       <path d="M 0 15 C 0 5, 240 5, 240 15 L 240 120 C 240 130, 0 130, 0 120 Z" fill="#1e293b" stroke="#818cf8" stroke-width="1.5" filter="url(#shadow)"/>
       <ellipse cx="120" cy="15" rx="120" ry="12" fill="#0f172a" stroke="#818cf8" stroke-width="1.5"/>
-      <text x="120" y="55" fill="#f8fafc" font-size="14" font-weight="700" text-anchor="middle">SQLite WAL Database</text>
-      <text x="120" y="75" fill="#a5b4fc" font-size="11" text-anchor="middle">SqliteStore (.zeta/zeta.db)</text>
-      <text x="120" y="95" fill="#94a3b8" font-size="10" text-anchor="middle">Transactional Revision History</text>
-      <text x="120" y="110" fill="#64748b" font-size="10" text-anchor="middle">Full Audit Trails &amp; Snapshots</text>
+      <text x="120" y="55" fill="#f8fafc" font-size="14" font-weight="700" text-anchor="middle">Headroom Context Cache</text>
+      <text x="120" y="75" fill="#a5b4fc" font-size="11" text-anchor="middle">.zeta/cache/headroom/</text>
+      <text x="120" y="95" fill="#94a3b8" font-size="10" text-anchor="middle">Lossless Context Compression</text>
+      <text x="120" y="110" fill="#64748b" font-size="10" text-anchor="middle">Local SHA-256 Token Storage</text>
     </g>
 
     <!-- Datastore 3: Canonical Docs -->
@@ -175,7 +175,7 @@ export function generateArchitectureSvg(_draft?: Step4ArchitectureDraft): string
   <!-- Governance down to StateStore -->
   <path d="M 435 289 L 435 330 L 180 330 L 180 408" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrow-cyan)" />
 
-  <!-- Governance down to SQLite -->
+  <!-- Agent Pool down to Headroom Cache -->
   <line x1="500" y1="289" x2="500" y2="408" stroke="#818cf8" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrow-indigo)" />
 
   <!-- Agent Pool down to Docs -->

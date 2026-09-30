@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
 import { StateManager } from '../../core/state/state-manager.js';
-import { StepSummary } from '../../core/state/types.js';
+import { StepSummary } from '../../core/state/schema.js';
 import { ClarifyingQuestion, Agent04State } from './types.js';
 import { PreconditionVerifier } from './precondition-verifier.js';
 import { StackSelector } from './stack-selector.js';
@@ -225,8 +225,5 @@ export class Agent04TechStrategy {
       q.top3Options.map((opt, i) => `${i + 1}. **${opt.title}**${opt.recommended ? ' *(Recommended)*' : ''}\n   • Characteristics: ${opt.description}\n   • Trade-off: ${opt.tradeOffs}`).join('\n\n') +
       `\n\nReply with your preferred number (1, 2, or 3) or provide your custom choice:`;
   }
-
-  public getState(): Agent04State {
-    return this.agentState;
-  }
 }
+

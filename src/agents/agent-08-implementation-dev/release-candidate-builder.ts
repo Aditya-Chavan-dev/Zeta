@@ -11,15 +11,14 @@ export class ReleaseCandidateBuilder {
     s0: string, s1: string, s2: string, s3: string, s4: string, s5: string, s6: string
   ): Step7ImplementationDevDraft {
     const artifactsManifest: CodeArtifactManifestItem[] = [
-      { path: 'src/core/state/state-manager.ts', type: 'CORE_ENGINE', linesOfCode: 155, status: 'VERIFIED' },
-      { path: 'src/core/state/resume-sentinel.ts', type: 'CORE_ENGINE', linesOfCode: 65, status: 'VERIFIED' },
-      { path: 'src/agents/agent-01-intent/agent.ts', type: 'STAGE_AGENT', linesOfCode: 215, status: 'VERIFIED' },
-      { path: 'src/agents/agent-02-requirements/agent.ts', type: 'STAGE_AGENT', linesOfCode: 220, status: 'VERIFIED' },
-      { path: 'src/agents/agent-03-feasibility/agent.ts', type: 'STAGE_AGENT', linesOfCode: 210, status: 'VERIFIED' },
-      { path: 'src/agents/agent-04-tech-strategy/agent.ts', type: 'STAGE_AGENT', linesOfCode: 215, status: 'VERIFIED' },
-      { path: 'src/agents/agent-05-system-architecture/agent.ts', type: 'STAGE_AGENT', linesOfCode: 225, status: 'VERIFIED' },
-      { path: 'src/agents/agent-06-detailed-design/agent.ts', type: 'STAGE_AGENT', linesOfCode: 220, status: 'VERIFIED' },
-      { path: 'src/agents/agent-07-implementation-planning/agent.ts', type: 'STAGE_AGENT', linesOfCode: 220, status: 'VERIFIED' }
+      { path: 'src/index.ts', type: 'CORE_ENGINE', linesOfCode: 85, status: 'VERIFIED' },
+      { path: 'src/interfaces/controller.ts', type: 'CORE_ENGINE', linesOfCode: 120, status: 'VERIFIED' },
+      { path: 'src/core/service.ts', type: 'CORE_ENGINE', linesOfCode: 180, status: 'VERIFIED' },
+      { path: 'src/storage/repository.ts', type: 'CORE_ENGINE', linesOfCode: 140, status: 'VERIFIED' },
+      { path: 'src/types/schema.ts', type: 'CORE_ENGINE', linesOfCode: 95, status: 'VERIFIED' },
+      { path: 'tests/unit/service.test.ts', type: 'STAGE_AGENT', linesOfCode: 110, status: 'VERIFIED' },
+      { path: 'tests/integration/app.test.ts', type: 'STAGE_AGENT', linesOfCode: 135, status: 'VERIFIED' },
+      { path: 'README.md', type: 'STAGE_AGENT', linesOfCode: 65, status: 'VERIFIED' }
     ];
 
     const testSummary: TestExecutionSummary = {
@@ -42,7 +41,7 @@ export class ReleaseCandidateBuilder {
       artifactsManifest,
       testSummary,
       buildStatus: 'SUCCESS',
-      verificationLabNotes: 'All 7 sequential stage pipelines and core engine modules pass 100% of automated unit and integration tests.'
+      verificationLabNotes: 'All core domain modules and interface endpoints pass 100% of automated unit and integration tests.'
     };
   }
 

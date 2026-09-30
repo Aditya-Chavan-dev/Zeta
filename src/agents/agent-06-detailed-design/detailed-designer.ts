@@ -10,25 +10,31 @@ export class DetailedDesigner {
   public static createEmptyDraft(s0: string, s1: string, s2: string, s3: string, s4: string): Step5DetailedDesignDraft {
     const modules: ModuleInterfaceSpec[] = [
       {
-        moduleName: 'StateManager',
-        filePath: 'src/core/state/state-manager.ts',
+        moduleName: 'AppController',
+        filePath: 'src/interfaces/controller.ts',
         publicMethods: [
-          { name: 'initialize', signature: '(workspaceRoot: string, projectId?: string): SessionState', description: 'Creates fresh .zeta/state.json' },
-          { name: 'load', signature: '(workspaceRoot: string): SessionState | null', description: 'Loads session state from disk with fallback to tmp backup' },
-          { name: 'save', signature: '(workspaceRoot: string, state: SessionState): void', description: 'Atomic write via temporary file + rename' },
-          { name: 'recordTurn', signature: '(workspaceRoot: string, userMessage: string, pendingDraftSummary?: string): SessionState', description: 'Records user/agent message and updates uncommitted buffer' },
-          { name: 'lockStep', signature: '(workspaceRoot: string, stepNumber: number, summary: StepSummary): SessionState', description: 'Locks completed step, stores SHA-256 and clears uncommitted buffer' },
-          { name: 'advanceStep', signature: '(workspaceRoot: string, nextStep: number): SessionState', description: 'Advances activeStep and sets status to IN_PROGRESS' }
+          { name: 'handleRequest', signature: '(request: RequestContext): Promise<ResponsePayload>', description: 'Dispatches incoming user commands and manages session lifecycle' },
+          { name: 'validateInput', signature: '(input: unknown): ValidationResult', description: 'Enforces input schema sanitization before domain execution' }
         ],
-        dependencies: ['node:fs', 'node:path', 'node:crypto']
+        dependencies: ['src/core/service.ts']
       },
       {
-        moduleName: 'ResumeSentinel',
-        filePath: 'src/core/state/resume-sentinel.ts',
+        moduleName: 'DomainService',
+        filePath: 'src/core/service.ts',
         publicMethods: [
-          { name: 'assessOnStartup', signature: '(workspaceRoot: string): ResumeAssessment', description: 'Inspects uncommittedBuffer to detect crash or interruption' }
+          { name: 'executeAction', signature: '(context: ActionContext): Promise<ActionResult>', description: 'Executes core domain business logic and workflow state transitions' },
+          { name: 'checkPreconditions', signature: '(state: CurrentState): PreconditionReport', description: 'Verifies domain invariants before state-modifying actions' }
         ],
-        dependencies: ['src/core/state/state-manager.ts']
+        dependencies: ['src/storage/repository.ts']
+      },
+      {
+        moduleName: 'DataRepository',
+        filePath: 'src/storage/repository.ts',
+        publicMethods: [
+          { name: 'save', signature: '(entity: DomainEntity): Promise<void>', description: 'Persists entity state atomically to local datastore' },
+          { name: 'load', signature: '(entityId: string): Promise<DomainEntity | null>', description: 'Retrieves entity state with fallback and integrity checks' }
+        ],
+        dependencies: ['node:fs', 'node:path']
       }
     ];
 

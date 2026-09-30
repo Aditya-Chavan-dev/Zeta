@@ -4,48 +4,12 @@ import fc from 'fast-check';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import { GovernanceEngine } from '../../src/core/engine/governance-engine.js';
 import { IntentComparator } from '../../src/core/drift/intent-comparator.js';
 import { ResponseSentinel } from '../../src/core/governance/response-sentinel.js';
 import { HeadroomCompressor } from '../../src/core/headroom/headroom-compressor.js';
 import { StateManager } from '../../src/core/state/state-manager.js';
-import { SqliteStore } from '../../src/core/state/sqlite-store.js';
 
 describe('Fast-Check Fuzzing Suite: Resilience Under Adversarial Inputs', () => {
-  describe('1. GovernanceEngine Input Parsers Fuzzing', () => {
-    it('isApprovalIntent never crashes and only matches exact case-insensitive "approve"', () => {
-      fc.assert(
-        fc.property(fc.string(), (input) => {
-          const result = GovernanceEngine.isApprovalIntent(input);
-          assert.strictEqual(typeof result, 'boolean');
-          if (result) {
-            assert.strictEqual(input.trim().toLowerCase(), 'approve');
-          }
-        }),
-        { numRuns: 1000 }
-      );
-    });
-
-    it('isNegativeResponse never crashes on arbitrary unicode, control characters, or huge strings', () => {
-      fc.assert(
-        fc.property(fc.string({ maxLength: 5000 }), (input) => {
-          const result = GovernanceEngine.isNegativeResponse(input);
-          assert.strictEqual(typeof result, 'boolean');
-        }),
-        { numRuns: 1000 }
-      );
-    });
-
-    it('isExplicitQuitIntent never crashes on adversarial inputs', () => {
-      fc.assert(
-        fc.property(fc.string({ maxLength: 5000 }), (input) => {
-          const result = GovernanceEngine.isExplicitQuitIntent(input);
-          assert.strictEqual(typeof result, 'boolean');
-        }),
-        { numRuns: 1000 }
-      );
-    });
-  });
 
   describe('2. IntentComparator Fuzzing & ReDoS Defense', () => {
     it('evaluates arbitrary adversarial user input without regex hanging or crashing', () => {
@@ -166,54 +130,5 @@ describe('Fast-Check Fuzzing Suite: Resilience Under Adversarial Inputs', () => 
       }
     });
   });
-
-  describe('6. SqliteStore Adversarial & SQL Injection Fuzzing', () => {
-    it('handles arbitrary SQL injection, null bytes, and malicious payloads safely', async () => {
-      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'zeta-fuzz-sqlite-'));
-      let store: SqliteStore | null = null;
-
-      try {
-        store = new SqliteStore(tempDir);
-
-        // Generator for malicious SQL patterns & random strings
-        const sqlInjectionArb = fc.oneof(
-          fc.constant("'; DROP TABLE session_state; --"),
-          fc.constant("' OR '1'='1"),
-          fc.constant('UNION SELECT * FROM sqlite_master; --'),
-          fc.constant('"\0; DELETE FROM audit_log;'),
-          fc.string({ maxLength: 2000 })
-        );
-
-        fc.assert(
-          fc.property(sqlInjectionArb, (maliciousInput) => {
-            // Record turn with adversarial payload
-            const updated = store!.recordTurn(maliciousInput, 'Fuzzing turn description');
-            assert.ok(updated);
-            assert.strictEqual(updated.uncommittedBuffer.lastUserMessage, maliciousInput);
-
-            // Verify database integrity has not been compromised
-            const integrity = store!.verifyIntegrity();
-            assert.ok(integrity.valid, 'Database integrity must remain valid');
-          }),
-          { numRuns: 100 }
-        );
-      } finally {
-        if (store) {
-          try { store.close(); } catch {}
-        }
-        // Wait briefly for fire-and-forget backups to complete before unlinking directory
-        await new Promise(r => setTimeout(r, 200));
-        let attempts = 5;
-        while (attempts > 0) {
-          try {
-            fs.rmSync(tempDir, { recursive: true, force: true });
-            break;
-          } catch {
-            attempts--;
-            await new Promise(r => setTimeout(r, 100));
-          }
-        }
-      }
-    });
-  });
 });
+

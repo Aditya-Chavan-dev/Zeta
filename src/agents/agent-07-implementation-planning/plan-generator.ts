@@ -11,48 +11,48 @@ export class PlanGenerator {
     const tasks: WbsTask[] = [
       {
         id: 'TASK-01',
-        title: 'Initialize State Manager & Atomic Persistence',
-        phase: 'Phase 1: Core Foundation',
+        title: 'Project Scaffolding & Core Foundation Setup',
+        phase: 'Phase 1: Foundation',
         estimatedHours: 4,
         dependencies: [],
-        definitionOfReady: 'Approved detailed design in Step 5 with StateManager method signatures.',
-        definitionOfDone: 'src/core/state/state-manager.ts passing atomic write tests with temp rename.'
+        definitionOfReady: 'Approved detailed technical design specifications.',
+        definitionOfDone: 'Project repository initialized with build configuration, linter, and base types.'
       },
       {
         id: 'TASK-02',
-        title: 'Implement Resume Sentinel & Crash Recovery',
-        phase: 'Phase 1: Core Foundation',
-        estimatedHours: 3,
+        title: 'Implement Data Layer & Storage Repositories',
+        phase: 'Phase 2: Persistence',
+        estimatedHours: 6,
         dependencies: ['TASK-01'],
-        definitionOfReady: 'StateManager load/save implemented and tested.',
-        definitionOfDone: 'ResumeSentinel correctly detects interrupted turns and builds recovery greeting.'
+        definitionOfReady: 'Database schema and repository method signatures defined.',
+        definitionOfDone: 'Data repositories passing atomic persistence and load/save unit tests.'
       },
       {
         id: 'TASK-03',
-        title: 'Implement Step Gating & Precondition Verification Engine',
-        phase: 'Phase 2: Governance Engine',
-        estimatedHours: 5,
-        dependencies: ['TASK-01'],
-        definitionOfReady: 'Precondition verifier contracts and error codes specified.',
-        definitionOfDone: 'Stages physically halt if preceding steps are not in LOCKED state.'
+        title: 'Implement Core Domain Logic & Business Rules',
+        phase: 'Phase 3: Domain Services',
+        estimatedHours: 10,
+        dependencies: ['TASK-02'],
+        definitionOfReady: 'Precondition verifier contracts and business rules documented.',
+        definitionOfDone: 'Domain services execute business logic and pass all domain test cases.'
       },
       {
         id: 'TASK-04',
-        title: 'Build Stage Agents (Step 0 to 14 Pipelines)',
-        phase: 'Phase 3: Agent Orchestration',
-        estimatedHours: 12,
+        title: 'Build Application Interfaces & User Controllers',
+        phase: 'Phase 4: Client & API Interfaces',
+        estimatedHours: 8,
         dependencies: ['TASK-03'],
-        definitionOfReady: 'All 15 agent markdown specifications approved in docs/.',
-        definitionOfDone: 'All 15 agents implemented in src/agents/ with Top 3 option generators.'
+        definitionOfReady: 'API/CLI input schemas and validation rules approved.',
+        definitionOfDone: 'Controllers handle user requests with input validation and clean error responses.'
       },
       {
         id: 'TASK-05',
-        title: 'End-to-End Pipeline Verification & Multi-Agent Integration Tests',
-        phase: 'Phase 4: QA & Packaging',
+        title: 'End-to-End System Integration & QA Test Suite',
+        phase: 'Phase 5: Verification & Packaging',
         estimatedHours: 6,
         dependencies: ['TASK-04'],
-        definitionOfReady: 'All individual agent unit test suites passing.',
-        definitionOfDone: 'Seamless multi-stage pipeline integration tests passing with zero state loss.'
+        definitionOfReady: 'All core domain services and interface controllers implemented.',
+        definitionOfDone: 'End-to-end integration tests pass 100% with regression test suite.'
       }
     ];
 

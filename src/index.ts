@@ -1,32 +1,18 @@
 // Core Engine
 export { StateManager } from './core/state/state-manager.js';
 export { ResumeSentinel } from './core/state/resume-sentinel.js';
-export { GovernanceEngine } from './core/engine/governance-engine.js';
-export { SqliteStore } from './core/state/sqlite-store.js';
 export { HeadroomCompressor } from './core/headroom/headroom-compressor.js';
 export { LifecycleRegistry, CANONICAL_LIFECYCLE } from './core/lifecycle/lifecycle-map.js';
 export { ResponseSentinel } from './core/governance/response-sentinel.js';
 export { BuilderTranslator } from './core/formatters/builder-translator.js';
-export { JsonToSqliteMigrator } from './core/migration/json-migrator.js';
 export { CrashLogger } from './core/logging/crash-logger.js';
-export { BackupRing } from './core/state/backup-ring.js';
 export { IntentComparator } from './core/drift/intent-comparator.js';
 export { DriftInterceptor } from './core/drift/interceptor.js';
 export { ImpactCascadeAnalyzer } from './core/drift/impact-cascade.js';
 export { BaselineUpdater } from './core/drift/baseline-updater.js';
 export { InitHook } from './core/bootstrap/init-hook.js';
 
-// Legacy State Types (from types.ts)
-export type {
-  SessionState,
-  StepSummary,
-  StepStatus,
-  StepNumber,
-  UncommittedBuffer,
-  ResumeAssessment
-} from './core/state/types.js';
-
-// Zod Schemas & SQL-layer Types (from schema.ts)
+// Zod Schemas & State Types (from schema.ts)
 export {
   SessionStateSchema,
   StepSummarySchema,
@@ -38,6 +24,12 @@ export {
   ExitCode
 } from './core/state/schema.js';
 export type {
+  SessionState,
+  StepSummary,
+  StepStatus,
+  StepNumber,
+  UncommittedBuffer,
+  ResumeAssessment,
   ArtifactSnapshot,
   AuditEvent,
   AgentTurnResult
@@ -45,9 +37,6 @@ export type {
 
 // Lifecycle Types
 export type { LifecycleStageDefinition } from './core/lifecycle/lifecycle-map.js';
-
-// Store Interface
-export type { IStateStore, IntegrityCheckResult } from './core/state/state-store.interface.js';
 
 // 15 Sequential Agents
 export { Agent01Intent } from './agents/agent-01-intent/index.js';
@@ -66,19 +55,3 @@ export { Agent13GovernanceLifecycle } from './agents/agent-13-governance-lifecyc
 export { Agent14KnowledgeTransfer } from './agents/agent-14-knowledge-transfer/index.js';
 export { Agent15Retrospective } from './agents/agent-15-retrospective/index.js';
 
-// Namespaced Agent Modules (for advanced sub-component access)
-export * as Agent01 from './agents/agent-01-intent/index.js';
-export * as Agent02 from './agents/agent-02-requirements/index.js';
-export * as Agent03 from './agents/agent-03-feasibility/index.js';
-export * as Agent04 from './agents/agent-04-tech-strategy/index.js';
-export * as Agent05 from './agents/agent-05-system-architecture/index.js';
-export * as Agent06 from './agents/agent-06-detailed-design/index.js';
-export * as Agent07 from './agents/agent-07-implementation-planning/index.js';
-export * as Agent08 from './agents/agent-08-implementation-dev/index.js';
-export * as Agent09 from './agents/agent-09-verification-qa/index.js';
-export * as Agent10 from './agents/agent-10-production-readiness/index.js';
-export * as Agent11 from './agents/agent-11-operations-sre/index.js';
-export * as Agent12 from './agents/agent-12-security-compliance/index.js';
-export * as Agent13 from './agents/agent-13-governance-lifecycle/index.js';
-export * as Agent14 from './agents/agent-14-knowledge-transfer/index.js';
-export * as Agent15 from './agents/agent-15-retrospective/index.js';

@@ -16,7 +16,7 @@
     "README.md"
   ],
   "scripts": {
-    "test": "npx tsx --test tests/**/*.test.ts",
+    "test": "tsc --noEmit && npx tsx --test tests/**/*.test.ts",
     "build": "tsc",
     "setup:global": "node scripts/install-rules.js"
   },
@@ -29,11 +29,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^13.0.3",
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^22.0.0",
     "fast-check": "^4.10.2",
     "typescript": "^7.0.2"
   }

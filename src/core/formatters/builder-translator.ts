@@ -142,8 +142,6 @@ export const STAGE_DEFAULT_TERMS: Record<number, EnterpriseTerm> = {
   }
 };
 
-export const DEFAULT_STAGE_TERMS = STAGE_DEFAULT_TERMS;
-
 export const JARGON_GLOSSARY: Record<string, string> = {
   'STRIDE Threat Mitigation & Residual Risk Tolerance': 'Security Policy & Vulnerability Gates (STRIDE)',
   'Data Privacy & Local Sandboxing Boundary': 'Data Privacy & Offline Execution Boundary',
@@ -187,7 +185,6 @@ export interface StoryTurnParams {
   top3Options?: BuilderOption[];
   nextActionPrompt?: string;
   termOverride?: EnterpriseTerm;
-  tone?: 'builder' | 'enterprise';
 }
 
 export const INLINE_TERM_GISTS: Record<string, string> = {
@@ -231,14 +228,6 @@ export class BuilderTranslator {
   public static formatInlineTerm(term: string, customGist?: string): string {
     const gist = customGist || INLINE_TERM_GISTS[term] || 'Core engineering concept.';
     return `${term} (**${gist}**)`;
-  }
-
-  /**
-   * Compact inline term explanation (replaces standalone card).
-   */
-  public static formatTermCard(stepNumber: number, override?: EnterpriseTerm): string {
-    const termInfo = override || STAGE_DEFAULT_TERMS[stepNumber] || STAGE_DEFAULT_TERMS[0];
-    return `🔹 **Key Concept**: ${termInfo.term} (**${termInfo.whatItIs}**)`;
   }
 
   /**
@@ -306,25 +295,5 @@ ${categoryHeader}${questionSection}${mainSection}${optionsSection}
 
 🔸 **Next Action (under 2 minutes)**:
 ${nextAction}`;
-  }
-
-  /**
-   * Backward-compatible question formatter.
-   */
-  public static formatQuestion(params: {
-    stepNumber: number;
-    category: string;
-    question: string;
-    top3Options: BuilderOption[];
-    tone?: 'builder' | 'enterprise';
-  }): string {
-    return this.formatStoryTurn({
-      stepNumber: params.stepNumber,
-      stepName: `Step ${params.stepNumber}`,
-      category: params.category,
-      question: params.question,
-      top3Options: params.top3Options,
-      tone: params.tone
-    });
   }
 }

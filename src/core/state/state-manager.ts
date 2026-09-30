@@ -1,18 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { SessionState, StepSummary } from './types.js';
+import { SessionState, StepSummary } from './schema.js';
 
 export class StateManager {
   public static readonly STATE_DIR = '.zeta';
   public static readonly STATE_FILE = 'state.json';
   public static readonly CURRENT_VERSION = 1;
   public static readonly CURRENT_TOOL_VERSION = '1.1.0';
-  public static readonly CURRENT_CHANGELOG = [
-    '3-Round Idea Clarification & 3-Round Blind Spots hardening in Step 0',
-    'Comprehensive negative response ("No") handling: excludes features rather than auto-selecting',
-    'Dynamic mid-session version upgrading with opt-out rollback preservation'
-  ];
 
   public static getStatePath(workspaceRoot: string): string {
     return path.join(workspaceRoot, this.STATE_DIR, this.STATE_FILE);
@@ -37,19 +32,6 @@ export class StateManager {
       uncommittedBuffer: {}
     };
 
-    this.save(workspaceRoot, state);
-    return state;
-  }
-
-  /**
-   * Sets the language and communication tone for the workspace ('builder' or 'enterprise').
-   */
-  public static setTone(workspaceRoot: string, tone: 'builder' | 'enterprise'): SessionState {
-    const state = this.load(workspaceRoot);
-    if (!state) {
-      throw new Error('No state found to update tone');
-    }
-    state.tone = tone;
     this.save(workspaceRoot, state);
     return state;
   }
@@ -248,40 +230,5 @@ export class StateManager {
       violations
     };
   }
-
-  /**
-   * Checks if the tool has been updated compared to the project's session state.
-   */
-  public static checkVersionUpdate(state: SessionState): {
-    hasUpdate: boolean;
-    currentVersion: string;
-    newVersion: string;
-    changelog: string[];
-  } {
-    const currentVersion = state.toolVersion || '1.0.0';
-    const newVersion = this.CURRENT_TOOL_VERSION;
-    const hasUpdate = !state.stayOnOldVersion && currentVersion !== newVersion;
-    return {
-      hasUpdate,
-      currentVersion,
-      newVersion,
-      changelog: this.CURRENT_CHANGELOG
-    };
-  }
-
-  /**
-   * Applies the user's decision on a mid-session tool update.
-   */
-  public static applyVersionChoice(workspaceRoot: string, upgrade: boolean): SessionState {
-    const state = this.load(workspaceRoot);
-    if (!state) throw new Error('Cannot apply version choice: state does not exist.');
-    if (upgrade) {
-      state.toolVersion = this.CURRENT_TOOL_VERSION;
-      state.stayOnOldVersion = false;
-    } else {
-      state.stayOnOldVersion = true;
-    }
-    this.save(workspaceRoot, state);
-    return state;
-  }
 }
+

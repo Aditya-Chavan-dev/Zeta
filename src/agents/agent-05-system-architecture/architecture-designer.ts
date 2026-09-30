@@ -104,7 +104,6 @@ export class ArchitectureDesigner {
 
   subgraph StorageLayer ["Persistence & Audit Boundary"]
     StateStore[(".zeta/state.json\n(Atomic State Manager COMP-02)")]
-    SqliteWAL[(".zeta/governance.db\n(WAL SQLite Storage)")]
     DocArtifacts[("docs/*.md\n(Canonical Specifications)")]
   end
 
@@ -115,7 +114,6 @@ export class ArchitectureDesigner {
   Dispatcher -->|"Invoke Stage Architect"| AgentPool
   AgentPool -->|"Generate Questions / Top 3"| QuestionEngine
   Governance -->|"Atomic Read / Write"| StateStore
-  Governance -->|"Audit & WAL Logging"| SqliteWAL
   AgentPool -->|"Compile Signed Document"| DocArtifacts`;
 
     return {

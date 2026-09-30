@@ -1,4 +1,4 @@
-import { ResumeAssessment, SessionState } from './types.js';
+import { ResumeAssessment, SessionState } from './schema.js';
 import { StateManager } from './state-manager.js';
 
 export class ResumeSentinel {
