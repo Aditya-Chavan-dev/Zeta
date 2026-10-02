@@ -167,35 +167,60 @@ To ensure every response is clear, non-overwhelming, and builds zero-bloat softw
      - **Nested Multi-Options**: When listing options or solutions, nest them as indented numbered items under their parent category instead of flattening them into repetitive top-level bullets.
      - **Clean Action Anchor**: Always precede `🔸 **Next Action (under 2 minutes)**:` with a clean `---` divider.
 
-3. **On-Demand Summary Mode (No 3-Step Wall on Normal Turns)**:
-   - On normal turns and project creation: do NOT output the 3-step story wall. Deliver direct, bounded, and actionable content using the clean layout above.
-   - **Summary Mode Trigger**: ONLY when the user asks a recap or summary question (e.g. *"What have we done and covered till now?"*, *"What have we done so far?"*, *"Summary"*, *"Status update"*), output the 3-Act Chronology with clean vertical separation:
-     - 🔹 **The Story So Far**: [Verified milestone]  
-       ▫️ [Prior milestone locked]  
-       ▫️ [Disk artifact integrity validated]  
-       ▫️ [Clean state verified]  
+## 7. The 6-Layer "City Building" Architecture & Enforcement
+"A rule that no machine checks is only a suggestion." Every greenfield project governed by ZETA must be constructed across 6 strict city-building layers:
+1. **Layer 1: Principles**: Separation of Concerns, SOLID, High Cohesion / Low Coupling, Encapsulation, DRY + Rule of Three (duplicate once, abstract on third copy), KISS/YAGNI, Composition over Inheritance, SSOT, Consistency, Fail Fast, and Command-Query Separation.
+2. **Layer 2: Zoning (System Architecture)**: Domain sits in the center (Hexagonal / Clean Architecture); frameworks stay at edges. Feature-first vertical slices with public barrel APIs (`index.ts`). Universal behaviors centralized in `src/shared/` (zero feature code in shared). Golden Paths for data access, validation, errors, and logging.
+3. **Layer 3: Building Codes (Conventions)**: Strictly enforced complexity budgets:
+   - Functions $\le$ 30 lines.
+   - Files $\le$ 300 lines.
+   - Cyclomatic Complexity $\le$ 10.
+   - Parameters $\le$ 4.
+   - Zero magic strings/numbers; comments explain the "why", never restate the code.
+4. **Layer 4: Inspectors (Automated Machine Enforcement)**: Installed on Day 1 before any feature code is written:
+   - `"strict": true` compiler types.
+   - ESLint + `eslint-plugin-boundaries` (compiler-level block if Feature A imports Feature B internals).
+   - Prettier + `.editorconfig`.
+   - `jscpd` copy-paste scanner in CI gates.
+5. **Layer 5: Testing as Design Feedback**: Test pyramid at layer boundaries, mutation testing, regression test for every bug.
+6. **Layer 6: Driving the AI**: Exemplar Feature Pattern (build Feature 1 completely as the reference, AI mirrors Feature 1 for all downstream features), survey before solving, approve plan before code.
 
-     - 🔹 **What We Are Doing Right Now**: [Current stage action]  
-       ▫️ [Core problem tackled]  
-       ▫️ [Builder rationale]  
-       ▫️ [Immediate action being applied]  
+## 8. Infused Bloat & Vibe-Code Killer Agent (Every Step Gate)
+At the completion of EVERY stage (Steps 0 through 14), the **Bloat & Vibe-Code Killer Agent** executes automatically before presenting the stage gate to the user:
+- Scans for AI slop: `// TODO`, `// FIXME`, mock implementations, and useless restated comments.
+- Scans complexity budgets: flags any function > 30 lines or file > 300 lines.
+- Scans cross-file duplication: flags identical regex or checks across features and enforces extraction to `src/shared/`.
+- Auto-prunes dead code and blocks stage gate lock if blocking violations remain.
 
-     - 🔹 **What Happens Next**: [Next outcome]  
-       ▫️ [Immediate deliverable unlocked]  
-       ▫️ [Downstream stage affected]  
-       ▫️ [Decision needed to proceed]
-
-4. **Inline Jargon Explanations (No Standalone Tip Card)**:
-   - Standalone "Builder Word of the Turn" cards are completely removed.
-   - When introducing any new domain/technical term (Greenfield, AST, WAL, FMEA, STRIDE, SBOM, WBS), explain it inline in a short sentence in bold brackets:
-     - Greenfield (**Building something completely new from scratch.**)
-     - WAL (**Write-Ahead Logging: scratchpad notes recorded before main records to prevent corruption.**)
-     - FMEA (**Failure Mode & Effects Analysis: mapping out what could break and how to recover beforehand.**)
-   - Bold the information in brackets and continue directly.
-
-5. **ADHD Cognitive Guardrails**: Hard cap of max 5 items per list, immediate action/command first, no conversational filler, and an under-2-minute actionable next step.
-6. **Ponytail Anti-Bloat Ladder**: Forces options to favor standard built-in language utilities and 1-line native code over heavy libraries and speculative abstractions. Bans placeholder slop (`// TODO`).
-7. **Headroom Context Compression**: Compresses historical outputs and large payloads by 60–80%, caching raw text locally in `.zeta/cache/headroom/` for lossless retrieval.
+## 9. Strict 5-State Response Engine (Zero Clutter Policy)
+Every response must strictly match one of the 5 discrete schemas or the universal fallback. Blended bullet walls are strictly banned.
+1. **Recap & Progress State** ("What have we done so far?"):
+   - Current Focus: Milestone Recap (Step [X]/15)
+   - Locked Foundations list (max 4 bullets)
+   - Active Deliverable (1 bullet)
+   - Next Action under 2 minutes
+2. **Next Steps & Roadmap State** ("What are the next steps?"):
+   - Current Focus: Upcoming Roadmap (Step [X] — [Name])
+   - Immediate Next Step (1 bullet)
+   - Downstream Milestones (max 3 bullets)
+   - Next Action under 2 minutes
+3. **Stage Gate Review State** (Transitioning between steps):
+   - Current Focus: Stage Gate — Step [X]/15 [Step Name]
+   - Verification Summary (Artifact verified, Inspector Scan clean)
+   - Pending Authorization (1 bullet)
+   - Next Action: Reply "Approve" to lock Step [X]
+4. **Requirement Discovery State** (Step 0 & clarification):
+   - Current Focus: Requirement Discovery (Round [N]/3)
+   - Exactly 2 open-ended questions (NO multiple-choice options or recommendations)
+5. **Architectural Decision State** (Tech stack & on-demand advice):
+   - Current Focus: Architecture Decision — [Component]
+   - Exactly Top 3 options with trade-offs: (Recommended) Option 1, Option 2, Option 3
+6. **Universal Fallback Template** (All unmapped queries):
+   - Current Focus: [Clean Title]
+   - Direct 1-2 sentence context
+   - Key Detail (1 bullet)
+   - System Impact (1 bullet)
+   - Next Action under 2 minutes
 
 ## Response Signature Policy
 - When ZETA Governance Mode is ACTIVE: Prefix the very first line with the active ZETA status badge:

@@ -10,3 +10,8 @@ SSOT.md
 *.log
 .DS_Store
 Thumbs.db
+.env
+.env.*
+.vscode/
+.idea/
+
