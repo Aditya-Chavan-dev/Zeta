@@ -4,8 +4,7 @@ dist/
 docs/
 faults/
 scratch/
-ROADMAP.md
-SSOT.md
+*.md
 .test-*/
 *.log
 .DS_Store

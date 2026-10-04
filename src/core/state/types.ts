@@ -9,7 +9,8 @@ export type StepStatus =
   | 'NOT_STARTED'
   | 'IN_PROGRESS'
   | 'AWAITING_APPROVAL'
-  | 'LOCKED';
+  | 'LOCKED'
+  | 'COMPLETED';
 
 export interface UncommittedBuffer {
   lastUserMessage?: string;
